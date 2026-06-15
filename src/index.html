@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CYBERENTERADOS // NEXUS_OS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="scanlines"></div>
+  <div id="crt-overlay"></div>
+
+  <div id="nexus-container">
+    
+    <header id="nexus-header">
+      <div class="brand">
+        <span class="blink">▋</span> CYBERENTERADOS // NEXUS_OS <span class="dim">v1.0.0</span>
+      </div>
+      <div class="telemetry">
+        <span class="dim">SISTEMA ONLINE | </span><span id="sys-clock">00:00:00</span>
+      </div>
+    </header>
+
+    <div class="nexus-grid">
+      
+      <aside class="side-panel">
+        <div class="panel-title">[ DIRECTORIO_RAÍZ ]</div>
+        <ul class="directory-list">
+          <li>> /bin/</li>
+          <li>> /cyber_news/</li>
+          <li>> /sys_logs/</li>
+          <li class="hi">> /arcade_core/</li>
+        </ul>
+
+        <div class="ad-space" style="margin-top: 30px;">
+          <div class="ad-label">>> TRANSMISIÓN_PATROCINADA <<</div>
+          <div class="ad-content dim">
+            [ BLOQUE ADSENSE IZQUIERDO ]<br>
+            Esperando inyección de red...
+          </div>
+        </div>
+      </aside>
+
+      <main id="executable-zone">
+        <div class="zone-title">>>> SELECCIONE EJECUTABLE <<<</div>
+        
+        <div class="games-grid">
+          
+          <a href="conda/index.html" class="game-card active">
+            <div class="game-icon">🐍</div>
+            <div class="game-info">
+              <h3>CONDA.exe</h3>
+              <p class="dim">Infiltración de Red</p>
+              <span class="status hi">[ ACTIVO ]</span>
+            </div>
+          </a>
+
+          <div class="game-card locked" onclick="accessDenied('CRYPT-TRIS.exe')">
+            <div class="game-icon dim">🧱</div>
+            <div class="game-info dim">
+              <h3>CRYPT-TRIS.exe</h3>
+              <p>Desencriptador de Bloques</p>
+              <span class="status danger">[ ENCRIPTADO ]</span>
+            </div>
+          </div>
+
+          <div class="game-card locked" onclick="accessDenied('BRUTE_FORCE.sh')">
+            <div class="game-icon dim">🔑</div>
+            <div class="game-info dim">
+              <h3>BRUTE_FORCE.sh</h3>
+              <p>Simulador de Vulnerabilidades</p>
+              <span class="status danger">[ ENCRIPTADO ]</span>
+            </div>
+          </div>
+
+          <div class="game-card locked" onclick="accessDenied('PING_PONG_PROXY.bin')">
+            <div class="game-icon dim">🏓</div>
+            <div class="game-info dim">
+              <h3>PING_PONG.bin</h3>
+              <p>Intercepción de Paquetes</p>
+              <span class="status danger">[ ENCRIPTADO ]</span>
+            </div>
+          </div>
+
+          <a href="conda/index.html" class="game-card active">
+            <div class="game-icon">🐍</div>
+            <div class="game-info">
+              <h3>CONDA.exe</h3>
+              <p class="dim">Infiltración de Red</p>
+              <span class="status hi">[ ACTIVO ]</span>
+            </div>
+          </a>
+          <a href="conda/index.html" class="game-card active">
+            <div class="game-icon">🐍</div>
+            <div class="game-info">
+              <h3>CONDA.exe</h3>
+              <p class="dim">Infiltración de Red</p>
+              <span class="status hi">[ ACTIVO ]</span>
+            </div>
+          </a>
+          <a href="conda/index.html" class="game-card active">
+            <div class="game-icon">🐍</div>
+            <div class="game-info">
+              <h3>CONDA.exe</h3>
+              <p class="dim">Infiltración de Red</p>
+              <span class="status hi">[ ACTIVO ]</span>
+            </div>
+          </a>
+          <a href="conda/index.html" class="game-card active">
+            <div class="game-icon">🐍</div>
+            <div class="game-info">
+              <h3>CONDA.exe</h3>
+              <p class="dim">Infiltración de Red</p>
+              <span class="status hi">[ ACTIVO ]</span>
+            </div>
+          </a>
+
+        </div>
+
+        <div id="nexus-log">
+          <span class="dim">root@nexus:~$</span> <span id="nexus-log-msg">SISTEMA INICIADO. ESPERANDO COMANDOS...</span>
+        </div>
+      </main>
+
+      <aside class="side-panel">
+        <div class="panel-title">[ IDENTIDAD_PILOTO ]</div>
+        <div class="pilot-profile">
+          <div class="avatar">👤</div>
+          <div class="pilot-data">
+            <div class="dim">Alias:</div>
+            <div class="hi" id="global-alias">GUEST_USER</div>
+            <div class="dim" style="margin-top:10px;">Reputación Global:</div>
+            <div class="amber">NIVEL 1 - NOVATO</div>
+          </div>
+          <button class="menu-btn" style="margin-top: 15px; width: 100%;">[ AUTENTICARSE ]</button>
+        </div>
+
+        <div class="ad-space" style="margin-top: auto;">
+          <div class="ad-label">>> SEÑAL_INTERCEPTADA <<</div>
+          <div class="ad-content dim">
+            [ BLOQUE ADSENSE DERECHO ]<br>
+            Esperando inyección de red...
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <script src="nexus.js"></script>
+</body>
+</html>
