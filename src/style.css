@@ -89,3 +89,76 @@ body {
   .nexus-grid { grid-template-columns: 1fr; }
   .side-panel { display: none; } /* Ocultar paneles en móvil para enfocarse en los juegos */
 }
+
+/* ════════════════════════════════════════
+   COMPONENTES TÁCTICOS DE AUTENTICACIÓN (MEJORA)
+   ════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 12, 2, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  background: var(--bg2);
+  border: 2px solid var(--green3);
+  box-shadow: var(--glow);
+  padding: 25px;
+  width: 90%;
+  max-width: 420px;
+  box-sizing: border-box;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group.hidden {
+  display: none !important;
+}
+
+.form-group label {
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: var(--green2);
+}
+
+.terminal-input {
+  background: var(--bg);
+  border: 1px solid var(--green3);
+  color: var(--green);
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  outline: none;
+}
+
+.terminal-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.menu-btn.danger:hover {
+  background: rgba(255, 34, 34, 0.2);
+  border-color: var(--danger);
+  color: var(--danger);
+  text-shadow: 0 0 5px var(--danger);
+}
