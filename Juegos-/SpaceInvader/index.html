@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PROYECTO GAMMA // DEFENSA RED OWM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="crt">
+    <div id="terminal-container">
+        <header class="hud glitch-text">
+            <div id="score-display">INTERCEPCIONES: <span id="score">0000</span></div>
+            <div id="level-display">OLEADA: <span id="level">01</span></div>
+            <div id="status">RED OWM: <span id="status-text">EN LÍNEA</span></div>
+        </header>
+        
+        <div id="radar-wrapper">
+            <canvas id="gameCanvas"></canvas>
+            <div id="pause-overlay" class="hidden">
+                <h1 class="glitch-text">SISTEMA EN ESPERA</h1>
+                <p>PRESIONE [P] O EL BOTÓN PARA REANUDAR</p>
+            </div>
+        </div>
+
+        <div id="mobile-controls">
+            <div class="instruction">>>> OBJETIVO: TOQUE EL RADAR PARA DESPLEGAR ESCUDOS <<<</div>
+            <button id="btn-pause" class="control-btn pause-btn">SISTEMA: PAUSA/REANUDAR</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

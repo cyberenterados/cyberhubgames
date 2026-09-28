@@ -1,0 +1,874 @@
+/* ==========================================================================
+   panel.css - Dossier OSINT Vintage Recon & Telemetría Táctica
+   Soporte para Pestañas Tácticas, Radio en Vivo, Sismicidad y Adaptación Responsive
+   ========================================================================== */
+
+.osint-panel {
+  position: fixed;
+  top: 136px;
+  right: -520px;
+  width: 460px;
+  max-width: 92vw;
+  height: calc(100vh - 160px);
+  background: var(--bg-panel);
+  border: 1.5px solid var(--brass-gold);
+  border-radius: 8px;
+  box-shadow: 
+    -12px 12px 40px rgba(0, 0, 0, 0.92),
+    0 0 20px rgba(212, 175, 55, 0.35);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1), bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+
+.osint-panel.active {
+  right: 28px;
+}
+
+/* ==========================================================================
+   ENCABEZADO DEL DOSSIER
+   ========================================================================== */
+
+.panel-header {
+  padding: 12px 16px;
+  background: linear-gradient(180deg, rgba(16, 28, 46, 0.96) 0%, rgba(10, 18, 30, 0.92) 100%);
+  border-bottom: 1px solid var(--brass-dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.panel-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.flag-badge {
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+.title-text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.place-title {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--parchment);
+  line-height: 1.2;
+}
+
+.place-subtitle {
+  font-size: 11px;
+  color: var(--parchment-muted);
+}
+
+.close-panel-btn {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--brass-dim);
+  color: var(--brass-light);
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.close-panel-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: var(--accent-crimson);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   BARRA DE PESTAÑAS TÁCTICAS DEL DOSSIER
+   ========================================================================== */
+
+.dossier-tabs-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(8, 15, 26, 0.95);
+  border-bottom: 1px solid var(--brass-dim);
+  flex-shrink: 0;
+}
+
+.dossier-tab-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(212, 175, 55, 0.15);
+  color: var(--parchment-muted);
+  font-family: var(--font-heading);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 8px 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dossier-tab-btn:last-child {
+  border-right: none;
+}
+
+.dossier-tab-btn:hover {
+  color: var(--parchment);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.dossier-tab-btn.active {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--brass-light);
+  border-bottom: 2px solid var(--brass-gold);
+}
+
+/* ==========================================================================
+   CUERPO Y PANELES DE PESTAÑAS
+   ========================================================================== */
+
+.panel-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brass-gold) var(--bg-deep);
+}
+
+.tab-content-panel {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tab-content-panel.active {
+  display: flex;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hud-section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--brass-dim);
+  border-radius: 6px;
+  padding: 12px 14px;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.section-label {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--brass-light);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ==========================================================================
+   PESTAÑA 1: TELEMETRÍA, RELOJ Y COORDENADAS
+   ========================================================================== */
+
+.intel-clock-wrapper {
+  text-align: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--brass-dim);
+  margin-bottom: 8px;
+}
+
+.intel-clock-time {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--parchment);
+  letter-spacing: 2px;
+  text-shadow: 0 0 14px rgba(212, 175, 55, 0.5);
+  line-height: 1.1;
+}
+
+.intel-clock-date {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--brass-light);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.clock-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-top: 6px;
+  color: var(--parchment-muted);
+}
+
+.clock-meta-row strong {
+  color: var(--parchment);
+  font-family: var(--font-mono);
+}
+
+.coords-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.coord-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.coord-row span {
+  color: var(--parchment-dark);
+}
+
+.coord-row strong {
+  color: var(--brass-light);
+}
+
+/* Visor Satelital */
+.recon-viewport {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--brass-gold);
+  background: #000000;
+}
+
+.recon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.recon-hud-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.recon-reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(212, 175, 55, 0.7);
+  border-radius: 50%;
+}
+
+.recon-reticle::before,
+.recon-reticle::after {
+  content: '';
+  position: absolute;
+  background: var(--brass-light);
+}
+
+.recon-reticle::before {
+  top: 50%;
+  left: -8px;
+  width: 62px;
+  height: 1px;
+}
+
+.recon-reticle::after {
+  top: -8px;
+  left: 50%;
+  width: 1px;
+  height: 62px;
+}
+
+.recon-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.8), transparent);
+  box-shadow: 0 0 6px var(--brass-gold);
+  animation: recon-sweep 3s infinite linear;
+}
+
+@keyframes recon-sweep {
+  0% { top: 0%; opacity: 0.8; }
+  100% { top: 100%; opacity: 0.2; }
+}
+
+.recon-target-coords {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--brass-light);
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 15, 26, 0.85);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.hud-blink {
+  animation: hud-blink 1s infinite alternate;
+  color: var(--accent-emerald);
+  font-weight: 700;
+}
+
+@keyframes hud-blink {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.recon-zoom-controls {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(8, 15, 26, 0.9);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--brass-dim);
+  pointer-events: auto;
+}
+
+.recon-zoom-controls button {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid var(--brass-gold);
+  color: var(--brass-light);
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.recon-zoom-controls button:hover {
+  background: var(--brass-gold);
+  color: var(--bg-deep);
+}
+
+.recon-zoom-controls span {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--parchment);
+  padding: 0 4px;
+}
+
+.recon-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(8, 15, 26, 0.9);
+  padding: 3px 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--parchment-dark);
+  font-family: var(--font-mono);
+}
+
+.source-tag {
+  color: var(--brass-light);
+}
+
+/* Solar */
+.solar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.solar-card {
+  background: rgba(8, 15, 26, 0.7);
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.solar-card-label {
+  font-size: 9.5px;
+  color: var(--parchment-dark);
+  margin-bottom: 2px;
+}
+
+.solar-card-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--parchment);
+}
+
+/* ==========================================================================
+   PESTAÑA 2: DIRECCIÓN MILIMÉTRICA Y ENLACES TÁCTICOS
+   ========================================================================== */
+
+.address-details-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.external-links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.ext-tactical-link {
+  background: rgba(14, 25, 42, 0.85);
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: var(--parchment);
+  text-decoration: none;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.ext-tactical-link:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--brass-gold);
+  color: var(--brass-light);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   PESTAÑA 3: METEOROLOGÍA Y SISMOS (USGS)
+   ========================================================================== */
+
+.weather-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.weather-temp-badge {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--parchment);
+}
+
+.weather-cond-badge {
+  font-size: 12px;
+  color: var(--brass-light);
+  font-weight: 600;
+}
+
+.weather-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.weather-stat-box {
+  background: rgba(8, 15, 26, 0.7);
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.stat-label {
+  font-size: 9px;
+  color: var(--parchment-dark);
+}
+
+.stat-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--parchment);
+  margin-top: 2px;
+}
+
+.tactical-weather-note {
+  font-size: 10.5px;
+  color: var(--accent-emerald);
+  margin-top: 8px;
+  background: rgba(52, 211, 153, 0.08);
+  border-left: 2px solid var(--accent-emerald);
+  padding: 4px 8px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Lista de Sismos */
+.seismic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.seismic-event-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(8, 15, 26, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+.seismic-mag-badge {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid var(--accent-amber);
+  color: var(--accent-amber);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.seismic-meta-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.seismic-place {
+  font-size: 11px;
+  color: var(--parchment);
+  font-weight: 600;
+}
+
+.seismic-specs {
+  font-size: 9.5px;
+  color: var(--parchment-muted);
+  margin-top: 1px;
+}
+
+.empty-list-msg {
+  font-size: 11px;
+  color: var(--parchment-dark);
+  font-style: italic;
+  padding: 6px 0;
+}
+
+/* ==========================================================================
+   PESTAÑA 4: REPRODUCTOR DE RADIO EN VIVO & WIKIPEDIA
+   ========================================================================== */
+
+.radio-player-widget {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(14, 25, 42, 0.9);
+  border: 1px solid var(--brass-gold);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.radio-player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-title-label {
+  font-size: 9.5px;
+  color: var(--parchment-dark);
+}
+
+.player-station-name {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brass-light);
+}
+
+.radio-master-toggle {
+  background: var(--brass-gold);
+  color: var(--bg-deep);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.radio-master-toggle:hover {
+  background: var(--parchment);
+  transform: scale(1.08);
+}
+
+.radio-stations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.station-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(8, 15, 26, 0.7);
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+.station-meta {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+}
+
+.station-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--parchment);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.station-tagline {
+  font-size: 9.5px;
+  color: var(--parchment-dark);
+}
+
+.station-play-btn {
+  background: rgba(212, 175, 55, 0.18);
+  border: 1px solid var(--brass-gold);
+  color: var(--brass-light);
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.station-play-btn:hover {
+  background: var(--brass-gold);
+  color: var(--bg-deep);
+}
+
+.station-play-btn.playing {
+  background: var(--accent-crimson);
+  border-color: var(--accent-crimson);
+  color: #ffffff;
+}
+
+/* Wikipedia */
+.wiki-card-body {
+  display: flex;
+  gap: 10px;
+}
+
+.wiki-thumb {
+  width: 68px;
+  height: 68px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--brass-dim);
+  flex-shrink: 0;
+}
+
+.wiki-text-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.wiki-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--parchment);
+  margin-bottom: 3px;
+}
+
+.wiki-extract {
+  font-size: 11px;
+  color: var(--parchment-muted);
+  line-height: 1.35;
+}
+
+.wiki-link {
+  font-size: 10.5px;
+  color: var(--brass-light);
+  text-decoration: none;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.wiki-link:hover {
+  text-decoration: underline;
+}
+
+.wiki-empty-msg {
+  font-size: 11px;
+  color: var(--parchment-dark);
+  font-style: italic;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.meta-row span {
+  color: var(--parchment-dark);
+}
+
+.meta-row strong {
+  color: var(--parchment);
+}
+
+/* ==========================================================================
+   PIE DE ACCIÓN
+   ========================================================================== */
+
+.panel-footer-actions {
+  padding: 10px 16px;
+  background: rgba(14, 25, 40, 0.96);
+  border-top: 1px solid var(--brass-dim);
+  flex-shrink: 0;
+}
+
+.action-btn-tactical {
+  width: 100%;
+  background: rgba(212, 175, 55, 0.18);
+  border: 1px solid var(--brass-gold);
+  color: var(--brass-light);
+  font-family: var(--font-heading);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  transition: all 0.2s ease;
+}
+
+.action-btn-tactical:hover {
+  background: var(--brass-gold);
+  color: var(--bg-deep);
+  box-shadow: var(--brass-glow);
+}
+
+/* ==========================================================================
+   BOTÓN FLOTANTE FAB (Tablets & Móviles en Vertical)
+   ========================================================================== */
+
+.intel-fab-btn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(12, 22, 36, 0.95);
+  border: 1.5px solid var(--brass-gold);
+  color: var(--brass-light);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 10px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 10001;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85), var(--brass-glow);
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.intel-fab-btn.panel-open {
+  background: var(--brass-gold);
+  color: var(--bg-deep);
+}
+
+/* ==========================================================================
+   RESPONSIVE: TABLETS Y PANTALLAS VERTICALES
+   ========================================================================== */
+
+@media (max-width: 850px) {
+  .intel-fab-btn {
+    display: flex;
+  }
+
+  /* Modo Drawer / Bottom-Sheet Táctico en Pantallas Verticales */
+  .osint-panel {
+    top: auto;
+    bottom: -80vh;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+    height: 72vh;
+    border-radius: 12px 12px 0 0;
+    z-index: 10000;
+    transition: bottom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .osint-panel.active {
+    bottom: 0;
+    right: 12px;
+  }
+}

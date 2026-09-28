@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitor Sísmico USGS - Windows XP Edition</title>
+  <!-- CSS de Leaflet.js -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Barra Superior / Header de Aplicación -->
+  <header class="app-header">
+    <div class="app-title">
+      <span class="app-icon">🌍</span>
+      <h1>Monitor Sísmico USGS v1.0</h1>
+    </div>
+    <div class="audio-control">
+      <button id="btn-audio" class="xp-btn">🔊 Habilitar / Probar Sonido</button>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Banner de Alerta Crítica Estilo Ventana de Error de XP -->
+    <section id="alert-banner" class="xp-window alert-window hidden">
+      <div class="xp-title-bar xp-alert-title">
+        <span class="title-text">⚠️ ALERTA CRÍTICA DEL SISTEMA</span>
+        <div class="window-controls">
+          <button id="btn-dismiss" class="win-btn win-close" title="Silenciar">✕</button>
+        </div>
+      </div>
+      <div class="xp-window-body alert-body">
+        <div class="alert-content">
+          <span class="alert-icon-big">⛔</span>
+          <div>
+            <h2 id="alert-title">¡Sismo detectado en zona monitoreada!</h2>
+            <p id="alert-message">Se ha registrado un evento sísmico en uno de tus países guardados.</p>
+          </div>
+        </div>
+        <div class="alert-actions">
+          <button id="btn-dismiss-body" class="xp-btn xp-btn-default">Aceptar / Silenciar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ventana: Configuración de Países Monitoreados -->
+    <section class="xp-window">
+      <div class="xp-title-bar">
+        <span class="title-text">🚨 Países en Monitoreo Inmediato</span>
+        <div class="window-controls">
+          <button class="win-btn">_</button>
+          <button class="win-btn">□</button>
+          <button class="win-btn win-close">✕</button>
+        </div>
+      </div>
+      <div class="xp-window-body">
+        <p class="xp-help-text">Agrega o remueve países. Tus preferencias se guardan automáticamente en tu navegador:</p>
+        
+        <div class="country-input-group">
+          <input type="text" id="country-input" class="xp-input" placeholder="Ej: Chile, Japan, Peru..." />
+          <button id="btn-add-country" class="xp-btn">Añadir País</button>
+        </div>
+
+        <fieldset class="xp-fieldset">
+          <legend>Lista de Países Activos</legend>
+          <div id="country-tags" class="tags-container">
+            <!-- Etiquetas generadas dinámicamente -->
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Ventana: Mapa Interactivo Leaflet -->
+    <section class="xp-window">
+      <div class="xp-title-bar">
+        <span class="title-text">🗺️ Mapa Sísmico Mundial en Tiempo Real</span>
+        <div class="window-controls">
+          <button class="win-btn">_</button>
+          <button class="win-btn">□</button>
+          <button class="win-btn win-close">✕</button>
+        </div>
+      </div>
+      <div class="xp-window-body">
+        <div id="map"></div>
+      </div>
+    </section>
+
+    <!-- Ventana: Feed de Terremotos Mundiales -->
+    <section class="xp-window">
+      <div class="xp-title-bar">
+        <span class="title-text">🌐 Registro Global de Eventos (Últimas 24 Horas)</span>
+        <div class="window-controls">
+          <button class="win-btn">_</button>
+          <button class="win-btn">□</button>
+          <button class="win-btn win-close">✕</button>
+        </div>
+      </div>
+      <div class="xp-window-body">
+        <div class="feed-header">
+          <div class="filter-bar">
+            <label for="min-mag">Filtrar por Magnitud:</label>
+            <select id="min-mag" class="xp-select">
+              <option value="0">Todas las magnitudes</option>
+              <option value="2.5" selected>2.5+</option>
+              <option value="4.5">4.5+</option>
+              <option value="6.0">6.0+ (Fuertes)</option>
+            </select>
+          </div>
+          <span id="last-update" class="update-time">Cargando datos...</span>
+        </div>
+
+        <div id="earthquake-list" class="quake-list">
+          <!-- Lista dinámica de terremotos -->
+        </div>
+      </div>
+      <div class="xp-status-bar">
+        <span id="status-bar-text">Sistema operativo :: Conectado a USGS GeoJSON Feed</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Librería JavaScript de Leaflet.js -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

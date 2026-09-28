@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:5000 http://127.0.0.1:5000; img-src 'self' data:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEON RACER 88 | Outrun Arcade 3D</title>
+    <!-- Fuentes Retro Arcade -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Press+Start+2P&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Pantalla de Inicio / Menú Principal -->
+        <div id="mainScreen" class="screen active">
+            <div class="background-grid"></div>
+            
+            <header class="game-header">
+                <div class="glitch-title">
+                    <span class="sub-header">OUTRUN ARCADE 1988</span>
+                    <h1>NEON<span class="glitch-text">RACER</span>88</h1>
+                </div>
+            </header>
+
+            <main class="menu-content">
+                <!-- Selector de Niveles (5 Niveles Temáticos) -->
+                <div class="section-container">
+                    <div class="section-title">
+                        <span class="title-icon">🏁</span> SELECCIONA TU CIRCUITO (5 NIVELES)
+                    </div>
+                    <div class="level-carousel" id="levelSelector">
+                        <!-- Nivel 1 -->
+                        <div class="level-card active" data-level="1">
+                            <div class="level-badge">LVL 1</div>
+                            <div class="level-preview level-1-bg">
+                                <div class="level-sun"></div>
+                                <div class="level-icon">🌴</div>
+                            </div>
+                            <div class="level-info">
+                                <h3>SUNSET HIGHWAY</h3>
+                                <p class="level-desc">Miami '88 • Palmeras & Atardecer Neón</p>
+                                <div class="level-meta">
+                                    <span class="meta-tag easy">FÁCIL</span>
+                                    <span class="best-time" id="bestTime1">--:--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nivel 2 -->
+                        <div class="level-card" data-level="2">
+                            <div class="level-badge">LVL 2</div>
+                            <div class="level-preview level-2-bg">
+                                <div class="level-icon">🏙️</div>
+                            </div>
+                            <div class="level-info">
+                                <h3>CYBER METROPOLIS</h3>
+                                <p class="level-desc">Rascacielos iluminados & Tráfico denso</p>
+                                <div class="level-meta">
+                                    <span class="meta-tag medium">MEDIO</span>
+                                    <span class="best-time" id="bestTime2">--:--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nivel 3 -->
+                        <div class="level-card" data-level="3">
+                            <div class="level-badge">LVL 3</div>
+                            <div class="level-preview level-3-bg">
+                                <div class="level-icon">🏜️</div>
+                            </div>
+                            <div class="level-info">
+                                <h3>NEON CANYON</h3>
+                                <p class="level-desc">Montañas rusas, colinas y curvas ciegas</p>
+                                <div class="level-meta">
+                                    <span class="meta-tag hard">DESAFÍO</span>
+                                    <span class="best-time" id="bestTime3">--:--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nivel 4 -->
+                        <div class="level-card" data-level="4">
+                            <div class="level-badge">LVL 4</div>
+                            <div class="level-preview level-4-bg">
+                                <div class="level-icon">⛈️</div>
+                            </div>
+                            <div class="level-info">
+                                <h3>TOKYO STORM</h3>
+                                <p class="level-desc">Lluvia nocturna, relámpagos & asfalto resbaladizo</p>
+                                <div class="level-meta">
+                                    <span class="meta-tag expert">PELIGRO</span>
+                                    <span class="best-time" id="bestTime4">--:--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nivel 5 -->
+                        <div class="level-card" data-level="5">
+                            <div class="level-badge">LVL 5</div>
+                            <div class="level-preview level-5-bg">
+                                <div class="level-icon">⚡</div>
+                            </div>
+                            <div class="level-info">
+                                <h3>MATRIX OVERDRIVE</h3>
+                                <p class="level-desc">Cuadrícula virtual Tron a velocidad sónica</p>
+                                <div class="level-meta">
+                                    <span class="meta-tag master">EXTREMO</span>
+                                    <span class="best-time" id="bestTime5">--:--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de Inicio Principal -->
+                <div class="action-section">
+                    <button id="startBtn" class="arcade-button primary">
+                        <span class="btn-text">ARRANCAR MOTOR</span>
+                        <span class="btn-subtext">INSERT COIN TO RACE</span>
+                        <span class="btn-glow"></span>
+                    </button>
+                </div>
+
+                <!-- Guía Rápida de Controles -->
+                <div class="controls-guide">
+                    <div class="guide-col">
+                        <span class="badge-key">↑ / W</span> Acelerar
+                    </div>
+                    <div class="guide-col">
+                        <span class="badge-key">↓ / S</span> Freno / Reversa
+                    </div>
+                    <div class="guide-col">
+                        <span class="badge-key">← → / A D</span> Giro & Derrape
+                    </div>
+                    <div class="guide-col highlight">
+                        <span class="badge-key">ESPACIO / SHIFT</span> NITRO TURBO
+                    </div>
+                </div>
+            </main>
+
+            <footer class="menu-footer">
+                <button id="audioToggleMenu" class="sound-chip">🔊 SONIDO: ON</button>
+                <span class="version-tag">V2.0 PSEUDO-3D ULTRA HD</span>
+            </footer>
+        </div>
+
+        <!-- Pantalla de Juego en Vivo (HUD + Canvas 3D) -->
+        <div id="gameScreen" class="screen">
+            <!-- HUD Superior -->
+            <div class="game-hud">
+                <div class="hud-box hud-speed-box">
+                    <div class="hud-speed-header">
+                        <span class="hud-title">SPEED</span>
+                        <span class="gear-chip" id="gearDisplay">HI</span>
+                    </div>
+                    <div class="speed-readout">
+                        <span id="speedDisplay" class="hud-digital">000</span>
+                        <span class="hud-unit">KM/H</span>
+                    </div>
+                    <div class="rpm-meter">
+                        <div class="rpm-fill" id="rpmBar"></div>
+                    </div>
+                </div>
+
+                <div class="hud-box hud-nitro-box">
+                    <span class="hud-title">NITRO BOOST</span>
+                    <div class="nitro-bar-wrap">
+                        <div class="nitro-bar-fill" id="nitroBar"></div>
+                        <span class="nitro-label" id="nitroLabel">READY</span>
+                    </div>
+                </div>
+
+                <div class="hud-box hud-center-box">
+                    <div class="hud-stage-name" id="stageNameDisplay">SUNSET HIGHWAY</div>
+                    <div class="timer-wrap">
+                        <span class="hud-title">TIME</span>
+                        <span id="timerDisplay" class="hud-timer">01:30.0</span>
+                    </div>
+                </div>
+
+                <div class="hud-box hud-pos-box">
+                    <span class="hud-title">POSICIÓN</span>
+                    <span id="posDisplay" class="hud-digital pos-value">1<span class="pos-total">/12</span></span>
+                </div>
+
+                <div class="hud-box hud-score-box">
+                    <span class="hud-title">SCORE</span>
+                    <span id="scoreDisplay" class="hud-digital">00000</span>
+                </div>
+
+                <div class="hud-controls-chip">
+                    <button id="audioToggleGame" class="icon-chip" title="Alternar Sonido">🔊</button>
+                    <button id="pauseBtn" class="icon-chip" title="Pausar">⏸️</button>
+                </div>
+            </div>
+
+            <!-- Minimapa de Progreso de Pista -->
+            <div class="track-progress-container">
+                <div class="progress-track">
+                    <div class="progress-finish-line">🏁</div>
+                    <div class="progress-checkpoint-mark mark-25"></div>
+                    <div class="progress-checkpoint-mark mark-50"></div>
+                    <div class="progress-checkpoint-mark mark-75"></div>
+                    <div class="progress-bar-fill" id="trackProgressFill"></div>
+                    <div class="progress-player-pin" id="playerPin">▲</div>
+                </div>
+            </div>
+
+            <!-- Canvas de Renderizado 3D -->
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- Notificaciones Flotantes y Mensajes Arcade -->
+            <div id="arcadeBanner" class="arcade-banner">
+                <span id="bannerText" class="banner-text">READY!</span>
+            </div>
+
+            <!-- Avisos Arcade Dinámicos (Drift, Checkpoint, Close Call) -->
+            <div class="arcade-alerts-container">
+                <div id="driftBadge" class="drift-badge">
+                    <span class="drift-title">DRIFT COMBO</span>
+                    <span id="driftText" class="drift-value">x1.5</span>
+                </div>
+                <div id="checkpointPopup" class="checkpoint-popup">
+                    <span id="checkpointText">CHECKPOINT! +25s</span>
+                </div>
+                <div id="closeCallPopup" class="close-call-popup">
+                    <span id="closeCallText">⚡ CLOSE CALL +250</span>
+                </div>
+            </div>
+
+            <!-- Controles Táctiles para Móvil -->
+            <div class="touch-controls" id="touchControls">
+                <div class="touch-cluster left-cluster">
+                    <button class="touch-btn steer-btn" id="leftBtn" aria-label="Girar Izquierda">◀</button>
+                    <button class="touch-btn steer-btn" id="rightBtn" aria-label="Girar Derecha">▶</button>
+                </div>
+                <div class="touch-cluster right-cluster">
+                    <button class="touch-btn nitro-btn" id="nitroTouchBtn" aria-label="Nitro Boost">⚡ NITRO</button>
+                    <div class="pedal-cluster">
+                        <button class="touch-btn brake-btn" id="downBtn" aria-label="Frenar">BRAKE</button>
+                        <button class="touch-btn gas-btn" id="upBtn" aria-label="Acelerar">GAS ▲</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Nivel Completado (Victoria) -->
+        <div id="victoryScreen" class="screen modal-screen">
+            <div class="modal-card victory-card">
+                <div class="victory-header">
+                    <div class="trophy-icon">🏆</div>
+                    <h2 class="victory-title">¡CIRCUITO SUPERADO!</h2>
+                    <p id="victoryLevelName" class="victory-subtitle">SUNSET HIGHWAY COMPLETADO</p>
+                </div>
+
+                <div class="star-rating" id="starRating">
+                    <span class="star active">★</span>
+                    <span class="star active">★</span>
+                    <span class="star active">★</span>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">TIEMPO FINAL</span>
+                        <span id="vicFinalTime" class="stat-num">01:14.2</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">POSICIÓN</span>
+                        <span id="vicFinalPos" class="stat-num">1º</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">VELOCIDAD MÁX</span>
+                        <span id="vicTopSpeed" class="stat-num">284 KM/H</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">PUNTUACIÓN</span>
+                        <span id="vicFinalScore" class="stat-num">14,250</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="nextLevelBtn" class="arcade-button primary pulse">
+                        <span>SIGUIENTE CIRCUITO ❯</span>
+                    </button>
+                    <button id="vicReplayBtn" class="arcade-button secondary">
+                        <span>REPETIR NIVEL</span>
+                    </button>
+                    <button id="vicMenuBtn" class="arcade-button tertiary">
+                        <span>MENÚ PRINCIPAL</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Fin de Juego (Game Over / Sin Tiempo) -->
+        <div id="gameOverScreen" class="screen modal-screen">
+            <div class="modal-card gameover-card">
+                <div class="gameover-header">
+                    <h2 class="gameover-title">TIME OUT</h2>
+                    <p class="gameover-subtitle">SE HA AGOTADO EL TIEMPO</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">DISTANCIA ALCANZADA</span>
+                        <span id="goDistance" class="stat-num">78%</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">PUNTOS TOTALES</span>
+                        <span id="goFinalScore" class="stat-num">04,200</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="restartBtn" class="arcade-button primary danger">
+                        <span>REINTENTAR NIVEL</span>
+                    </button>
+                    <button id="goMenuBtn" class="arcade-button tertiary">
+                        <span>MENÚ PRINCIPAL</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Pausa -->
+        <div id="pauseModal" class="pause-overlay">
+            <div class="pause-card">
+                <h2>JUEGO EN PAUSA</h2>
+                <div class="pause-buttons">
+                    <button id="resumeBtn" class="arcade-button primary">CONTINUAR</button>
+                    <button id="restartPauseBtn" class="arcade-button secondary">REINICIAR</button>
+                    <button id="quitBtn" class="arcade-button tertiary">SALIR AL MENÚ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script del Motor de Juego -->
+    <script src="game.js"></script>
+</body>
+</html>

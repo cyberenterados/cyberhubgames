@@ -143,6 +143,13 @@
     const alias = localStorage.getItem('pilot_alias');
     const reputation = localStorage.getItem('pilot_reputation');
     const avatarPath = localStorage.getItem('pilot_avatar');
+    const sessionState = document.getElementById('pilot-session-state');
+    const isAuthenticated = Boolean(localStorage.getItem('nexus_token'));
+
+    if (sessionState) {
+      sessionState.textContent = isAuthenticated ? 'AUTENTICADO' : 'INVITADO';
+      sessionState.classList.toggle('is-authenticated', isAuthenticated);
+    }
     
     if(alias && elAlias) {
       elAlias.textContent = alias;

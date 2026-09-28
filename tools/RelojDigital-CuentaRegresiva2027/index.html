@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Clock // Temporal Node</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="neon-cyan">
+
+    <div class="scanlines"></div>
+
+    <main class="clock-container">
+        <header>
+            <span class="system-status">SYS.ONLINE [AMERICA REGION]</span>
+            <span id="location-tag" class="location-tag">Detectando zona...</span>
+        </header>
+
+        <!-- Reloj Principal -->
+        <div class="clock-box">
+            <h1 id="clock-time">00:00:00</h1>
+            <p id="clock-date">--/--/----</p>
+        </div>
+
+        <!-- Cuenta Regresiva Automática -->
+        <section class="countdown-box">
+            <h2 id="countdown-title">CUENTA REGRESIVA // FIN DE AÑO</h2>
+            <div id="countdown-timer">00d 00h 00m 00s</div>
+        </section>
+
+        <!-- Panel de Eventos Locales (Maracaibo) -->
+        <div id="local-events" class="events-box hidden">
+            <p id="event-message">⚡ Nodo Local Activo</p>
+        </div>
+
+        <!-- Botón para abrir personalización -->
+        <button id="toggle-custom" class="cyber-btn">CONFIGURAR APARIENCIA</button>
+    </main>
+
+    <!-- Panel de Personalización -->
+    <aside id="custom-panel" class="custom-panel hidden">
+        <h3>PERSONALIZACIÓN CYBER</h3>
+        <label>Color de Neón:</label>
+        <div class="color-options">
+            <button onclick="setTheme('neon-cyan')" class="btn-cyan"></button>
+            <button onclick="setTheme('neon-pink')" class="btn-pink"></button>
+            <button onclick="setTheme('neon-green')" class="btn-green"></button>
+        </div>
+        <label>Efectos Visuales:</label>
+        <button id="toggle-effects" class="cyber-btn-small">Alternar Scanlines</button>
+    </aside>
+
+    <script src="script.js"></script>
+</body>
+</html>

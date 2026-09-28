@@ -1,0 +1,146 @@
+:root {
+    --bg-color: #05050a;
+    --primary-color: #00f3ff;
+    --secondary-color: #ff0055;
+    --glow-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+}
+
+body.neon-cyan { --primary-color: #00f3ff; }
+body.neon-pink { --primary-color: #ff0055; }
+body.neon-green { --primary-color: #00ff66; }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+    font-family: 'Share Tech+Mono', monospace;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+.scanlines {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.clock-container {
+    background: rgba(10, 10, 20, 0.85);
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--glow-shadow);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    z-index: 5;
+    position: relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.clock-box h1 {
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    text-shadow: var(--glow-shadow);
+    margin: 10px 0;
+}
+
+.clock-box p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.countdown-box {
+    border-top: 1px solid var(--primary-color);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.countdown-box h2 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+#countdown-timer {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.events-box {
+    margin-top: 15px;
+    padding: 8px;
+    background: rgba(255, 0, 85, 0.1);
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.hidden { display: none; }
+
+.cyber-btn, .cyber-btn-small {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 8px 15px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.cyber-btn:hover, .cyber-btn-small:hover {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    box-shadow: var(--glow-shadow);
+}
+
+.custom-panel {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: #0d0d15;
+    border: 1px solid var(--primary-color);
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 20;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.color-options button {
+    width: 25px;
+    height: 25px;
+    border: none;
+    cursor: pointer;
+}
+.btn-cyan { background: #00f3ff; }
+.btn-pink { background: #ff0055; }
+.btn-green { background: #00ff66; }

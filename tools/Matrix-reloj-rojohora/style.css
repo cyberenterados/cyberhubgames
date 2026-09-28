@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #050505; /* Fondo ultra oscuro */
+    color: #00FF00; /* Verde fósforo reglamentario */
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#bgCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+.terminal-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #00FF00;
+    box-shadow: 0 0 15px #00FF00, inset 0 0 10px #00FF00;
+    padding: 2.5rem;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 650px;
+    backdrop-filter: blur(4px);
+    text-transform: uppercase;
+}
+
+/* Efecto visual de monitor CRT (Scanlines) */
+.terminal-container::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 3px 100%;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.hud-text {
+    font-size: 1.2rem;
+    margin: 12px 0;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px #00FF00;
+}
+
+/* El módulo retro rojo solicitado por el Comandante */
+.clock-text {
+    font-size: 5rem;
+    color: #FF2020; 
+    text-shadow: 0 0 15px #FF0000, 0 0 30px #FF0000;
+    margin: 20px 0;
+    letter-spacing: 5px;
+    position: relative;
+    z-index: 3;
+}
+
+/* Responsividad Táctica para Móviles */
+@media (max-width: 600px) {
+    .clock-text {
+        font-size: 3rem;
+    }
+    .hud-text {
+        font-size: 0.9rem;
+    }
+    .terminal-container {
+        padding: 1.5rem;
+    }
+}

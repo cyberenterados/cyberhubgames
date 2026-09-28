@@ -1,0 +1,353 @@
+:root {
+  --xp-bg: #3a6ea5; /* Azul clásico de fondo o escritorio XP */
+  --xp-window-bg: #ece9d8; /* Gris beige clásico de diálogo XP */
+  --xp-blue-title: linear-gradient(180deg, #0058ee 0%, #3a93ff 8%, #0058ee 40%, #0045aa 100%);
+  --xp-red-title: linear-gradient(180deg, #e71111 0%, #f16868 8%, #d30f0f 40%, #8b0000 100%);
+  --xp-border-blue: #0054e3;
+  --xp-border-gray: #7f9db9;
+  --xp-btn-bg: linear-gradient(180deg, #ffffff 0%, #ece9d8 85%, #d8d4c0 100%);
+  --xp-btn-border: #003c74;
+  --text-main: #000000;
+  --text-muted: #444444;
+  --alert-red: #d32f2f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Tahoma', 'Segoe UI', Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--xp-bg);
+  color: var(--text-main);
+  line-height: 1.4;
+  padding-bottom: 2rem;
+  font-size: 12px;
+}
+
+/* Header principal con estética XP */
+.app-header {
+  background: linear-gradient(180deg, #245edb 0%, #1941a5 100%);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #00266e;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-title h1 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.container {
+  max-width: 920px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Contenedor Estilo Ventana Windows XP */
+.xp-window {
+  background-color: var(--xp-window-bg);
+  border: 3px solid var(--xp-border-blue);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.xp-title-bar {
+  background: var(--xp-blue-title);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+  user-select: none;
+}
+
+.xp-alert-title {
+  background: var(--xp-red-title) !important;
+}
+
+.title-text {
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+}
+
+/* Botones de control de ventana (_ □ X) */
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.win-btn {
+  width: 21px;
+  height: 21px;
+  background: linear-gradient(180deg, #3c93ff 0%, #0054e3 100%);
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.6);
+}
+
+.win-btn.win-close {
+  background: linear-gradient(180deg, #e76653 0%, #d32f2f 100%);
+}
+
+.win-btn:active {
+  filter: brightness(0.8);
+}
+
+.xp-window-body {
+  padding: 1rem;
+  color: #000;
+}
+
+/* Estilo Cuadro de Alerta Crítica */
+.alert-window {
+  border-color: var(--alert-red) !important;
+  animation: xpPulse 1s infinite alternate;
+}
+
+.alert-window.hidden {
+  display: none;
+}
+
+@keyframes xpPulse {
+  from { box-shadow: 0 0 10px rgba(211, 47, 47, 0.5); }
+  to { box-shadow: 0 0 25px rgba(211, 47, 47, 0.9); }
+}
+
+.alert-body {
+  background-color: #fff;
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.alert-icon-big {
+  font-size: 2.5rem;
+}
+
+.alert-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Botones genéricos de Windows XP */
+.xp-btn {
+  background: var(--xp-btn-bg);
+  border: 1px solid var(--xp-btn-border);
+  border-radius: 3px;
+  padding: 0.4rem 0.9rem;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px #d8d4c0;
+}
+
+.xp-btn:hover {
+  border-color: #e59700;
+  box-shadow: inset 0 0 3px #ffeaaf;
+}
+
+.xp-btn:active {
+  background: #d8d4c0;
+  box-shadow: inset 1px 1px 2px #707070;
+}
+
+.xp-btn-default {
+  border: 2px solid #0054e3;
+}
+
+/* Fieldset e Inputs */
+.xp-fieldset {
+  border: 1px solid var(--xp-border-gray);
+  border-radius: 4px;
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  background-color: #f7f6f0;
+}
+
+.xp-fieldset legend {
+  font-weight: bold;
+  padding: 0 0.4rem;
+  color: #003c74;
+}
+
+.xp-help-text {
+  margin-bottom: 0.6rem;
+  color: #333;
+}
+
+.country-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.xp-input, .xp-select {
+  padding: 0.4rem;
+  border: 1px solid var(--xp-border-gray);
+  border-radius: 2px;
+  background-color: #fff;
+  font-size: 11px;
+  outline: none;
+}
+
+.xp-input {
+  flex: 1;
+}
+
+.xp-input:focus, .xp-select:focus {
+  border-color: #0054e3;
+  box-shadow: 0 0 3px #3c93ff;
+}
+
+/* Tags de Países */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  background: linear-gradient(180deg, #ffffff 0%, #e4e2d5 100%);
+  border: 1px solid #7f9db9;
+  color: #000;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Mapa Leaflet */
+#map {
+  height: 380px;
+  width: 100%;
+  border: 1px solid var(--xp-border-gray);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+/* Feed */
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.update-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.quake-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--xp-border-gray);
+  background-color: #fff;
+  padding: 0.4rem;
+}
+
+.quake-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.8rem;
+  background-color: #f9f9f6;
+  border: 1px solid #e0dfd5;
+  border-radius: 2px;
+}
+
+.quake-item.monitored {
+  border: 1px solid #d32f2f;
+  background-color: #fde8e8;
+}
+
+.mag-badge {
+  font-weight: bold;
+  font-size: 11px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  min-width: 45px;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.mag-low { background-color: #8bc34a; color: #000; }
+.mag-mid { background-color: #ffca28; color: #000; }
+.mag-high { background-color: #ef5350; color: #fff; }
+
+.quake-info {
+  flex: 1;
+  margin: 0 0.8rem;
+}
+
+.quake-place {
+  font-weight: bold;
+  color: #000;
+}
+
+.quake-time {
+  font-size: 10px;
+  color: #666;
+}
+
+/* Status Bar de Ventana XP */
+.xp-status-bar {
+  background-color: var(--xp-window-bg);
+  border-top: 1px solid #b5b2a5;
+  padding: 0.2rem 0.6rem;
+  font-size: 10px;
+  color: #555;
+}

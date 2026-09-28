@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KeyDiag Pro — Keyboard Tester</title>
+  <style>
+    /* =========================================================
+       DESIGN TOKENS — Catppuccin Mocha palette + custom accents
+       ========================================================= */
+    :root {
+      --bg-base:       #1e1e2e;
+      --bg-mantle:     #181825;
+      --bg-crust:      #11111b;
+      --bg-surface0:   #313244;
+      --bg-surface1:   #45475a;
+      --bg-surface2:   #585b70;
+      --text-main:     #cdd6f4;
+      --text-sub:      #a6adc8;
+      --text-muted:    #6c7086;
+      --accent-blue:   #89b4fa;
+      --accent-lavender:#b4befe;
+      --accent-sapphire:#74c7ec;
+      --neon-yellow:   #f9e2af;
+      --neon-active:   #cba6f7;
+      --green-pass:    #a6e3a1;
+      --red-stuck:     #f38ba8;
+      --orange-warn:   #fab387;
+      --overlay0:      #6c7086;
+
+      --key-h: 42px;
+      --key-radius: 6px;
+      --key-shadow: 0 4px 0 rgba(0,0,0,.55);
+      --key-gap: 4px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-crust);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-mantle); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-surface1); border-radius: 3px; }
+
+    /* =========================================================  HEADER  */
+    header {
+      background: var(--bg-mantle);
+      border-bottom: 1px solid var(--bg-surface0);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--neon-active), var(--accent-blue));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .brand-title {
+      font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;
+      background: linear-gradient(90deg, var(--text-main), var(--accent-lavender));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .brand-sub { font-size: .7rem; color: var(--text-muted); }
+    .header-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    /* =========================================================  BUTTONS  */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px; border: 1px solid transparent;
+      font-size: .8rem; font-weight: 600; cursor: pointer;
+      transition: all .15s ease; letter-spacing: .3px; white-space: nowrap;
+    }
+    .btn-ghost { background: var(--bg-surface0); border-color: var(--bg-surface1); color: var(--text-sub); }
+    .btn-ghost:hover { background: var(--bg-surface1); color: var(--text-main); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-active), var(--accent-blue));
+      color: var(--bg-crust); border-color: transparent;
+    }
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    .toggle-pill { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--text-sub); }
+    .toggle-pill input[type="checkbox"] { display: none; }
+    .toggle-track {
+      width: 36px; height: 20px; background: var(--bg-surface0);
+      border-radius: 10px; position: relative; cursor: pointer;
+      transition: background .2s; border: 1px solid var(--bg-surface1);
+    }
+    .toggle-track::after {
+      content: ''; position: absolute; width: 14px; height: 14px;
+      border-radius: 50%; background: var(--text-muted); top: 2px; left: 2px;
+      transition: transform .2s, background .2s;
+    }
+    .toggle-pill input:checked + .toggle-track { background: var(--neon-active); }
+    .toggle-pill input:checked + .toggle-track::after { transform: translateX(16px); background: white; }
+
+    .layout-selector { display: flex; gap: 6px; }
+    .layout-btn {
+      padding: 5px 12px; border-radius: 6px; border: 1px solid var(--bg-surface1);
+      background: var(--bg-surface0); color: var(--text-sub); font-size: .75rem;
+      cursor: pointer; transition: all .15s;
+    }
+    .layout-btn.active { background: var(--neon-active); color: var(--bg-crust); border-color: var(--neon-active); font-weight: 700; }
+
+    /* =========================================================  MAIN  */
+    main {
+      flex: 1; padding: 20px 24px; display: flex; flex-direction: column;
+      gap: 20px; max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+
+    /* =========================================================  TELEMETRY  */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .tele-card {
+      background: var(--bg-mantle); border: 1px solid var(--bg-surface0);
+      border-radius: 12px; padding: 14px 16px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .tele-card.wide { grid-column: span 2; }
+    .tele-label { font-size: .68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .8px; font-weight: 600; }
+    .tele-value { font-size: 1.35rem; font-weight: 700; color: var(--text-main); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tele-sub { font-size: .72rem; color: var(--text-muted); }
+    .tele-accent { color: var(--neon-active); }
+    .progress-wrap { height: 4px; background: var(--bg-surface0); border-radius: 4px; margin-top: 6px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green-pass), var(--accent-sapphire)); border-radius: 4px; width: 0%; transition: width .4s ease; }
+    .nkey-dots { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+    .nkey-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--bg-surface1); transition: background .1s; }
+    .nkey-dot.active { background: var(--green-pass); box-shadow: 0 0 6px var(--green-pass); }
+
+    /* =========================================================  KEYBOARD  */
+    .keyboard-section { display: flex; flex-direction: column; gap: 12px; }
+    .keyboard-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .section-title { font-size: .9rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+    .keyboard-wrapper {
+      background: var(--bg-mantle); border: 1px solid var(--bg-surface0);
+      border-radius: 16px; padding: 20px; overflow-x: auto;
+    }
+    .keyboard { display: flex; flex-direction: column; gap: var(--key-gap); min-width: max-content; }
+    .key-row { display: flex; gap: var(--key-gap); align-items: flex-end; }
+
+    /* =========================================================  KEY STYLES  */
+    .key {
+      height: var(--key-h); min-width: var(--key-h);
+      background: var(--bg-surface0); border: 1px solid var(--bg-surface1);
+      border-bottom: 3px solid var(--bg-crust); border-radius: var(--key-radius);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: .62rem; color: var(--text-sub); cursor: default; user-select: none;
+      box-shadow: var(--key-shadow);
+      transition: background .1s, border-color .1s, box-shadow .1s, transform .08s, color .1s;
+      padding: 2px 4px; text-align: center; line-height: 1.2; position: relative; letter-spacing: .2px;
+    }
+    .key .top-label { font-size: .55rem; color: var(--text-muted); }
+    .key .main-label { font-weight: 600; }
+
+    /* Key widths (based on 42px unit) */
+    .w-1    { width: 42px; }
+    .w-1h   { width: 55px; }   /* 1.25 */
+    .w-1hh  { width: 64px; }   /* 1.5  */
+    .w-1hhh { width: 74px; }   /* 1.75 */
+    .w-2    { width: 88px; }
+    .w-2h   { width: 96px; }   /* 2.25 */
+    .w-2hh  { width: 107px; }  /* 2.5  */
+    .w-2hhh { width: 116px; }  /* 2.75 */
+    .w-sp   { width: 270px; }  /* spacebar 6.25 */
+    .w-np0  { width: 88px; }   /* numpad 0 */
+
+    /* === STATES === */
+    .key.pressed {
+      background: var(--bg-crust); border-color: var(--neon-active); border-bottom-width: 1px;
+      transform: translateY(2px);
+      box-shadow: 0 0 0 1px var(--neon-active),
+                  0 0 14px 2px color-mix(in srgb, var(--neon-active) 40%, transparent),
+                  inset 0 0 8px color-mix(in srgb, var(--neon-active) 15%, transparent);
+      color: var(--neon-active);
+    }
+    .key.tested {
+      background: color-mix(in srgb, var(--green-pass) 12%, var(--bg-surface0));
+      border-color: color-mix(in srgb, var(--green-pass) 60%, transparent);
+      color: var(--green-pass);
+    }
+    .key.stuck {
+      background: color-mix(in srgb, var(--red-stuck) 14%, var(--bg-surface0));
+      border-color: var(--red-stuck); color: var(--red-stuck);
+      animation: stuck-pulse 1s ease-in-out infinite;
+    }
+    @keyframes stuck-pulse {
+      0%, 100% { box-shadow: 0 0 6px var(--red-stuck); }
+      50%       { box-shadow: 0 0 18px var(--red-stuck), 0 0 30px color-mix(in srgb, var(--red-stuck) 30%, transparent); }
+    }
+    .key::after {
+      content: ''; position: absolute; inset: 0; border-radius: var(--key-radius);
+      background: radial-gradient(circle at center, var(--neon-active) 0%, transparent 70%);
+      opacity: 0; transition: opacity .3s; pointer-events: none;
+    }
+    .key.press-flash::after { opacity: .25; animation: flash-out .3s forwards; }
+    @keyframes flash-out { to { opacity: 0; } }
+
+    /* =========================================================  MOUSE  */
+    .mouse-section {
+      background: var(--bg-mantle); border: 1px solid var(--bg-surface0);
+      border-radius: 16px; padding: 20px;
+    }
+    .mouse-grid { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; margin-top: 14px; }
+    .mouse-diagram { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .mouse-stats { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 8px; }
+    .mouse-stat-row {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      background: var(--bg-surface0); border-radius: 10px; border: 1px solid var(--bg-surface1);
+      transition: border-color .2s;
+    }
+    .mouse-stat-row.active { border-color: var(--neon-active); }
+    .mouse-stat-row.tested { border-color: var(--green-pass); }
+    .mouse-stat-icon { font-size: 1.1rem; }
+    .mouse-stat-text { flex: 1; }
+    .mouse-stat-label { font-size: .7rem; color: var(--text-muted); }
+    .mouse-stat-val { font-size: .9rem; font-weight: 600; color: var(--text-main); }
+    .mouse-stat-badge { font-size: .65rem; padding: 2px 8px; border-radius: 20px; background: var(--bg-surface1); color: var(--text-muted); }
+    .mouse-stat-badge.ok { background: color-mix(in srgb, var(--green-pass) 20%, transparent); color: var(--green-pass); }
+
+    /* =========================================================  LOG  */
+    .event-log {
+      background: var(--bg-mantle); border: 1px solid var(--bg-surface0);
+      border-radius: 16px; padding: 16px 20px;
+    }
+    .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .log-entries { display: flex; flex-direction: column; gap: 4px; max-height: 150px; overflow-y: auto; }
+    .log-entry {
+      display: flex; align-items: center; gap: 10px; font-size: .75rem;
+      padding: 5px 8px; border-radius: 6px; background: var(--bg-surface0);
+      animation: slide-in .15s ease-out;
+    }
+    @keyframes slide-in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+    .log-entry .le-type { padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: .65rem; text-transform: uppercase; }
+    .le-down   { background: color-mix(in srgb, var(--neon-active) 25%, transparent); color: var(--neon-active); }
+    .le-up     { background: color-mix(in srgb, var(--accent-blue) 25%, transparent); color: var(--accent-blue); }
+    .le-mouse  { background: color-mix(in srgb, var(--orange-warn) 25%, transparent); color: var(--orange-warn); }
+    .log-entry .le-code { font-weight: 600; color: var(--text-main); }
+    .log-entry .le-key  { color: var(--text-sub); }
+    .log-entry .le-loc  { color: var(--text-muted); font-size: .65rem; }
+    .log-entry .le-ts   { margin-left: auto; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+    /* =========================================================  FOOTER  */
+    footer {
+      background: var(--bg-mantle); border-top: 1px solid var(--bg-surface0);
+      padding: 10px 24px; text-align: center; font-size: .7rem; color: var(--text-muted);
+    }
+
+    /* =========================================================  TOAST  */
+    #toast-area { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; }
+    .toast {
+      background: var(--bg-surface0); border: 1px solid var(--bg-surface1);
+      border-radius: 10px; padding: 10px 16px; font-size: .8rem; color: var(--text-main);
+      animation: toast-in .25s ease-out; max-width: 320px;
+    }
+    .toast.success { border-color: var(--green-pass); }
+    .toast.warn    { border-color: var(--orange-warn); }
+    @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* =========================================================  RESPONSIVE  */
+    @media (max-width: 768px) {
+      main { padding: 12px; }
+      header { padding: 10px 14px; }
+      .keyboard-wrapper { padding: 12px; }
+      :root { --key-h: 36px; --key-gap: 3px; }
+      .w-1 { width: 36px; }
+      .w-1h { width: 46px; }
+      .w-1hh { width: 55px; }
+      .w-1hhh { width: 64px; }
+      .w-2 { width: 75px; }
+      .w-2h { width: 83px; }
+      .w-2hh { width: 92px; }
+      .w-2hhh { width: 100px; }
+      .w-sp { width: 228px; }
+      .w-np0 { width: 75px; }
+      .tele-card.wide { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header>
+  <div class="brand">
+    <div class="brand-icon">⌨️</div>
+    <div>
+      <div class="brand-title">KeyDiag Pro</div>
+      <div class="brand-sub">Professional Keyboard &amp; Mouse Diagnostic Tool</div>
+    </div>
+  </div>
+  <div class="header-controls">
+    <label class="toggle-pill">
+      <input type="checkbox" id="soundToggle" checked />
+      <span class="toggle-track"></span>
+      🔊 Sonido
+    </label>
+    <div class="layout-selector">
+      <button class="layout-btn active" id="btn104" onclick="setLayout('104')">104-keys</button>
+      <button class="layout-btn" id="btn87"  onclick="setLayout('87')">87-TKL</button>
+    </div>
+    <button class="btn btn-ghost" onclick="resetTest()">🔄 Reiniciar</button>
+    <button class="btn btn-primary" onclick="exportReport()">📋 Exportar</button>
+  </div>
+</header>
+
+<!-- ===================== MAIN ===================== -->
+<main>
+
+  <!-- TELEMETRY -->
+  <div class="telemetry-grid">
+    <div class="tele-card wide">
+      <div class="tele-label">Última Tecla Detectada</div>
+      <div class="tele-value" id="tel-key">— Presiona cualquier tecla —</div>
+      <div class="tele-sub">
+        Code: <span id="tel-code" class="tele-accent">–</span> &nbsp;|&nbsp;
+        KeyCode: <span id="tel-keycode" class="tele-accent">–</span> &nbsp;|&nbsp;
+        Location: <span id="tel-loc" class="tele-accent">–</span>
+      </div>
+    </div>
+    <div class="tele-card">
+      <div class="tele-label">Teclas Probadas</div>
+      <div class="tele-value"><span id="tel-tested">0</span> / <span id="tel-total">104</span></div>
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="tele-card">
+      <div class="tele-label">N-Key Rollover</div>
+      <div class="tele-value"><span id="tel-simultaneous">0</span> <span style="font-size:.85rem;color:var(--text-muted)">activas</span></div>
+      <div class="nkey-dots" id="nkey-dots"></div>
+      <div class="tele-sub">Récord: <span id="tel-max-simul" class="tele-accent">0</span></div>
+    </div>
+    <div class="tele-card">
+      <div class="tele-label">Teclas Atascadas</div>
+      <div class="tele-value" id="tel-stuck" style="color:var(--red-stuck)">0</div>
+      <div class="tele-sub">Detección de ghosting/stuck</div>
+    </div>
+    <div class="tele-card">
+      <div class="tele-label">Tiempo de Sesión</div>
+      <div class="tele-value" id="tel-time">00:00</div>
+      <div class="tele-sub">Sesión activa</div>
+    </div>
+  </div>
+
+  <!-- KEYBOARD -->
+  <div class="keyboard-section">
+    <div class="keyboard-header">
+      <div class="section-title">⌨️ Mapa de Teclado</div>
+      <div style="display:flex;gap:12px;font-size:.72rem;color:var(--text-muted);flex-wrap:wrap;">
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--bg-surface1);margin-right:4px;vertical-align:middle;"></span>Inactiva</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--neon-active);margin-right:4px;vertical-align:middle;"></span>Presionada</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--green-pass);margin-right:4px;vertical-align:middle;"></span>Probada ✓</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--red-stuck);margin-right:4px;vertical-align:middle;"></span>Atascada ⚠</span>
+      </div>
+    </div>
+    <div class="keyboard-wrapper">
+      <div class="keyboard" id="keyboard-root"></div>
+    </div>
+  </div>
+
+  <!-- MOUSE TESTER -->
+  <div class="mouse-section">
+    <div class="section-title">🖱️ Test de Ratón</div>
+    <p style="font-size:.75rem;color:var(--text-muted);margin-top:4px;">Haz clic con el ratón sobre esta área para probar botones. El menú contextual está desactivado.</p>
+    <div class="mouse-grid">
+      <!-- SVG diagram -->
+      <div class="mouse-diagram">
+        <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body outline -->
+          <path d="M15 75 Q15 15 65 10 Q115 15 115 75 L115 155 Q115 180 65 182 Q15 180 15 155 Z" fill="#313244" stroke="#45475a" stroke-width="2"/>
+          <!-- Left button -->
+          <path id="svg-left" d="M15 75 Q15 15 65 10 L65 90 Q40 90 15 78 Z" fill="#3a3c5a" stroke="#45475a" stroke-width="1.5" style="cursor:pointer;transition:fill .12s,filter .12s"/>
+          <!-- Right button -->
+          <path id="svg-right" d="M115 75 Q115 15 65 10 L65 90 Q90 90 115 78 Z" fill="#3a3c5a" stroke="#45475a" stroke-width="1.5" style="cursor:pointer;transition:fill .12s,filter .12s"/>
+          <!-- Divider line -->
+          <line x1="65" y1="10" x2="65" y2="90" stroke="#45475a" stroke-width="1.5"/>
+          <!-- Scroll wheel housing -->
+          <rect x="51" y="32" width="28" height="42" rx="14" fill="#45475a" stroke="#6c7086" stroke-width="1.5"/>
+          <!-- Scroll wheel inner -->
+          <rect id="svg-wheel" x="55" y="36" width="20" height="34" rx="10" fill="#585b70" stroke="#6c7086" stroke-width="1" style="transition:fill .12s"/>
+          <!-- Side btn 4 (back) -->
+          <rect id="svg-btn4" x="2" y="100" width="14" height="24" rx="5" fill="#3a3c5a" stroke="#45475a" stroke-width="1.5" style="transition:fill .12s"/>
+          <!-- Side btn 5 (forward) -->
+          <rect id="svg-btn5" x="2" y="130" width="14" height="24" rx="5" fill="#3a3c5a" stroke="#45475a" stroke-width="1.5" style="transition:fill .12s"/>
+          <!-- Labels -->
+          <text x="38" y="62" font-size="8" fill="#6c7086" font-family="monospace">L</text>
+          <text x="87" y="62" font-size="8" fill="#6c7086" font-family="monospace">R</text>
+          <text x="4" y="116" font-size="7" fill="#6c7086" font-family="monospace">4</text>
+          <text x="4" y="146" font-size="7" fill="#6c7086" font-family="monospace">5</text>
+        </svg>
+        <div style="font-size:.65rem;color:var(--text-muted);text-align:center;">Clic derecho sobre<br>la página para probar</div>
+      </div>
+
+      <!-- Mouse stats -->
+      <div class="mouse-stats">
+        <div class="mouse-stat-row" id="mstat-left">
+          <div class="mouse-stat-icon">◀</div>
+          <div class="mouse-stat-text">
+            <div class="mouse-stat-label">Botón Izquierdo (LMB)</div>
+            <div class="mouse-stat-val" id="mval-left">0 clics</div>
+          </div>
+          <div class="mouse-stat-badge" id="mbadge-left">–</div>
+        </div>
+        <div class="mouse-stat-row" id="mstat-right">
+          <div class="mouse-stat-icon">▶</div>
+          <div class="mouse-stat-text">
+            <div class="mouse-stat-label">Botón Derecho (RMB)</div>
+            <div class="mouse-stat-val" id="mval-right">0 clics</div>
+          </div>
+          <div class="mouse-stat-badge" id="mbadge-right">–</div>
+        </div>
+        <div class="mouse-stat-row" id="mstat-middle">
+          <div class="mouse-stat-icon">●</div>
+          <div class="mouse-stat-text">
+            <div class="mouse-stat-label">Botón Central / Rueda</div>
+            <div class="mouse-stat-val" id="mval-middle">0 clics</div>
+          </div>
+          <div class="mouse-stat-badge" id="mbadge-middle">–</div>
+        </div>
+        <div class="mouse-stat-row" id="mstat-scroll">
+          <div class="mouse-stat-icon">↕</div>
+          <div class="mouse-stat-text">
+            <div class="mouse-stat-label">Rueda de Desplazamiento</div>
+            <div class="mouse-stat-val" id="mval-scroll">↑ 0 &nbsp; ↓ 0</div>
+          </div>
+          <div class="mouse-stat-badge" id="mbadge-scroll">–</div>
+        </div>
+        <div class="mouse-stat-row" id="mstat-btn4">
+          <div class="mouse-stat-icon">↩</div>
+          <div class="mouse-stat-text">
+            <div class="mouse-stat-label">Botón Lateral 4 (Atrás)</div>
+            <div class="mouse-stat-val" id="mval-btn4">0 clics</div>
+          </div>
+          <div class="mouse-stat-badge" id="mbadge-btn4">–</div>
+        </div>
+        <div class="mouse-stat-row" id="mstat-btn5">
+          <div class="mouse-stat-icon">↪</div>
+          <div class="mouse-stat-text">
+            <div class="mouse-stat-label">Botón Lateral 5 (Adelante)</div>
+            <div class="mouse-stat-val" id="mval-btn5">0 clics</div>
+          </div>
+          <div class="mouse-stat-badge" id="mbadge-btn5">–</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENT LOG -->
+  <div class="event-log">
+    <div class="log-header">
+      <div class="section-title">📋 Log de Eventos en Tiempo Real</div>
+      <button class="btn btn-ghost" style="padding:4px 10px;font-size:.7rem" onclick="clearLog()">Limpiar</button>
+    </div>
+    <div class="log-entries" id="log-entries">
+      <div class="log-entry" style="color:var(--text-muted);justify-content:center;background:transparent">
+        Esperando entrada — presiona teclas o usa el ratón…
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  KeyDiag Pro · Usa <code>event.code</code> para mapeo físico independiente del idioma y SO ·
+  Web Audio API (sin archivos externos) · v1.0.0
+</footer>
+
+<div id="toast-area"></div>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+'use strict';
+
+// ============================================================
+//  KEYBOARD LAYOUT DEFINITION
+//  Layout rows: array of key definition objects.
+//  Each key: { code, label, topLabel?, width, numpadOnly? }
+//  spacer: { spacer:true, w: CSS width string }
+// ============================================================
+
+const sp = (w) => ({ spacer: true, w });
+
+const ROWS = [
+  // ---- Row 0: Function row ----
+  [
+    { code:'Escape',         label:'Esc',   w:'w-1' },
+    sp('0.6em'),
+    { code:'F1',             label:'F1',    w:'w-1' },
+    { code:'F2',             label:'F2',    w:'w-1' },
+    { code:'F3',             label:'F3',    w:'w-1' },
+    { code:'F4',             label:'F4',    w:'w-1' },
+    sp('0.4em'),
+    { code:'F5',             label:'F5',    w:'w-1' },
+    { code:'F6',             label:'F6',    w:'w-1' },
+    { code:'F7',             label:'F7',    w:'w-1' },
+    { code:'F8',             label:'F8',    w:'w-1' },
+    sp('0.4em'),
+    { code:'F9',             label:'F9',    w:'w-1' },
+    { code:'F10',            label:'F10',   w:'w-1' },
+    { code:'F11',            label:'F11',   w:'w-1' },
+    { code:'F12',            label:'F12',   w:'w-1' },
+    sp('0.4em'),
+    { code:'PrintScreen',    label:'PrtSc', w:'w-1' },
+    { code:'ScrollLock',     label:'ScrlLk',w:'w-1' },
+    { code:'Pause',          label:'Pause', w:'w-1' },
+    sp('0.4em'),
+    { code:'NumLock',        label:'Num',   w:'w-1',  numpadOnly:true },
+    { code:'NumpadDivide',   label:'/',     w:'w-1',  numpadOnly:true },
+    { code:'NumpadMultiply', label:'*',     w:'w-1',  numpadOnly:true },
+    { code:'NumpadSubtract', label:'−',     w:'w-1',  numpadOnly:true },
+  ],
+  // ---- Row 1: Number row ----
+  [
+    { code:'Backquote',  label:'`', topLabel:'~', w:'w-1' },
+    { code:'Digit1',     label:'1', topLabel:'!', w:'w-1' },
+    { code:'Digit2',     label:'2', topLabel:'@', w:'w-1' },
+    { code:'Digit3',     label:'3', topLabel:'#', w:'w-1' },
+    { code:'Digit4',     label:'4', topLabel:'$', w:'w-1' },
+    { code:'Digit5',     label:'5', topLabel:'%', w:'w-1' },
+    { code:'Digit6',     label:'6', topLabel:'^', w:'w-1' },
+    { code:'Digit7',     label:'7', topLabel:'&', w:'w-1' },
+    { code:'Digit8',     label:'8', topLabel:'*', w:'w-1' },
+    { code:'Digit9',     label:'9', topLabel:'(', w:'w-1' },
+    { code:'Digit0',     label:'0', topLabel:')', w:'w-1' },
+    { code:'Minus',      label:'-', topLabel:'_', w:'w-1' },
+    { code:'Equal',      label:'=', topLabel:'+', w:'w-1' },
+    { code:'Backspace',  label:'⌫ Bksp',          w:'w-2' },
+    sp('0.4em'),
+    { code:'Insert',     label:'Ins',  w:'w-1' },
+    { code:'Home',       label:'Home', w:'w-1' },
+    { code:'PageUp',     label:'PgUp', w:'w-1' },
+    sp('0.4em'),
+    { code:'Numpad7',    label:'7', topLabel:'Home', w:'w-1', numpadOnly:true },
+    { code:'Numpad8',    label:'8', topLabel:'↑',    w:'w-1', numpadOnly:true },
+    { code:'Numpad9',    label:'9', topLabel:'PgUp', w:'w-1', numpadOnly:true },
+    { code:'NumpadAdd',  label:'+',                  w:'w-1', numpadOnly:true },
+  ],
+  // ---- Row 2: QWERTY ----
+  [
+    { code:'Tab',          label:'Tab',        w:'w-1hh' },
+    { code:'KeyQ',         label:'Q',          w:'w-1' },
+    { code:'KeyW',         label:'W',          w:'w-1' },
+    { code:'KeyE',         label:'E',          w:'w-1' },
+    { code:'KeyR',         label:'R',          w:'w-1' },
+    { code:'KeyT',         label:'T',          w:'w-1' },
+    { code:'KeyY',         label:'Y',          w:'w-1' },
+    { code:'KeyU',         label:'U',          w:'w-1' },
+    { code:'KeyI',         label:'I',          w:'w-1' },
+    { code:'KeyO',         label:'O',          w:'w-1' },
+    { code:'KeyP',         label:'P',          w:'w-1' },
+    { code:'BracketLeft',  label:'[', topLabel:'{', w:'w-1' },
+    { code:'BracketRight', label:']', topLabel:'}', w:'w-1' },
+    { code:'Backslash',    label:'\\',topLabel:'|', w:'w-1hh' },
+    sp('0.4em'),
+    { code:'Delete',       label:'Del', w:'w-1' },
+    { code:'End',          label:'End', w:'w-1' },
+    { code:'PageDown',     label:'PgDn',w:'w-1' },
+    sp('0.4em'),
+    { code:'Numpad4',      label:'4', topLabel:'←', w:'w-1', numpadOnly:true },
+    { code:'Numpad5',      label:'5',               w:'w-1', numpadOnly:true },
+    { code:'Numpad6',      label:'6', topLabel:'→', w:'w-1', numpadOnly:true },
+    sp('calc(42px + 4px)', true /* numpadOnly spacer */),
+  ],
+  // ---- Row 3: ASDF ----
+  [
+    { code:'CapsLock',     label:'Caps',           w:'w-1hhh' },
+    { code:'KeyA',         label:'A',              w:'w-1' },
+    { code:'KeyS',         label:'S',              w:'w-1' },
+    { code:'KeyD',         label:'D',              w:'w-1' },
+    { code:'KeyF',         label:'F',              w:'w-1' },
+    { code:'KeyG',         label:'G',              w:'w-1' },
+    { code:'KeyH',         label:'H',              w:'w-1' },
+    { code:'KeyJ',         label:'J',              w:'w-1' },
+    { code:'KeyK',         label:'K',              w:'w-1' },
+    { code:'KeyL',         label:'L',              w:'w-1' },
+    { code:'Semicolon',    label:';', topLabel:':', w:'w-1' },
+    { code:'Quote',        label:"'",topLabel:'"',  w:'w-1' },
+    { code:'Enter',        label:'Enter',           w:'w-2h' },
+    sp('calc(3*(42px + 4px) + 0.4em)'),
+    { code:'Numpad1',      label:'1', topLabel:'End',  w:'w-1', numpadOnly:true },
+    { code:'Numpad2',      label:'2', topLabel:'↓',    w:'w-1', numpadOnly:true },
+    { code:'Numpad3',      label:'3', topLabel:'PgDn', w:'w-1', numpadOnly:true },
+    { code:'NumpadEnter',  label:'Ent',                w:'w-1', numpadOnly:true },
+  ],
+  // ---- Row 4: Shift row ----
+  [
+    { code:'ShiftLeft',    label:'⇧ Shift', w:'w-2hh' },
+    { code:'KeyZ',         label:'Z',       w:'w-1' },
+    { code:'KeyX',         label:'X',       w:'w-1' },
+    { code:'KeyC',         label:'C',       w:'w-1' },
+    { code:'KeyV',         label:'V',       w:'w-1' },
+    { code:'KeyB',         label:'B',       w:'w-1' },
+    { code:'KeyN',         label:'N',       w:'w-1' },
+    { code:'KeyM',         label:'M',       w:'w-1' },
+    { code:'Comma',        label:',', topLabel:'<', w:'w-1' },
+    { code:'Period',       label:'.', topLabel:'>', w:'w-1' },
+    { code:'Slash',        label:'/', topLabel:'?', w:'w-1' },
+    { code:'ShiftRight',   label:'⇧ Shift', w:'w-2hhh' },
+    sp('calc(42px + 0.4em)'),
+    { code:'ArrowUp',      label:'↑',       w:'w-1' },
+    sp('calc(42px + 4px)'),
+    { code:'Numpad0',      label:'0', topLabel:'Ins', w:'w-np0', numpadOnly:true },
+    { code:'NumpadDecimal',label:'.', topLabel:'Del', w:'w-1',   numpadOnly:true },
+    sp('calc(42px + 4px)', true),
+  ],
+  // ---- Row 5: Bottom row ----
+  [
+    { code:'ControlLeft',  label:'Ctrl',    w:'w-1h' },
+    { code:'MetaLeft',     label:'⊞ Win',   w:'w-1h' },
+    { code:'AltLeft',      label:'Alt',     w:'w-1h' },
+    { code:'Space',        label:'',        w:'w-sp' },
+    { code:'AltRight',     label:'Alt',     w:'w-1h' },
+    { code:'MetaRight',    label:'⊞ Win',   w:'w-1h' },
+    { code:'ContextMenu',  label:'☰',       w:'w-1h' },
+    { code:'ControlRight', label:'Ctrl',    w:'w-1h' },
+    sp('calc(42px + 0.4em)'),
+    { code:'ArrowLeft',    label:'←',       w:'w-1' },
+    { code:'ArrowDown',    label:'↓',       w:'w-1' },
+    { code:'ArrowRight',   label:'→',       w:'w-1' },
+  ],
+];
+
+// ============================================================
+//  APP STATE
+// ============================================================
+
+let currentLayout = '104';
+const keyMap = new Map();      // code → { el, tested }
+const pressedCodes = new Set();
+const holdCounts = new Map();  // code → consecutive keydown count (no keyup)
+let maxSimultaneous = 0;
+let testedCount = 0;
+let totalKeys = 0;
+let stuckCount = 0;
+let sessionStart = Date.now();
+let audioCtx = null;
+
+// Mouse state
+const ms = {
+  left:   { clicks: 0, tested: false },
+  right:  { clicks: 0, tested: false },
+  middle: { clicks: 0, tested: false },
+  btn4:   { clicks: 0, tested: false },
+  btn5:   { clicks: 0, tested: false },
+  scrollUp: 0, scrollDown: 0, scrollTested: false,
+};
+
+// ============================================================
+//  WEB AUDIO — Mechanical Click Synthesis
+// ============================================================
+
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+/**
+ * Synthesizes a mechanical switch click using:
+ * 1. Exponentially-enveloped white noise → bandpass filter (thump)
+ * 2. Short sine burst (tactile click transient)
+ */
+function playClick(type = 'down') {
+  if (!document.getElementById('soundToggle').checked) return;
+  try {
+    const ctx = ensureAudio();
+    const sr = ctx.sampleRate;
+    const dur = 0.045;
+    const buf = ctx.createBuffer(1, Math.ceil(sr * dur), sr);
+    const d = buf.getChannelData(0);
+
+    for (let i = 0; i < d.length; i++) {
+      const t = i / sr;
+      const attack = 1 - Math.exp(-t * (type === 'down' ? 900 : 600));
+      const decay  = Math.exp(-t * (type === 'down' ? 75 : 110));
+      d[i] = (Math.random() * 2 - 1) * attack * decay;
+    }
+
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+
+    // Bandpass to shape the "click" character
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = type === 'down' ? 4200 : 2600;
+    bp.Q.value = 1.8;
+
+    const gn = ctx.createGain();
+    gn.gain.value = type === 'down' ? 0.55 : 0.28;
+
+    src.connect(bp).connect(gn).connect(ctx.destination);
+    src.start();
+  } catch (_) { /* silently fail if AudioContext is blocked */ }
+}
+
+// ============================================================
+//  BUILD KEYBOARD DOM
+// ============================================================
+
+function buildKeyboard() {
+  const root = document.getElementById('keyboard-root');
+  root.innerHTML = '';
+  keyMap.clear();
+  testedCount = 0;
+  totalKeys = 0;
+
+  ROWS.forEach(row => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'key-row';
+
+    row.forEach(def => {
+      if (def.numpadOnly && currentLayout === '87') return;
+
+      if (def.spacer) {
+        // Numpad-only spacers also suppressed in 87-TKL
+        if (def[1] === true && currentLayout === '87') return;
+        const sp = document.createElement('div');
+        sp.style.cssText = `width:${def.w};flex-shrink:0`;
+        rowEl.appendChild(sp);
+        return;
+      }
+
+      const el = document.createElement('div');
+      el.className = `key ${def.w}`;
+      el.dataset.code = def.code;
+      el.innerHTML = def.topLabel
+        ? `<span class="top-label">${def.topLabel}</span><span class="main-label">${def.label}</span>`
+        : `<span class="main-label">${def.label}</span>`;
+
+      rowEl.appendChild(el);
+      keyMap.set(def.code, { el, tested: false });
+      totalKeys++;
+    });
+
+    if (rowEl.children.length > 0) root.appendChild(rowEl);
+  });
+
+  updateTelemetryTotals();
+}
+
+// ============================================================
+//  KEYBOARD EVENTS
+// ============================================================
+
+const PREVENT_CODES = new Set([
+  'Tab','Space','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+  'ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ContextMenu','Backspace',
+  'PrintScreen','ScrollLock','Pause',
+]);
+
+document.addEventListener('keydown', e => {
+  if (PREVENT_CODES.has(e.code)) e.preventDefault();
+
+  const code = e.code;
+  pressedCodes.add(code);
+  updateNKeyRollover();
+
+  const held = (holdCounts.get(code) || 0) + 1;
+  holdCounts.set(code, held);
+
+  const entry = keyMap.get(code);
+  if (entry) {
+    if (held > 8 && !entry.el.classList.contains('stuck')) {
+      // Stuck key detected
+      entry.el.classList.remove('pressed', 'tested');
+      entry.el.classList.add('stuck');
+      stuckCount++;
+      document.getElementById('tel-stuck').textContent = stuckCount;
+      showToast(`⚠️ Tecla atascada: ${code}`, 'warn');
+    } else if (!entry.el.classList.contains('stuck')) {
+      entry.el.classList.remove('tested');
+      entry.el.classList.add('pressed');
+      // Ripple re-trigger
+      entry.el.classList.remove('press-flash');
+      void entry.el.offsetWidth;
+      entry.el.classList.add('press-flash');
+    }
+  }
+
+  if (!e.repeat) {
+    playClick('down');
+    addLog('down', code, e.key, e.keyCode, e.location);
+  }
+  updateTelemetryKey(e);
+}, { passive: false });
+
+document.addEventListener('keyup', e => {
+  const code = e.code;
+  pressedCodes.delete(code);
+  holdCounts.delete(code);
+  updateNKeyRollover();
+
+  const entry = keyMap.get(code);
+  if (entry) {
+    entry.el.classList.remove('pressed', 'stuck');
+    if (!entry.tested) {
+      entry.tested = true;
+      testedCount++;
+      updateTelemetryTotals();
+    }
+    entry.el.classList.add('tested');
+  }
+
+  playClick('up');
+  addLog('up', code, e.key, e.keyCode, e.location);
+}, { passive: true });
+
+// ============================================================
+//  MOUSE EVENTS
+// ============================================================
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+const MOUSE_KEYS = { 0:'left', 1:'middle', 2:'right', 3:'btn4', 4:'btn5' };
+const MOUSE_SVG  = { 0:'svg-left', 1:'svg-wheel', 2:'svg-right', 3:'svg-btn4', 4:'svg-btn5' };
+const MOUSE_NAMES = { left:'LMB Izquierdo', middle:'MMB Central', right:'RMB Derecho', btn4:'Lateral Atrás', btn5:'Lateral Adelante' };
+
+document.addEventListener('mousedown', e => {
+  const key = MOUSE_KEYS[e.button];
+  if (!key) return;
+  playClick('down');
+  const svgEl = document.getElementById(MOUSE_SVG[e.button]);
+  if (svgEl) { svgEl.style.fill = '#b4befe'; svgEl.style.filter = 'drop-shadow(0 0 6px #b4befe)'; }
+  addLog('mouse', MOUSE_NAMES[key] || `Btn${e.button}`, 'mousedown', e.button, 0);
+}, { passive: true });
+
+document.addEventListener('mouseup', e => {
+  const key = MOUSE_KEYS[e.button];
+  if (!key) return;
+  ms[key].clicks++;
+  ms[key].tested = true;
+  const svgEl = document.getElementById(MOUSE_SVG[e.button]);
+  if (svgEl) { svgEl.style.fill = ''; svgEl.style.filter = ''; }
+  updateMouseUI();
+  addLog('mouse', MOUSE_NAMES[key] || `Btn${e.button}`, 'mouseup', e.button, 0);
+}, { passive: true });
+
+document.addEventListener('wheel', e => {
+  if (e.deltaY < 0) ms.scrollUp++; else ms.scrollDown++;
+  ms.scrollTested = true;
+  const wheel = document.getElementById('svg-wheel');
+  if (wheel) {
+    wheel.style.fill = '#89b4fa';
+    setTimeout(() => { wheel.style.fill = ''; }, 220);
+  }
+  updateMouseUI();
+  addLog('mouse', `Rueda ${e.deltaY < 0 ? '↑Up' : '↓Down'}`, 'wheel', 0, 0);
+}, { passive: true });
+
+function updateMouseUI() {
+  const slots = [
+    ['left','mval-left','mbadge-left'],
+    ['right','mval-right','mbadge-right'],
+    ['middle','mval-middle','mbadge-middle'],
+    ['btn4','mval-btn4','mbadge-btn4'],
+    ['btn5','mval-btn5','mbadge-btn5'],
+  ];
+  slots.forEach(([key, valId, badgeId]) => {
+    const s = ms[key];
+    document.getElementById(valId).textContent = `${s.clicks} clic${s.clicks !== 1 ? 's' : ''}`;
+    const badge = document.getElementById(badgeId);
+    if (s.tested) { badge.className = 'mouse-stat-badge ok'; badge.textContent = '✓ OK'; }
+  });
+  document.getElementById('mval-scroll').textContent = `↑ ${ms.scrollUp}   ↓ ${ms.scrollDown}`;
+  if (ms.scrollTested) {
+    const b = document.getElementById('mbadge-scroll');
+    b.className = 'mouse-stat-badge ok'; b.textContent = '✓ OK';
+  }
+}
+
+// ============================================================
+//  N-KEY ROLLOVER
+// ============================================================
+
+function updateNKeyRollover() {
+  const n = pressedCodes.size;
+  if (n > maxSimultaneous) { maxSimultaneous = n; document.getElementById('tel-max-simul').textContent = n; }
+  document.getElementById('tel-simultaneous').textContent = n;
+
+  const wrap = document.getElementById('nkey-dots');
+  const total = Math.max(n, 10, wrap.children.length);
+  const limit = Math.min(total, 20);
+  wrap.innerHTML = '';
+  for (let i = 0; i < limit; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'nkey-dot' + (i < n ? ' active' : '');
+    wrap.appendChild(dot);
+  }
+}
+
+// ============================================================
+//  TELEMETRY
+// ============================================================
+
+const LOC_NAMES = { 0:'Estándar', 1:'Izquierda', 2:'Derecha', 3:'Numpad' };
+
+function updateTelemetryKey(e) {
+  document.getElementById('tel-key').textContent = e.key === ' ' ? '[ Espacio ]' : (e.key.length > 20 ? e.key.slice(0,20)+'…' : e.key);
+  document.getElementById('tel-code').textContent = e.code;
+  document.getElementById('tel-keycode').textContent = e.keyCode;
+  document.getElementById('tel-loc').textContent = LOC_NAMES[e.location] ?? e.location;
+}
+
+function updateTelemetryTotals() {
+  document.getElementById('tel-tested').textContent = testedCount;
+  document.getElementById('tel-total').textContent = totalKeys;
+  document.getElementById('progress-fill').style.width = totalKeys > 0 ? `${(testedCount / totalKeys) * 100}%` : '0%';
+}
+
+// ============================================================
+//  EVENT LOG
+// ============================================================
+
+const MAX_LOG = 60;
+
+function addLog(type, code, key, keyCode, location) {
+  const wrap = document.getElementById('log-entries');
+  // Remove placeholder
+  if (wrap.firstChild && wrap.firstChild.style && wrap.firstChild.style.color === 'var(--text-muted)') {
+    wrap.innerHTML = '';
+  }
+
+  const now = new Date();
+  const ts  = `${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}.${String(now.getMilliseconds()).padStart(3,'0')}`;
+
+  const el = document.createElement('div');
+  el.className = 'log-entry';
+  const typeClass = type === 'down' ? 'le-down' : type === 'up' ? 'le-up' : 'le-mouse';
+  const typeLabel = type === 'down' ? 'DN' : type === 'up' ? 'UP' : '🖱';
+  const displayKey = key === ' ' ? '⎵' : (String(key).length > 15 ? String(key).slice(0,15)+'…' : key);
+
+  el.innerHTML =
+    `<span class="le-type ${typeClass}">${typeLabel}</span>` +
+    `<span class="le-code">${code}</span>` +
+    `<span class="le-key">"${displayKey}"</span>` +
+    (type !== 'mouse' ? `<span class="le-loc">${LOC_NAMES[location] ?? location}</span>` : '') +
+    `<span class="le-ts">${ts}</span>`;
+
+  wrap.insertBefore(el, wrap.firstChild);
+  while (wrap.children.length > MAX_LOG) wrap.removeChild(wrap.lastChild);
+}
+
+function clearLog() {
+  document.getElementById('log-entries').innerHTML =
+    '<div class="log-entry" style="color:var(--text-muted);justify-content:center;background:transparent">Log limpiado…</div>';
+}
+
+// ============================================================
+//  LAYOUT
+// ============================================================
+
+function setLayout(layout) {
+  currentLayout = layout;
+  document.getElementById('btn104').classList.toggle('active', layout === '104');
+  document.getElementById('btn87').classList.toggle('active', layout === '87');
+  buildKeyboard();
+  resetState(false); // silent reset (no toast)
+  showToast(`📐 Layout: ${layout === '104' ? '104-keys con Numpad' : '87-key TKL (sin Numpad)'}`, '');
+}
+
+// ============================================================
+//  RESET
+// ============================================================
+
+function resetTest() {
+  buildKeyboard();
+  resetState(true);
+}
+
+function resetState(toast = true) {
+  pressedCodes.clear();
+  holdCounts.clear();
+  stuckCount = 0;
+  maxSimultaneous = 0;
+  sessionStart = Date.now();
+
+  Object.assign(ms, {
+    left:   { clicks: 0, tested: false },
+    right:  { clicks: 0, tested: false },
+    middle: { clicks: 0, tested: false },
+    btn4:   { clicks: 0, tested: false },
+    btn5:   { clicks: 0, tested: false },
+    scrollUp: 0, scrollDown: 0, scrollTested: false,
+  });
+
+  ['mbadge-left','mbadge-right','mbadge-middle','mbadge-scroll','mbadge-btn4','mbadge-btn5'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'mouse-stat-badge'; el.textContent = '–';
+  });
+  ['mval-left','mval-right','mval-middle','mval-btn4','mval-btn5'].forEach(id =>
+    document.getElementById(id).textContent = '0 clics');
+  document.getElementById('mval-scroll').textContent = '↑ 0   ↓ 0';
+
+  document.getElementById('tel-simultaneous').textContent = '0';
+  document.getElementById('tel-max-simul').textContent = '0';
+  document.getElementById('tel-stuck').textContent = '0';
+  document.getElementById('tel-key').textContent = '— Presiona cualquier tecla —';
+  document.getElementById('tel-code').textContent = '–';
+  document.getElementById('tel-keycode').textContent = '–';
+  document.getElementById('tel-loc').textContent = '–';
+  document.getElementById('nkey-dots').innerHTML = '';
+
+  updateTelemetryTotals();
+  clearLog();
+  if (toast) showToast('🔄 Prueba reiniciada', 'success');
+}
+
+// ============================================================
+//  EXPORT REPORT
+// ============================================================
+
+function exportReport() {
+  const untestedKeys = [], stuckKeys = [], testedKeys = [];
+  keyMap.forEach(({ el, tested }, code) => {
+    if (el.classList.contains('stuck')) stuckKeys.push(code);
+    else if (!tested) untestedKeys.push(code);
+    else testedKeys.push(code);
+  });
+
+  const report = {
+    tool: 'KeyDiag Pro v1.0.0',
+    timestamp: new Date().toISOString(),
+    layout: currentLayout === '104' ? 'Full 104-key (with Numpad)' : '87-key TKL (no Numpad)',
+    session_duration_seconds: Math.floor((Date.now() - sessionStart) / 1000),
+    summary: {
+      total_mapped_keys: totalKeys,
+      tested_ok: testedCount,
+      not_tested: untestedKeys.length,
+      stuck_detected: stuckCount,
+      max_simultaneous_keys_nkro: maxSimultaneous,
+      test_coverage_pct: totalKeys > 0 ? +((testedCount / totalKeys) * 100).toFixed(1) : 0,
+    },
+    keyboard: { tested_ok: testedKeys, not_tested: untestedKeys, stuck: stuckKeys },
+    mouse: {
+      left_button_clicks: ms.left.clicks,
+      right_button_clicks: ms.right.clicks,
+      middle_button_clicks: ms.middle.clicks,
+      scroll_up_events: ms.scrollUp,
+      scroll_down_events: ms.scrollDown,
+      side_btn4_clicks: ms.btn4.clicks,
+      side_btn5_clicks: ms.btn5.clicks,
+      untested: [
+        !ms.left.tested && 'left_button',
+        !ms.right.tested && 'right_button',
+        !ms.middle.tested && 'middle_button',
+        !ms.scrollTested && 'scroll_wheel',
+        !ms.btn4.tested && 'side_btn4',
+        !ms.btn5.tested && 'side_btn5',
+      ].filter(Boolean),
+    },
+    diagnostics: {
+      potential_issues: [
+        ...stuckKeys.map(k => ({ key: k, issue: 'STUCK — Continuous keydown without keyup' })),
+        ...untestedKeys.map(k => ({ key: k, issue: 'NOT_TESTED — No signal received' })),
+      ],
+    },
+  };
+
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `keydiag-report-${new Date().toISOString().slice(0,19).replace(/[:.]/g,'-')}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast(
+    `📋 Informe exportado — ${testedCount}/${totalKeys} teclas OK, ${stuckKeys.length} atascadas, ${untestedKeys.length} sin probar`,
+    'success'
+  );
+}
+
+// ============================================================
+//  SESSION TIMER
+// ============================================================
+
+setInterval(() => {
+  const s = Math.floor((Date.now() - sessionStart) / 1000);
+  document.getElementById('tel-time').textContent =
+    `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+}, 1000);
+
+// ============================================================
+//  TOAST
+// ============================================================
+
+function showToast(msg, type = '') {
+  const area  = document.getElementById('toast-area');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  area.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .3s'; }, 3000);
+  setTimeout(() => toast.remove(), 3400);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+
+buildKeyboard();
+setTimeout(() => showToast('⌨️ KeyDiag Pro listo — presiona teclas para comenzar', ''), 400);
+
+</script>
+</body>
+</html>

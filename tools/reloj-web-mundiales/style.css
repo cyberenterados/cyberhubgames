@@ -1,0 +1,727 @@
+:root {
+    /* Paleta de Color Windows Vista Aero */
+    --aero-cyan: #00d2ff;
+    --aero-blue: #0078d7;
+    --aero-teal: #00b4d8;
+    --aero-aurora-green: #00f5a0;
+    --aero-glass-bg: rgba(14, 28, 48, 0.55);
+    --aero-glass-border: rgba(255, 255, 255, 0.35);
+    --aero-glass-highlight: rgba(255, 255, 255, 0.7);
+    --aero-glass-shadow: rgba(0, 0, 0, 0.45);
+    --aero-text-bright: #ffffff;
+    --aero-text-muted: #b0cbe8;
+    --aero-day-glow: #ffd166;
+    --aero-night-glow: #809bce;
+    --font-ui: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    --font-clock: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #040914;
+    font-family: var(--font-ui);
+    color: var(--aero-text-bright);
+    user-select: none;
+}
+
+/* ============================================================
+   CANVAS DE FONDO Y ATMÓSFERA AERO
+   ============================================================ */
+#aero-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+}
+
+.aero-atmosphere-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 164, 239, 0.08) 0%, rgba(4, 9, 20, 0.6) 80%, rgba(2, 5, 12, 0.9) 100%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+}
+
+/* ============================================================
+   BARRA SUPERIOR ESTILO WINDOWS VISTA AERO
+   ============================================================ */
+.vista-aero-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 54px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(20, 45, 75, 0.65) 15%, rgba(10, 25, 45, 0.75) 85%, rgba(0, 10, 20, 0.85) 100%);
+    backdrop-filter: blur(16px) saturate(190%);
+    -webkit-backdrop-filter: blur(16px) saturate(190%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* Vista Start Orb */
+.aero-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.vista-orb {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #4ae5ff 0%, #0099ff 45%, #003366 85%, #001a33 100%);
+    border: 2px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.7), inset 0 0 6px rgba(255, 255, 255, 0.6);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vista-orb:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 18px rgba(0, 245, 160, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.orb-gloss {
+    position: absolute;
+    top: 1px;
+    left: 4px;
+    right: 4px;
+    height: 15px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-radius: 50% 50% 40% 40%;
+    pointer-events: none;
+}
+
+.orb-clock-icon {
+    font-size: 19px;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+.brand-subtitle {
+    font-size: 0.72rem;
+    color: var(--aero-text-muted);
+    letter-spacing: 0.3px;
+}
+
+/* Indicadores de Estadísticas */
+.aero-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 4px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.78rem;
+    font-weight: 500;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.utc-pill {
+    font-family: var(--font-clock);
+    color: var(--aero-aurora-green);
+    letter-spacing: 0.5px;
+}
+
+.stat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--aero-aurora-green);
+    box-shadow: 0 0 8px var(--aero-aurora-green);
+}
+
+.stat-dot.pulse {
+    animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Botones Vista Aero */
+.aero-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aero-button {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.12) 48%, rgba(0, 60, 110, 0.35) 52%, rgba(0, 30, 65, 0.5) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    padding: 5px 12px;
+    color: #ffffff;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.aero-button:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.22) 48%, rgba(0, 140, 220, 0.45) 52%, rgba(0, 80, 140, 0.6) 100%);
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.6), inset 0 1px 1px #fff;
+    transform: translateY(-1px);
+}
+
+.aero-button:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.aero-button.icon-only {
+    padding: 5px 9px;
+    font-size: 0.9rem;
+}
+
+.btn-icon {
+    font-size: 0.95rem;
+}
+
+/* Visualizador de audio sutil */
+.audio-waves {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    margin-left: 2px;
+}
+
+.audio-waves span {
+    width: 3px;
+    height: 4px;
+    background: var(--aero-aurora-green);
+    border-radius: 2px;
+    transition: height 0.2s ease;
+}
+
+.audio-playing .audio-waves span:nth-child(1) {
+    animation: waveBar 0.6s infinite ease-in-out alternate;
+}
+.audio-playing .audio-waves span:nth-child(2) {
+    animation: waveBar 0.8s 0.2s infinite ease-in-out alternate;
+}
+.audio-playing .audio-waves span:nth-child(3) {
+    animation: waveBar 0.5s 0.4s infinite ease-in-out alternate;
+}
+
+@keyframes waveBar {
+    0% { height: 3px; }
+    100% { height: 12px; }
+}
+
+/* ============================================================
+   CONTENEDOR DE REJILLA PRINCIPAL Y CUADRITOS
+   ============================================================ */
+.grid-viewport {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    z-index: 10;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 14px;
+    perspective: 1000px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 210, 255, 0.4) rgba(0, 0, 0, 0.3);
+}
+
+.grid-viewport::-webkit-scrollbar {
+    width: 6px;
+}
+.grid-viewport::-webkit-scrollbar-thumb {
+    background: rgba(0, 210, 255, 0.4);
+    border-radius: 3px;
+}
+
+.aero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   MINI CUADRITOS (AERO CARDS) ESTILO WINDOWS VISTA
+   ============================================================ */
+.aero-card {
+    position: relative;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(16, 36, 64, 0.65) 30%, rgba(8, 20, 38, 0.78) 100%);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid var(--aero-glass-border);
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 0 12px rgba(0, 180, 255, 0.18),
+        0 6px 18px rgba(0, 0, 0, 0.45);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 130px;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: aeroCrystallize 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+}
+
+/* Reflejo Curvo Superior Especular de Windows Vista */
+.aero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 65%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 9px 9px 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Efecto hover suave */
+.aero-card:hover {
+    transform: translateY(-3px) scale(1.03);
+    border-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.9),
+        0 10px 25px rgba(0, 210, 255, 0.4),
+        0 0 18px rgba(0, 245, 160, 0.25);
+    z-index: 5;
+}
+
+/* Animación de entrada de cada cuadrito */
+@keyframes aeroCrystallize {
+    0% {
+        opacity: 0;
+        transform: scale(0.65) translateY(20px) rotateX(20deg);
+        filter: blur(10px) brightness(2.2);
+        box-shadow: 0 0 40px rgba(0, 210, 255, 1);
+    }
+    60% {
+        opacity: 1;
+        filter: blur(0px) brightness(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotateX(0deg);
+        filter: blur(0px) brightness(1);
+    }
+}
+
+/* Cabecera del Cuadrito: Bandera, País y Ciudad */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    z-index: 2;
+    position: relative;
+}
+
+.card-location {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.card-country-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.card-flag {
+    font-size: 1.15rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.card-country {
+    font-weight: 700;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+}
+
+.card-city {
+    font-size: 0.68rem;
+    color: var(--aero-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 2px;
+}
+
+.card-daynight-badge {
+    font-size: 0.85rem;
+    padding: 2px 5px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    line-height: 1;
+}
+
+.is-day .card-daynight-badge {
+    border-color: rgba(255, 209, 102, 0.4);
+    box-shadow: 0 0 6px rgba(255, 209, 102, 0.3);
+}
+
+.is-night .card-daynight-badge {
+    border-color: rgba(128, 155, 206, 0.4);
+    box-shadow: 0 0 6px rgba(128, 155, 206, 0.3);
+}
+
+/* Cuerpo del Cuadrito: Reloj Digital Central */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    position: relative;
+    padding: 4px 0;
+}
+
+.card-time {
+    font-family: var(--font-clock);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffffff;
+    text-shadow: 
+        0 0 8px rgba(0, 210, 255, 0.8),
+        0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.card-seconds {
+    color: var(--aero-aurora-green);
+    font-size: 1.05rem;
+    opacity: 0.9;
+}
+
+.card-date-badge {
+    font-size: 0.64rem;
+    color: var(--aero-text-muted);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin-top: -2px;
+}
+
+/* Pie del Cuadrito: Clima y Temperatura */
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+    position: relative;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 6px;
+    padding: 3px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+}
+
+.weather-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+}
+
+.weather-desc {
+    font-size: 0.64rem;
+    color: #e0eaff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 75px;
+}
+
+.weather-temp {
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: var(--font-clock);
+    color: #72efdd;
+    text-shadow: 0 0 6px rgba(114, 239, 221, 0.5);
+}
+
+/* ============================================================
+   NOTIFICACIÓN DE INICIO DE AUDIO AERO
+   ============================================================ */
+.aero-notification {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 100;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(12, 38, 70, 0.85) 40%, rgba(5, 20, 42, 0.95) 100%);
+    backdrop-filter: blur(18px) saturate(200%);
+    -webkit-backdrop-filter: blur(18px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        0 12px 30px rgba(0, 0, 0, 0.6),
+        0 0 25px rgba(0, 210, 255, 0.4);
+    padding: 12px 16px;
+    max-width: 320px;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+    animation: bounceIn 0.8s ease;
+}
+
+@keyframes bounceIn {
+    0% { transform: translateY(-30px) scale(0.9); opacity: 0; }
+    60% { transform: translateY(5px) scale(1.02); opacity: 1; }
+    100% { transform: translateY(0) scale(1); }
+}
+
+.aero-notification.hidden {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.notification-gloss {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 11px 11px 50px 50px;
+    pointer-events: none;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification-icon {
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 8px #00d2ff);
+}
+
+.notification-text strong {
+    font-size: 0.82rem;
+    display: block;
+    margin-bottom: 2px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.notification-text p {
+    font-size: 0.72rem;
+    color: var(--aero-text-muted);
+    line-height: 1.3;
+}
+
+.aero-button-mini {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(0, 114, 206, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    white-space: nowrap;
+}
+
+.aero-button-mini:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(0, 164, 239, 0.8) 100%);
+}
+
+/* ============================================================
+   BARRA DE ESTADO INFERIOR
+   ============================================================ */
+.aero-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background: linear-gradient(180deg, rgba(10, 24, 45, 0.75) 0%, rgba(4, 12, 24, 0.9) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.72rem;
+    color: var(--aero-text-muted);
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vista-badge {
+    background: linear-gradient(90deg, #0078d7, #00c49f);
+    color: #fff;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.status-msg {
+    color: #cfe2ff;
+}
+
+.hint {
+    opacity: 0.8;
+}
+
+/* ============================================================
+   RESPONSIVIDAD Y AJUSTES PARA PANTALLAS PEQUEÑAS / MÓVILES
+   ============================================================ */
+@media (max-width: 768px) {
+    .vista-aero-bar {
+        height: 50px;
+        padding: 0 10px;
+    }
+
+    .brand-title {
+        font-size: 0.85rem;
+    }
+
+    .brand-subtitle {
+        display: none;
+    }
+
+    .utc-pill {
+        display: none;
+    }
+
+    .aero-stats {
+        gap: 6px;
+    }
+
+    .aero-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+    }
+
+    .aero-card {
+        height: 120px;
+        padding: 8px;
+    }
+
+    .card-time {
+        font-size: 1.25rem;
+    }
+
+    .card-seconds {
+        font-size: 0.95rem;
+    }
+
+    .card-country {
+        font-size: 0.75rem;
+    }
+
+    .weather-desc {
+        max-width: 55px;
+    }
+
+    .aero-notification {
+        top: auto;
+        bottom: 35px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .footer-right {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .aero-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 8px;
+    }
+
+    #btn-shuffle span:not(.btn-icon) {
+        display: none;
+    }
+    
+    #audio-label {
+        display: none;
+    }
+}

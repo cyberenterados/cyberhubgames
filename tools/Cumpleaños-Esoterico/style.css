@@ -1,0 +1,1998 @@
+/* ==========================================================================
+   CUMPLEAÑOS ESOTÉRICO & ORÁCULO VÉDICO - HOJA DE ESTILOS PRINCIPAL
+   Estilo: Místico, Indo-Védico, Geometría Sagrada, Glassmorphism Dorado
+   ========================================================================== */
+
+/* --- Variables y Paleta Sagrada --- */
+:root {
+  --bg-deep-space: #060511;
+  --bg-night-sky: #0c0824;
+  --bg-vedic-purple: #160a38;
+  --bg-card: rgba(22, 13, 46, 0.72);
+  --bg-card-hover: rgba(32, 20, 68, 0.85);
+  --bg-subcard: rgba(10, 6, 26, 0.6);
+
+  /* Acentos de Oro Celestial y Bronce */
+  --gold-primary: #d4af37;
+  --gold-bright: #fbe69b;
+  --gold-glow: rgba(212, 175, 55, 0.35);
+  --gold-border: rgba(212, 175, 55, 0.28);
+  --gold-border-bright: rgba(245, 215, 127, 0.65);
+  --bronze: #9c6c28;
+
+  /* Colores de Energía y Chakras */
+  --color-purple: #a855f7;
+  --color-cyan: #38bdf8;
+  --color-amber: #f59e0b;
+  --color-rose: #f43f5e;
+  --color-emerald: #10b981;
+
+  /* Texto y Sombras */
+  --text-primary: #fdfbf7;
+  --text-secondary: #c9c3dc;
+  --text-muted: #8b83a8;
+  --text-gold: #f5d77f;
+
+  --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.25);
+  --shadow-purple-glow: 0 0 30px rgba(168, 85, 247, 0.25);
+
+  --font-serif-mystic: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-serif-heading: 'Cinzel', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+
+  --transition-smooth: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- Reset y Estructura Global --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-deep-space);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(58, 28, 114, 0.45) 0%, transparent 60%),
+    radial-gradient(circle at 10% 40%, rgba(18, 28, 72, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(76, 29, 149, 0.3) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Canvas de Polvo Cósmico --- */
+#cosmic-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+}
+
+/* --- Mandalas y Yantras Sagrados de Fondo --- */
+.mandala-container {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.16;
+  transition: opacity 1s ease;
+}
+
+.mandala-top-right {
+  top: -120px;
+  right: -120px;
+  width: 550px;
+  height: 550px;
+}
+
+.mandala-bottom-left {
+  bottom: -150px;
+  left: -150px;
+  width: 600px;
+  height: 600px;
+}
+
+.mandala-svg {
+  width: 100%;
+  height: 100%;
+  animation: rotateMandala 140s linear infinite;
+  transform-origin: center center;
+}
+
+.mandala-reverse {
+  animation: rotateMandalaReverse 160s linear infinite;
+}
+
+@keyframes rotateMandala {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateMandalaReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* --- Barra Superior Ceremonial --- */
+.sacred-toolbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(8, 5, 20, 0.65);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gold-border);
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sacred-symbol {
+  font-size: 1.7rem;
+  color: var(--gold-bright);
+  text-shadow: 0 0 12px var(--gold-glow);
+  animation: gentlePulse 4s ease-in-out infinite;
+}
+
+.toolbar-title {
+  font-family: var(--font-serif-heading);
+  font-size: 1.05rem;
+  letter-spacing: 3px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-sacred-icon {
+  background: rgba(35, 20, 68, 0.6);
+  border: 1px solid var(--gold-border);
+  color: var(--text-gold);
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-sacred-icon:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold-primary);
+  color: #ffffff;
+  box-shadow: 0 0 15px var(--gold-glow);
+  transform: translateY(-1px);
+}
+
+.btn-sacred-icon.playing {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: var(--gold-bright);
+  color: #fff;
+  box-shadow: 0 0 18px var(--gold-glow);
+}
+
+/* --- Contenedor Principal --- */
+.main-wrapper {
+  position: relative;
+  z-index: 5;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* --- Hero & Formulario Ceremonial --- */
+.oracle-hero {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 1.25rem;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-serif-heading);
+  font-size: 0.75rem;
+  letter-spacing: 2.5px;
+  color: var(--gold-bright);
+  margin-bottom: 1.2rem;
+}
+
+.badge-sparkle {
+  color: var(--gold-primary);
+}
+
+.oracle-title {
+  font-family: var(--font-serif-mystic);
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, #fff 20%, #fae19c 50%, #d4af37 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 35px rgba(212, 175, 55, 0.25);
+}
+
+.oracle-subtitle {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* --- Tarjeta del Formulario --- */
+.oracle-form-card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-subtle), var(--shadow-glow);
+  padding: 2.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.oracle-form-card:hover {
+  border-color: var(--gold-border-bright);
+}
+
+.form-mandala-crest {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+  background: var(--bg-vedic-purple);
+  border: 1px solid var(--gold-primary);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.crest-icon {
+  font-size: 1.3rem;
+  color: var(--gold-bright);
+  animation: rotateMandala 20s linear infinite;
+}
+
+.form-content {
+  margin-top: 0.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.8rem;
+  text-align: left;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-serif-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-gold);
+  margin-bottom: 0.75rem;
+}
+
+.label-icon {
+  font-size: 1.1rem;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.sacred-date-input {
+  width: 100%;
+  padding: 1.1rem 1.3rem;
+  background: rgba(10, 6, 25, 0.85);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-family: var(--font-serif-heading);
+  font-size: 1.15rem;
+  letter-spacing: 1.5px;
+  outline: none;
+  transition: var(--transition-smooth);
+  color-scheme: dark;
+}
+
+.sacred-date-input:focus {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 20px var(--gold-glow);
+  background: rgba(15, 8, 38, 0.95);
+}
+
+.input-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.btn-reveal-oracle {
+  width: 100%;
+  padding: 1.2rem 2rem;
+  background: linear-gradient(135deg, #c59b27, #f3d476, #9b6c1e);
+  color: #120625;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif-heading);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.4);
+  transition: var(--transition-spring);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.btn-reveal-oracle:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 35px rgba(245, 215, 127, 0.6);
+}
+
+.btn-reveal-oracle:active {
+  transform: translateY(1px);
+}
+
+.form-error-msg {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  border-radius: var(--radius-sm);
+  color: #fca5a5;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+/* --- Loader Místico --- */
+.mystic-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+}
+
+.loader-mandala {
+  width: 70px;
+  height: 70px;
+  border: 2px dashed var(--gold-bright);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: rotateMandala 2s linear infinite;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 25px var(--gold-glow);
+}
+
+.loader-text {
+  font-family: var(--font-serif-heading);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  color: var(--text-gold);
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+
+/* --- Resultados: Sección y Tarjeta de Saludo --- */
+.oracle-results-section {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.results-header-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem 2.2rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.results-greeting {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.greeting-symbol {
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.greeting-tag {
+  font-family: var(--font-serif-heading);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+}
+
+.greeting-date {
+  font-family: var(--font-serif-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.quick-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.stat-chip {
+  background: rgba(10, 6, 26, 0.7);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stat-label {
+  color: var(--text-muted);
+}
+
+.stat-chip strong {
+  color: var(--gold-bright);
+}
+
+/* --- Cuadrícula de Cartas Astrales (Grid) --- */
+.oracle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.8rem;
+  margin-bottom: 3.5rem;
+}
+
+/* Tarjeta General */
+.oracle-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem;
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.oracle-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.oracle-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-border-bright);
+  box-shadow: var(--shadow-subtle), var(--shadow-glow);
+}
+
+.oracle-card:hover::before {
+  opacity: 1;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.card-icon-wrap {
+  width: 48px;
+  height: 48px;
+  background: rgba(45, 23, 85, 0.6);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--gold-bright);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.card-category {
+  display: block;
+  font-family: var(--font-serif-heading);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-family: var(--font-serif-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* --- 1. Módulo: Cronometría del Alma --- */
+.age-main-display {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--bg-subcard);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.age-unit-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.age-number {
+  font-family: var(--font-serif-mystic);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  line-height: 1.1;
+  text-shadow: 0 0 15px var(--gold-glow);
+}
+
+.age-unit {
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.age-unit-separator {
+  color: var(--gold-primary);
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.age-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+}
+
+.detail-label {
+  color: var(--text-secondary);
+}
+
+.detail-val {
+  font-family: var(--font-serif-heading);
+  font-weight: 600;
+  color: var(--text-gold);
+}
+
+/* --- 2. Módulo: Zodiaco & Rashi Védico --- */
+.zodiac-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.badge-element, .badge-modality, .badge-ruler {
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--gold-border);
+  color: var(--text-gold);
+}
+
+.zodiac-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1.4rem;
+}
+
+.vedic-subcard {
+  background: var(--bg-subcard);
+  border: 1px dashed var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.vedic-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-serif-heading);
+  font-size: 0.85rem;
+  color: var(--gold-bright);
+  margin-bottom: 0.5rem;
+}
+
+.vedic-tag {
+  display: inline-block;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid var(--color-purple);
+  color: #e9d5ff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.4rem;
+}
+
+.vedic-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* --- 3. Módulo: Fase Lunar Natal --- */
+.moon-display {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--bg-subcard);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.moon-visual-wrap {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moon-phase-art {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #0f1225;
+  border: 2px solid var(--gold-border);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.moon-meta {
+  flex: 1;
+}
+
+.moon-title {
+  font-family: var(--font-serif-heading);
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.moon-illum {
+  font-size: 0.82rem;
+  color: var(--text-gold);
+  margin-bottom: 0.5rem;
+}
+
+.moon-archetype-badge {
+  display: inline-flex;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.moon-archetype-badge strong {
+  color: var(--gold-bright);
+}
+
+.moon-description {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* --- 4. Módulo: Numerología de Vida --- */
+.numerology-highlight {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.2rem;
+}
+
+.numerology-number-ring {
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(20, 10, 45, 0.9) 70%);
+  border: 2px solid var(--gold-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--gold-glow);
+  flex-shrink: 0;
+}
+
+.num-val {
+  font-family: var(--font-serif-mystic);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--gold-bright);
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.num-archetype {
+  font-family: var(--font-serif-heading);
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.num-formula {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.numerology-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+.numerology-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.pillar-box {
+  background: var(--bg-subcard);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+}
+
+.pillar-tag {
+  display: block;
+  font-family: var(--font-serif-heading);
+  font-size: 0.72rem;
+  color: var(--gold-primary);
+  margin-bottom: 0.35rem;
+}
+
+.pillar-text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* --- 5. Módulo: Tarot del Día (3D Flip Card) --- */
+.tarot-instruction {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.tarot-flip-container {
+  perspective: 1200px;
+  width: 200px;
+  height: 310px;
+  margin: 0 auto 1.5rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.tarot-flipper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tarot-flip-container.flipped .tarot-flipper {
+  transform: rotateY(180deg);
+}
+
+.tarot-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--gold-glow);
+  overflow: hidden;
+}
+
+/* Dorso de la carta */
+.tarot-back {
+  background: linear-gradient(135deg, #180d38 0%, #0c0620 100%);
+  border: 2px solid var(--gold-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tarot-back-pattern {
+  width: 88%;
+  height: 92%;
+  border: 1px dashed var(--gold-border-bright);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+}
+
+.tarot-back-center {
+  text-align: center;
+}
+
+.tarot-eye {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.tarot-back-sub {
+  font-family: var(--font-serif-heading);
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: var(--gold-bright);
+}
+
+/* Frente de la carta */
+.tarot-front {
+  background: linear-gradient(145deg, #24144e 0%, #110928 100%);
+  border: 2px solid var(--gold-primary);
+  transform: rotateY(180deg);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tarot-frame {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 0.5rem;
+  text-align: center;
+}
+
+.tarot-card-roman {
+  font-family: var(--font-serif-mystic);
+  font-size: 1.1rem;
+  color: var(--gold-primary);
+  font-weight: 700;
+}
+
+.tarot-card-artwork {
+  font-size: 3.5rem;
+  line-height: 1;
+  text-shadow: 0 0 20px var(--gold-glow);
+}
+
+.tarot-card-name {
+  font-family: var(--font-serif-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.tarot-card-orientation {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--gold-bright);
+  background: rgba(212, 175, 55, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.tarot-meaning-box {
+  background: var(--bg-subcard);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.tarot-keywords {
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+}
+
+.keyword-label {
+  color: var(--text-muted);
+}
+
+.keyword-values {
+  color: var(--gold-bright);
+  font-weight: 600;
+}
+
+.tarot-reading-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 0.75rem;
+}
+
+.tarot-advice {
+  font-size: 0.84rem;
+  color: var(--text-gold);
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  padding-top: 0.6rem;
+}
+
+/* --- 6. Módulo: Horóscopo Diario --- */
+.horoscope-source-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.horoscope-badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold-bright);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-serif-heading);
+}
+
+.source-badge {
+  font-size: 0.72rem;
+  color: var(--color-emerald);
+}
+
+.horoscope-general {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1.3rem;
+  font-style: italic;
+}
+
+.horoscope-aspects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.aspect-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--bg-subcard);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.9rem;
+}
+
+.aspect-icon {
+  font-size: 1.2rem;
+  margin-top: 0.1rem;
+}
+
+.aspect-info strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--gold-bright);
+  margin-bottom: 0.2rem;
+}
+
+.aspect-info p {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* --- 7. Módulo: Biorritmo Místico --- */
+.biorhythm-intro {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
+}
+
+.biorhythm-meters {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.bio-meter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bio-meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.bio-name {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.bio-pct {
+  font-family: var(--font-serif-heading);
+  font-weight: 700;
+  color: var(--gold-bright);
+}
+
+.bio-progress-bar {
+  width: 100%;
+  height: 9px;
+  background: rgba(10, 6, 25, 0.9);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.bio-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bio-fill-physical {
+  background: linear-gradient(90deg, #b91c1c, #ef4444);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.bio-fill-emotional {
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+.bio-fill-intellectual {
+  background: linear-gradient(90deg, #d97706, #fbbf24);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.bio-fill-spiritual {
+  background: linear-gradient(90deg, #7e22ce, #c084fc);
+  box-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
+}
+
+/* --- 8. Módulo: Recomendaciones Místicas & Mantras --- */
+.recs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.rec-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--bg-subcard);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+}
+
+.rec-icon {
+  font-size: 1.3rem;
+}
+
+.rec-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.rec-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.rec-text strong {
+  font-size: 0.85rem;
+  color: var(--gold-bright);
+}
+
+.mantra-sacred-card {
+  background: linear-gradient(135deg, rgba(40, 20, 75, 0.5) 0%, rgba(15, 8, 32, 0.8) 100%);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  text-align: center;
+}
+
+.mantra-header {
+  font-family: var(--font-serif-heading);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--gold-primary);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.mantra-sanskrit {
+  font-family: var(--font-serif-mystic);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 12px var(--gold-glow);
+}
+
+.mantra-meaning {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* --- 9. Módulo: Hechos Históricos / Wikipedia (Full Width) --- */
+.card-history-full {
+  grid-column: 1 / -1;
+}
+
+.history-intro {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.4rem;
+}
+
+.history-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 0.8rem;
+}
+
+.tab-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--gold-border);
+  color: var(--text-secondary);
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-serif-heading);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.tab-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold-bright);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(163, 108, 44, 0.2));
+  border-color: var(--gold-bright);
+  color: #ffffff;
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.history-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.history-list.hidden {
+  display: none;
+}
+
+.history-item {
+  background: var(--bg-subcard);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  transition: var(--transition-smooth);
+}
+
+.history-item:hover {
+  border-color: var(--gold-primary);
+  background: rgba(26, 16, 54, 0.8);
+  transform: translateY(-2px);
+}
+
+.history-year {
+  display: inline-block;
+  font-family: var(--font-serif-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  background: rgba(212, 175, 55, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.4rem;
+}
+
+.history-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.history-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem;
+}
+
+.history-attribution {
+  margin-top: 1.2rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+  font-style: italic;
+}
+
+/* --- Botones de Acción Finales --- */
+.results-footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.btn-primary-sacred, .btn-secondary-sacred {
+  padding: 1rem 2rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary-sacred {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #0b041a;
+  border: none;
+  box-shadow: 0 4px 20px var(--gold-glow);
+}
+
+.btn-primary-sacred:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+}
+
+.btn-secondary-sacred {
+  background: rgba(25, 14, 52, 0.8);
+  border: 1px solid var(--gold-border);
+  color: var(--text-gold);
+}
+
+.btn-secondary-sacred:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold-primary);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* --- Pie de Página --- */
+.sacred-footer {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(6, 4, 16, 0.8);
+}
+
+.footer-symbols {
+  font-size: 1.3rem;
+  color: var(--gold-primary);
+  letter-spacing: 0.75rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.footer-text {
+  font-family: var(--font-serif-heading);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 0.6rem;
+  line-height: 1.6;
+}
+
+.footer-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* --- Toast de Notificación --- */
+.sacred-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(22, 12, 46, 0.95);
+  border: 1px solid var(--gold-primary);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.4rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--gold-glow);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideInUp 0.3s ease forwards;
+}
+
+/* --- Utilidades --- */
+.hidden {
+  display: none !important;
+}
+
+/* --- Animaciones Clave --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* --- Modo Impresión (Papiro Astral) --- */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  #cosmic-canvas, .mandala-container, .sacred-toolbar, .oracle-hero, .results-footer-bar, .sacred-footer {
+    display: none !important;
+  }
+
+  .oracle-card, .results-header-card {
+    background: #ffffff !important;
+    border: 1px solid #777 !important;
+    box-shadow: none !important;
+    color: #111 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .card-title, .greeting-date, .age-number, .num-val {
+    color: #000 !important;
+    text-shadow: none !important;
+  }
+}
+
+/* --- Responsive Breakpoints --- */
+@media (max-width: 768px) {
+  .sacred-toolbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .toolbar-title {
+    font-size: 0.85rem;
+  }
+
+  .main-wrapper {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .oracle-hero {
+    margin-bottom: 2rem;
+  }
+
+  .oracle-form-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .results-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.4rem;
+  }
+
+  .oracle-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .age-number {
+    font-size: 1.8rem;
+  }
+
+  .recs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .numerology-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .sacred-toast {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS DEL PAPIRO ASTRAL & GENERADOR PDF (html2pdf)
+   ========================================================================== */
+
+/* Botón Destacado de Descarga PDF */
+.btn-pdf-sacred {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #fae19c 0%, #d4af37 50%, #9c6c28 100%);
+  color: #0d061f;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: var(--transition-spring);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-pdf-sacred:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(245, 215, 127, 0.7);
+  color: #000000;
+}
+
+.btn-pdf-sacred:active {
+  transform: translateY(1px);
+}
+
+.btn-pdf-sacred:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  box-shadow: none;
+}
+
+.btn-pdf-sacred .btn-icon {
+  font-size: 1.2rem;
+}
+
+.btn-pdf-sacred .btn-sparkle {
+  color: #5c3b06;
+  font-size: 0.85rem;
+}
+
+/* Botón Destacado de Guardar Imagen (PNG) */
+.btn-img-sacred {
+  padding: 1rem 1.8rem;
+  background: linear-gradient(135deg, #38bdf8 0%, #0284c7 50%, #0369a1 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: var(--transition-spring);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-img-sacred:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(56, 189, 248, 0.6);
+}
+
+.btn-img-sacred:active {
+  transform: translateY(1px);
+}
+
+.btn-img-sacred:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* Modal Ceremonial de Vista Previa y Descarga */
+.papiro-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.papiro-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 2, 14, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.papiro-modal-dialog {
+  position: relative;
+  z-index: 2;
+  background: #0d061f;
+  border: 1px solid var(--gold-border-bright);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 35px var(--gold-glow);
+  max-width: 860px;
+  width: 100%;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleInParchment 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleInParchment {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.papiro-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.4rem;
+  background: rgba(22, 12, 45, 0.98);
+  border-bottom: 1px solid var(--gold-border);
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.modal-header-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-badge {
+  font-family: var(--font-serif-heading);
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: var(--gold-bright);
+}
+
+.modal-title {
+  font-family: var(--font-serif-heading);
+  font-size: 1.05rem;
+  color: #ffffff;
+}
+
+.modal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-compact {
+  padding: 0.45rem 0.9rem !important;
+  font-size: 0.78rem !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.modal-btn-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #ffffff;
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.modal-btn-close:hover {
+  background: rgba(244, 63, 94, 0.25);
+  border-color: #f43f5e;
+  color: #fca5a5;
+  transform: rotate(90deg);
+}
+
+.papiro-modal-body {
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: center;
+  background: #06030e;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Papiro Astral Ceremonial (Formato A4 exacto: 794px x 1080px) */
+.papiro-parchment {
+  width: 794px;
+  min-width: 794px;
+  height: 1080px;
+  min-height: 1080px;
+  max-height: 1080px;
+  background: #0d0724;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(58, 28, 114, 0.65) 0%, transparent 60%),
+    radial-gradient(circle at 50% 100%, rgba(30, 15, 70, 0.55) 0%, transparent 60%);
+  color: #fdfbf7;
+  padding: 26px 32px;
+  font-family: var(--font-sans);
+  position: relative;
+  box-sizing: border-box;
+  border: 3px double #d4af37;
+  outline: 1px solid rgba(212, 175, 55, 0.45);
+  outline-offset: -8px;
+  overflow: hidden;
+}
+
+/* Esquinas Ornamentales */
+.papiro-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  color: #d4af37;
+  font-size: 1.1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.papiro-corner-tl { top: 14px; left: 14px; }
+.papiro-corner-tr { top: 14px; right: 14px; }
+.papiro-corner-bl { bottom: 14px; left: 14px; }
+.papiro-corner-br { bottom: 14px; right: 14px; }
+
+/* Encabezado del Papiro */
+.papiro-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  position: relative;
+}
+
+.papiro-om-seal {
+  font-size: 2.2rem;
+  color: #fae19c;
+  line-height: 1;
+  margin-bottom: 4px;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.papiro-subtag {
+  font-family: var(--font-serif-heading);
+  font-size: 0.68rem;
+  letter-spacing: 3.5px;
+  color: #d4af37;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.papiro-main-title {
+  font-family: var(--font-serif-mystic);
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 6px;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+}
+
+.papiro-date-badge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 4px 16px;
+  border-radius: 999px;
+  font-family: var(--font-serif-heading);
+  font-size: 0.84rem;
+  color: #fae19c;
+  letter-spacing: 1px;
+}
+
+/* Grilla de Módulos del Papiro (2 Columnas) */
+.papiro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.papiro-card {
+  background: rgba(22, 12, 48, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+}
+
+.papiro-card-title {
+  font-family: var(--font-serif-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fae19c;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.papiro-card-body {
+  font-size: 0.78rem;
+  color: #d1c9e4;
+  line-height: 1.45;
+}
+
+.papiro-stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  padding: 2px 0;
+}
+
+.papiro-stat-label {
+  color: #9d93be;
+}
+
+.papiro-stat-val {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.papiro-highlight-val {
+  color: #f5d77f;
+  font-weight: 700;
+}
+
+/* Tarjeta Completa de Mantra & Armonización */
+.papiro-card-full {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(35, 18, 70, 0.9) 0%, rgba(18, 9, 38, 0.95) 100%);
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.papiro-mantra-title {
+  font-family: var(--font-serif-heading);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: #d4af37;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.papiro-mantra-text {
+  font-family: var(--font-serif-mystic);
+  font-size: 1.25rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.papiro-mantra-desc {
+  font-size: 0.76rem;
+  color: #c5bcdb;
+  font-style: italic;
+}
+
+/* Pie del Papiro con Sello de Autenticidad */
+.papiro-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+  font-size: 0.7rem;
+  color: #9d93be;
+}
+
+.papiro-seal-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.papiro-seal-icon {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid #d4af37;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fae19c;
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.papiro-seal-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.papiro-seal-text strong {
+  font-family: var(--font-serif-heading);
+  color: #fae19c;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+}
+
+.papiro-seal-text span {
+  font-size: 0.65rem;
+  color: #8b80ab;
+}
+
+.papiro-footer-rights {
+  text-align: right;
+  font-family: var(--font-serif-heading);
+  letter-spacing: 1px;
+  font-size: 0.65rem;
+  color: #d4af37;
+}
+

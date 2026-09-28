@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL_PONG_V1.0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="scanlines">
+
+    <div class="terminal-container">
+        
+        <header class="terminal-header">
+            <div class="glitch-text" data-text="SYS_STATUS: ACTIVE">SYS_STATUS: ACTIVE</div>
+            <div class="timer">TIME: <span id="time-display">00:00</span></div>
+        </header>
+
+        <div class="scoreboard">
+            <div class="score-box">
+                <span class="label">CMD_USER:</span>
+                <span id="player-score" class="score">00</span>
+            </div>
+            <div class="score-box">
+                <span class="label">CPU_CORE:</span>
+                <span id="cpu-score" class="score">00</span>
+            </div>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="pongCanvas"></canvas>
+            
+            <div id="overlay" class="overlay">
+                <h1 class="glitch-title" data-text="FALLOUT_PONG">FALLOUT_PONG</h1>
+                <p class="blink-text">>> PRESIONA LA PANTALLA O ENTER PARA INICIAR INTERCEPCIÓN <<</p>
+            </div>
+        </div>
+
+        <div class="mobile-controls">
+            <button id="btn-up" class="ctrl-btn">▲ UP</button>
+            <button id="btn-down" class="ctrl-btn">▼ DOWN</button>
+        </div>
+
+        <footer class="terminal-footer">
+            <span>[BUENOS AIRES_SECTOR]</span>
+            <span>MANU_EXPLORA // ENGIN_OPERATIONS</span>
+        </footer>
+    </div>
+
+    <svg style="display: none;">
+        <defs>
+            <filter id="glitch-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05 0.95" numOctaves="1" result="noise" />
+                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <script src="script.js"></script>
+</body>
+</html>

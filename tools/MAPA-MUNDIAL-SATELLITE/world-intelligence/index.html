@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vintage OSINT Satellite Chronometer 🌍🛰️📜</title>
+
+  <!-- Google Fonts: Rajdhani, Cinzel, Share Tech Mono, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Estilos de la suite Vintage OSINT -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/panel.css">
+</head>
+<body>
+
+  <!-- ENCABEZADO TÁCTICO VINTAGE -->
+  <header class="hud-header">
+    <div class="brand-title-box">
+      <h1 class="main-title">MAPA MUNDIAL <span>SATELLITE</span></h1>
+      <div class="sub-title-accent">CHRONOS // VINTAGE OSINT PRECISION</div>
+      <div class="tagline">Un solo planeta, infinitos momentos · Exploración orbital en tiempo real</div>
+    </div>
+
+    <!-- Reloj Maestro UTC en Latón Envejecido -->
+    <div class="utc-master-card">
+      <div class="utc-radar-icon"></div>
+      <div class="utc-info-column">
+        <span class="utc-date-label" id="utc-master-date">CARGANDO FECHA UTC...</span>
+        <span class="utc-digital-clock" id="utc-master-time">00:00:00 (UTC)</span>
+        <span class="utc-tagline">Mismo mundo, diferentes horas</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- FRANJA SUPERIOR DE BANDAS UTC (-12 a +14) -->
+  <div class="utc-bands-container">
+    <div class="utc-bands-strip" id="utc-bands-strip">
+      <!-- Generado dinámicamente por ui.js -->
+    </div>
+  </div>
+
+  <!-- BARRA DE HERRAMIENTAS SATELITALES Y BÚSQUEDA -->
+  <div class="tactical-control-bar">
+    <div class="sat-layer-toggles">
+      <button class="sat-btn active" id="toggle-radar-btn" title="Activar/Desactivar radar de lluvia en vivo">🌧️ RADAR LLUVIA</button>
+      <button class="sat-btn active" id="toggle-daynight-btn" title="Activar/Desactivar sombra solar día/noche">🌓 DÍA / NOCHE</button>
+      <button class="sat-btn active" id="toggle-borders-btn" title="Activar/Desactivar etiquetas de fronteras">🏷️ FRONTERAS</button>
+      <button class="sat-btn" id="toggle-vintage-btn" title="Aplicar tono de cartografía militar vintage">📜 TONO VINTAGE</button>
+    </div>
+
+    <!-- Buscador Táctico por Nombre o Coordenadas (lat, lon) -->
+    <div class="search-box-wrapper">
+      <input type="text" id="search-location-input" class="search-input" placeholder="Buscar calle, metrópoli o coords (ej: -34.6, -58.3)..." />
+      <button id="search-submit-btn" class="search-btn">EXPLORAR</button>
+    </div>
+  </div>
+
+  <!-- MARCO CARTOGRÁFICO SATELITAL EXPANDIDO -->
+  <main class="map-outer-frame">
+    <div class="map-inner-border">
+      <!-- Esquineros decorativos en latón grabado -->
+      <div class="corner-bracket corner-top-left"></div>
+      <div class="corner-bracket corner-top-right"></div>
+      <div class="corner-bracket corner-bottom-left"></div>
+      <div class="corner-bracket corner-bottom-right"></div>
+
+      <!-- Contenedor del Mapa Satelital HD -->
+      <div id="map-satellite-container"></div>
+
+      <!-- Rosa de los Vientos Náutica en Latón Vintage -->
+      <div class="vintage-compass-wrapper">
+        <img src="assets/icons/compass.svg" alt="Rosa de los Vientos Vintage" class="compass-svg" />
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTÓN FLOTANTE TÁCTICO PARA TABLETS Y DISPOSITIVOS MÓVILES (FAB) -->
+  <button id="open-intel-fab" class="intel-fab-btn" title="Abrir/Cerrar Dossier OSINT">
+    <span class="fab-icon">📊</span>
+    <span class="fab-text">DOSSIER OSINT</span>
+  </button>
+
+  <!-- PANEL LATERAL DESPLEGABLE: DOSSIER DE INTELIGENCIA OSINT -->
+  <aside id="osint-intel-panel" class="osint-panel">
+    <!-- Encabezado del Dossier -->
+    <div class="panel-header">
+      <div class="panel-title-group">
+        <span class="flag-badge" id="intel-flag-badge">🇦🇷</span>
+        <div class="title-text-box">
+          <h3 class="place-title" id="intel-place-title">Buenos Aires</h3>
+          <span class="place-subtitle" id="intel-place-subtitle">Argentina · América del Sur</span>
+        </div>
+      </div>
+      <button class="close-panel-btn" id="close-intel-panel" title="Cerrar dossier">✕</button>
+    </div>
+
+    <!-- Navegación por Pestañas Tácticas -->
+    <div class="dossier-tabs-nav">
+      <button class="dossier-tab-btn active" data-tab="telemetry"><span>📌 TELEMETRÍA</span></button>
+      <button class="dossier-tab-btn" data-tab="address"><span>📍 DIRECCIÓN</span></button>
+      <button class="dossier-tab-btn" data-tab="weather-seismic"><span>🌤️ CLIMA/SISMOS</span></button>
+      <button class="dossier-tab-btn" data-tab="radio-wiki"><span>📻 RADIO/WIKI</span></button>
+    </div>
+
+    <!-- Cuerpo con scroll -->
+    <div class="panel-scroll-body">
+
+      <!-- ================= PESTAÑA 1: TELEMETRÍA ================= -->
+      <div id="tab-telemetry" class="tab-content-panel active">
+        <!-- 1. Cronometría Local en Vivo -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>🕐 HORA LOCAL EXACTA</span>
+            <span id="intel-clock-offset" style="color: var(--brass-light); font-family: var(--font-mono);">UTC-3</span>
+          </div>
+          <div class="intel-clock-wrapper">
+            <div class="intel-clock-time" id="intel-clock-time">00:00:00</div>
+            <div class="intel-clock-date" id="intel-clock-date">CARGANDO...</div>
+          </div>
+          <div class="clock-meta-row">
+            <span>Diferencia horaria:</span>
+            <strong id="intel-clock-diff">Misma hora</strong>
+          </div>
+          <div class="clock-meta-row">
+            <span>Zona horaria IANA:</span>
+            <strong id="intel-clock-iana">America/Argentina/Buenos_Aires</strong>
+          </div>
+        </div>
+
+        <!-- 2. Coordenadas de Blanco & Plus Code -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>📍 COORDENADAS DE BLANCO</span>
+            <span style="color: var(--accent-emerald);">GPS LOCK</span>
+          </div>
+          <div class="coords-grid">
+            <div class="coord-row">
+              <span>Decimal:</span>
+              <strong id="intel-coords-decimal">-34.6037° S, 58.3816° O</strong>
+            </div>
+            <div class="coord-row">
+              <span>Militar DMS:</span>
+              <strong id="intel-coords-dms">34° 36' 13" S // 58° 22' 53" O</strong>
+            </div>
+            <div class="coord-row">
+              <span>Google Plus Code:</span>
+              <strong id="intel-plus-code" style="color: var(--accent-cyan);">48W2+F8 Buenos Aires</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Visor Satelital Táctico (Esri World Imagery) -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>🛰️ RECONOCIMIENTO ORBITAL</span>
+            <span style="color: var(--brass-light);">FEED HD</span>
+          </div>
+          <div id="intel-satellite-container">
+            <!-- Renderizado por satellite.js con zoom y retícula de latón -->
+          </div>
+        </div>
+
+        <!-- 4. Ciclo Solar & Terminador Día/Noche -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>☀️ ESTADO ASTRONÓMICO SOLAR</span>
+            <span id="solar-status-badge" style="color: var(--accent-amber);">Día ☀️</span>
+          </div>
+          <div class="solar-grid">
+            <div class="solar-card">
+              <div class="solar-card-label">Amanecer</div>
+              <div class="solar-card-val" id="solar-sunrise-val">07:12</div>
+            </div>
+            <div class="solar-card">
+              <div class="solar-card-label">Mediodía</div>
+              <div class="solar-card-val" id="solar-noon-val">12:45</div>
+            </div>
+            <div class="solar-card">
+              <div class="solar-card-label">Atardecer</div>
+              <div class="solar-card-val" id="solar-sunset-val">18:42</div>
+            </div>
+          </div>
+          <div class="clock-meta-row" style="margin-top: 8px;">
+            <span>Elevación solar:</span>
+            <strong id="solar-altitude-val">42.5°</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PESTAÑA 2: DIRECCIÓN Y CALLE ================= -->
+      <div id="tab-address" class="tab-content-panel">
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>🏙️ DIRECCIÓN DE PRECISIÓN MILIMÉTRICA</span>
+            <span style="color: var(--brass-light);">DETALLE OSM</span>
+          </div>
+          <div class="address-details-box">
+            <div class="meta-row"><span>Calle / Vía:</span> <strong id="addr-road-val">Avenida 9 de Julio</strong></div>
+            <div class="meta-row"><span>Barrio / Urbanización:</span> <strong id="addr-suburb-val">San Nicolás</strong></div>
+            <div class="meta-row"><span>Ciudad / Municipio:</span> <strong id="addr-city-val">Buenos Aires</strong></div>
+            <div class="meta-row"><span>Código Postal:</span> <strong id="addr-postcode-val">C1043</strong></div>
+            <div class="meta-row"><span>País / Territorio:</span> <strong id="addr-country-val">Argentina</strong></div>
+          </div>
+        </div>
+
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>🌐 ENLACES TÁCTICOS EXTERNOS</span>
+          </div>
+          <div class="external-links-grid">
+            <a href="#" id="btn-link-gmaps" target="_blank" rel="noopener" class="ext-tactical-link">
+              <span>📍 Google Maps (Satélite)</span>
+              <span>↗</span>
+            </a>
+            <a href="#" id="btn-link-streetview" target="_blank" rel="noopener" class="ext-tactical-link">
+              <span>👁️ Google Street View</span>
+              <span>↗</span>
+            </a>
+            <a href="#" id="btn-link-earth" target="_blank" rel="noopener" class="ext-tactical-link">
+              <span>🌍 Google Earth 3D</span>
+              <span>↗</span>
+            </a>
+            <a href="#" id="btn-link-osm" target="_blank" rel="noopener" class="ext-tactical-link">
+              <span>🗺️ OpenStreetMap</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>🏛️ METADATOS TERRITORIALES</span>
+          </div>
+          <div id="intel-country-info">
+            <!-- Rellenado dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PESTAÑA 3: CLIMA Y SISMOS ================= -->
+      <div id="tab-weather-seismic" class="tab-content-panel">
+        <!-- Meteorología -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>🌤️ CONDICIÓN METEOROLÓGICA (OPEN-METEO)</span>
+            <span style="color: var(--accent-emerald);">EN VIVO</span>
+          </div>
+          <div class="weather-header-row">
+            <span class="weather-temp-badge" id="weather-temp-val">18°C / 64°F</span>
+            <span class="weather-cond-badge" id="weather-condition-val">☀️ Despejado</span>
+          </div>
+          <div class="weather-stats-grid">
+            <div class="weather-stat-box">
+              <div class="stat-label">Viento</div>
+              <div class="stat-val" id="weather-wind-val">14 km/h</div>
+            </div>
+            <div class="weather-stat-box">
+              <div class="stat-label">Humedad</div>
+              <div class="stat-val" id="weather-humidity-val">68%</div>
+            </div>
+            <div class="weather-stat-box">
+              <div class="stat-label">Presión</div>
+              <div class="stat-val" id="weather-pressure-val">1014 hPa</div>
+            </div>
+          </div>
+          <div class="tactical-weather-note" id="weather-tactical-note">
+            Condición atmosférica favorable para observación.
+          </div>
+        </div>
+
+        <!-- Altitud & Topografía -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>⛰️ ELEVACIÓN TOPOGRÁFICA & TERRENO</span>
+          </div>
+          <div class="meta-row">
+            <span>Altitud sobre el nivel del mar:</span>
+            <strong id="topo-elevation-val" style="color: var(--brass-light); font-family: var(--font-mono);">25 m (82 ft)</strong>
+          </div>
+          <div class="meta-row">
+            <span>Clasificación del relieve:</span>
+            <strong id="topo-terrain-val">Costero / Llanura litoral</strong>
+          </div>
+        </div>
+
+        <!-- Sismicidad Cercana USGS -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>⚡ ACTIVIDAD SÍSMICA RECIENTE (USGS)</span>
+            <span style="color: var(--accent-amber);">RADIO 1000 KM</span>
+          </div>
+          <div id="seismic-events-list" class="seismic-list">
+            <!-- Rellenado dinámicamente con terremotos recientes -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PESTAÑA 4: RADIO Y WIKIPEDIA ================= -->
+      <div id="tab-radio-wiki" class="tab-content-panel">
+        <!-- Reproductor de Radio Local en Vivo -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>📻 SINTONIZADOR DE RADIO LOCAL EN VIVO</span>
+            <span id="radio-live-status" style="color: var(--accent-emerald);">○ DETENIDO</span>
+          </div>
+          <div class="radio-player-widget">
+            <div class="radio-player-info">
+              <span class="player-title-label">Emisora en sintonía:</span>
+              <div class="player-station-name" id="radio-now-playing">Selecciona una emisora</div>
+            </div>
+            <button class="radio-master-toggle" id="radio-master-toggle" title="Reproducir/Pausar">
+              <span id="radio-play-icon">▶</span>
+            </button>
+          </div>
+          <div class="radio-stations-list" id="radio-stations-list">
+            <!-- Emisoras cargadas dinámicamente por RadioIntelligence -->
+          </div>
+        </div>
+
+        <!-- Resumen Enciclopédico de Wikipedia -->
+        <div class="hud-section-card">
+          <div class="section-label">
+            <span>📖 DOSSIER ENCICLOPÉDICO (WIKIPEDIA)</span>
+          </div>
+          <div id="intel-wiki-section">
+            <!-- Rellenado dinámicamente -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botón de Acción Inferior: Exportar Dossier OSINT -->
+    <div class="panel-footer-actions">
+      <button class="action-btn-tactical" id="copy-osint-report">
+        <span>📋 COPIAR REPORTE OSINT COMPLETO</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Módulos de la Suite OSINT -->
+  <script src="js/sun.js"></script>
+  <script src="js/timezone.js"></script>
+  <script src="js/location.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/radio.js"></script>
+  <script src="js/satellite.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

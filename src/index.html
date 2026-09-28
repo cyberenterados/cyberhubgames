@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CYBERENTERADOS // NEXUS_OS</title>
+  <meta name="description" content="CyberEnterados Nexus: arcade retro, juegos clásicos y herramientas interactivas en una experiencia de terminal hacker con estética CRT." />
+  <meta name="keywords" content="CyberEnterados, arcade retro, juegos online, herramientas interactivas, juegos clásicos, Nexus OS" />
+  <meta name="author" content="CyberEnterados" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#020c02" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CyberEnterados // Nexus OS — Arcade y herramientas" />
+  <meta property="og:description" content="Explora juegos arcade retro y herramientas interactivas desde el terminal Nexus de CyberEnterados." />
+  <title>CyberEnterados // Nexus OS — Arcade y herramientas</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,97 +25,228 @@
         <span class="blink">▋</span> CYBERENTERADOS // NEXUS_OS <span class="dim">v1.0.0</span>
       </div>
       <div class="telemetry">
-        <span class="dim">SISTEMA ONLINE | </span><span id="sys-clock">00:00:00</span>
+        <span class="dim">ARCADE ONLINE | </span><span id="sys-clock">00:00:00</span>
       </div>
     </header>
 
     <div class="nexus-grid">
-      
-      <aside class="side-panel">
-        <div class="panel-title">[ DIRECTORIO_RAÍZ ]</div>
-        <ul class="directory-list">
-          <li>> /bin/</li>
-          <li>> /cyber_news/</li>
-          <li>> /sys_logs/</li>
-          <li class="hi">> /arcade_core/</li>
-        </ul>
-
-        <div class="ad-space" style="margin-top: 30px;">
-          <div class="ad-label">>> TRANSMISIÓN_PATROCINADA <<</div>
-          <div class="ad-content dim">
-            [ BLOQUE ADSENSE IZQUIERDO ]<br>
-            Esperando inyección de red...
+      <aside class="side-panel pilot-panel">
+        <div class="panel-title">[ IDENTIDAD_PILOTO ]</div>
+        <div class="pilot-profile">
+          <div class="avatar" id="global-avatar" aria-hidden="true">👤</div>
+          <div class="pilot-data">
+            <div class="dim">Alias</div>
+            <div class="hi" id="global-alias">GUEST_USER</div>
+            <div class="dim reputation-label">Reputación global</div>
+            <div class="amber" id="global-reputation">NIVEL 1 - NOVATO</div>
           </div>
+          <button class="menu-btn" id="auth-trigger-btn" type="button">[ AUTENTICARSE ]</button>
+          <a class="menu-btn creator-link" href="https://cyberenterados.github.io/ManuExplora-Dossier_identidad/" target="_blank" rel="noopener noreferrer">
+            [ PERFIL_DEL_CREADOR ↗ ]
+          </a>
+        </div>
+        <div class="pilot-status">
+          <span class="status-light" aria-hidden="true"></span>
+          <span>SESIÓN DE ARCADE</span>
+          <strong id="pilot-session-state">INVITADO</strong>
         </div>
       </aside>
 
       <main id="executable-zone">
-        <div class="zone-title">>>> SELECCIONE EJECUTABLE <<<</div>
-        
-        <div class="games-grid">
-          <a href="conda/index.html" class="game-card active">
-            <div class="game-icon">🐍</div>
-            <div class="game-info">
-              <h3>CONDA.exe</h3>
-              <p class="dim">Infiltración de Red</p>
-              <span class="status hi">[ ACTIVO ]</span>
-            </div>
-          </a>
+        <section class="catalog-heading" aria-labelledby="catalog-title">
+          <p class="eyebrow">NEXUS_OS / CENTRO DE ENTRETENIMIENTO</p>
+          <h1 id="catalog-title">>>> EJECUTABLES <<<</h1>
+          <p class="catalog-intro">Selecciona un juego o herramienta para iniciar. Todo el catálogo disponible, en un solo lugar.</p>
 
-          <div class="game-card locked" onclick="accessDenied('CRYPT-TRIS.exe')">
-            <div class="game-icon dim">🧱</div>
-            <div class="game-info dim">
-              <h3>CRYPT-TRIS.exe</h3>
-              <p>Desencriptador de Bloques</p>
-              <span class="status danger">[ ENCRIPTADO ]</span>
+          <div class="catalog-controls">
+            <label class="search-box" for="catalog-search">
+              <span aria-hidden="true">&gt;_</span>
+              <input id="catalog-search" type="search" placeholder="Buscar en el catálogo..." autocomplete="off">
+            </label>
+            <div class="filter-controls" role="group" aria-label="Filtrar catálogo">
+              <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">TODO</button>
+              <button class="filter-btn" type="button" data-filter="game" aria-pressed="false">JUEGOS</button>
+              <button class="filter-btn" type="button" data-filter="tool" aria-pressed="false">HERRAMIENTAS</button>
             </div>
           </div>
+          <p class="catalog-count" id="catalog-count" aria-live="polite"></p>
+        </section>
 
-          <div class="game-card locked" onclick="accessDenied('BRUTE_FORCE.sh')">
-            <div class="game-icon dim">🔑</div>
-            <div class="game-info dim">
-              <h3>BRUTE_FORCE.sh</h3>
-              <p>Simulador de Vulnerabilidades</p>
-              <span class="status danger">[ ENCRIPTADO ]</span>
+        <div class="catalog-columns">
+          <section class="catalog-section" id="games-section" aria-labelledby="games-title">
+            <header class="section-heading">
+              <div>
+                <p class="section-kicker">01 / ARCADE</p>
+                <h2 id="games-title">JUEGOS</h2>
+              </div>
+              <span class="section-count" id="games-count"></span>
+            </header>
+            <div class="catalog-list">
+              <a href="../Juegos-/game-tetris/index.html" class="catalog-card" data-category="game" data-search="tetris crypt tris bloques arcade puzzle">
+                <span class="card-icon" aria-hidden="true">▦</span>
+                <span class="card-copy">
+                  <strong>CRYPT-TRIS.exe</strong>
+                  <span>Desencriptador de bloques</span>
+                  <small>ARCADE / PUZZLE</small>
+                </span>
+                <span class="card-launch" aria-hidden="true">INICIAR ↗</span>
+              </a>
+              <a href="../Juegos-/carreras-estilo-80/index.html" class="catalog-card" data-category="game" data-search="neon racer carreras outrun 80 arcade velocidad">
+                <span class="card-icon" aria-hidden="true">🏁</span>
+                <span class="card-copy">
+                  <strong>NEON RACER 88</strong>
+                  <span>Carreras y circuitos retro</span>
+                  <small>ARCADE / CARRERAS</small>
+                </span>
+                <span class="card-launch" aria-hidden="true">INICIAR ↗</span>
+              </a>
+              <a href="../Juegos-/SpaceInvader/index.html" class="catalog-card" data-category="game" data-search="space invader gamma defensa red invasores disparos arcade">
+                <span class="card-icon" aria-hidden="true">✦</span>
+                <span class="card-copy">
+                  <strong>PROYECTO GAMMA</strong>
+                  <span>Defensa de red por oleadas</span>
+                  <small>ARCADE / ACCIÓN</small>
+                </span>
+                <span class="card-launch" aria-hidden="true">INICIAR ↗</span>
+              </a>
+              <a href="../Juegos-/PingPong-Hacker/index.html" class="catalog-card" data-category="game" data-search="ping pong hacker terminal pong deportes arcade">
+                <span class="card-icon" aria-hidden="true">▰</span>
+                <span class="card-copy">
+                  <strong>TERMINAL_PONG</strong>
+                  <span>Duelo de reflejos contra el núcleo</span>
+                  <small>ARCADE / DEPORTES</small>
+                </span>
+                <span class="card-launch" aria-hidden="true">INICIAR ↗</span>
+              </a>
             </div>
-          </div>
+          </section>
 
-          <div class="game-card locked" onclick="accessDenied('PING_PONG_PROXY.bin')">
-            <div class="game-icon dim">🏓</div>
-            <div class="game-info dim">
-              <h3>PING_PONG.bin</h3>
-              <p>Intercepción de Paquetes</p>
-              <span class="status danger">[ ENCRIPTADO ]</span>
+          <section class="catalog-section tools-section" id="tools-section" aria-labelledby="tools-title">
+            <header class="section-heading">
+              <div>
+                <p class="section-kicker">02 / UTILIDADES</p>
+                <h2 id="tools-title">HERRAMIENTAS</h2>
+              </div>
+              <span class="section-count" id="tools-count"></span>
+            </header>
+            <div class="catalog-list">
+              <a href="../tools/tools-key/index.html" class="catalog-card" data-category="tool" data-search="keydiag pro teclado keyboard tester diagnóstico teclas">
+                <span class="card-icon" aria-hidden="true">⌨</span>
+                <span class="card-copy">
+                  <strong>KEYDIAG PRO</strong>
+                  <span>Prueba y diagnóstico de teclado</span>
+                  <small>HARDWARE / DIAGNÓSTICO</small>
+                </span>
+                <span class="card-launch" aria-hidden="true">ABRIR ↗</span>
+              </a>
+              <a href="../tools/Alert-UsgsWXP/index.html" class="catalog-card" data-category="tool" data-search="monitor sísmico usgs terremotos mapa alertas actividad tierra">
+                <span class="card-icon" aria-hidden="true">⌁</span>
+                <span class="card-copy">
+                  <strong>MONITOR SÍSMICO</strong>
+                  <span>Mapa y alertas de actividad USGS</span>
+                  <small>MONITOREO / TIERRA</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/Cumpleaños-Esoterico/index.html" class="catalog-card" data-category="tool" data-search="oráculo védico cumpleaños esotérico astrología numerología tarot">
+                <span class="card-icon" aria-hidden="true">✧</span>
+                <span class="card-copy">
+                  <strong>ORÁCULO VÉDICO</strong>
+                  <span>Lectura astral y mapa de nacimiento</span>
+                  <small>ASTRAL / CONSULTA</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/alarma-rojo-reloj/index.html" class="catalog-card" data-category="tool" data-search="chrono red reloj despertador hora mundial alarma fecha clima">
+                <span class="card-icon" aria-hidden="true">◷</span>
+                <span class="card-copy">
+                  <strong>CHRONO-RED</strong>
+                  <span>Reloj despertador y hora local</span>
+                  <small>TIEMPO / RELOJ</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/reloj-web-mundiales/index.html" class="catalog-card" data-category="tool" data-search="vista aero reloj mundial clima temporal zonas horarias">
+                <span class="card-icon" aria-hidden="true">◴</span>
+                <span class="card-copy">
+                  <strong>VISTA AERO CLOCK</strong>
+                  <span>Reloj mundial y clima temporal</span>
+                  <small>TIEMPO / MUNDO</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/RelojHora-Rojo/index.html" class="catalog-card" data-category="tool" data-search="reloj digital hora fecha cronómetro">
+                <span class="card-icon" aria-hidden="true">◷</span>
+                <span class="card-copy">
+                  <strong>RELOJ DIGITAL</strong>
+                  <span>Hora y fecha en pantalla</span>
+                  <small>TIEMPO / RELOJ</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/RelojDigital-CuentaRegresiva2027/index.html" class="catalog-card" data-category="tool" data-search="cyber clock temporal node cuenta regresiva 2027 reloj hora">
+                <span class="card-icon" aria-hidden="true">◷</span>
+                <span class="card-copy">
+                  <strong>CYBER CLOCK</strong>
+                  <span>Nodo temporal con cuenta regresiva</span>
+                  <small>TIEMPO / CUENTA REGRESIVA</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/Matrix-reloj-rojohora/index.html" class="catalog-card" data-category="tool" data-search="matrix reloj rojo telemetría tiempo global bunker clima ubicación">
+                <span class="card-icon" aria-hidden="true">⌁</span>
+                <span class="card-copy">
+                  <strong>TELEMETRÍA GLOBAL</strong>
+                  <span>Hora, ubicación y clima del búnker</span>
+                  <small>TIEMPO / TELEMETRÍA</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/reloj-vintageTime-Chrono/index.html" class="catalog-card" data-category="tool" data-search="chronographe art reloj esqueleto 3d lujo tiempo">
+                <span class="card-icon" aria-hidden="true">⚙</span>
+                <span class="card-copy">
+                  <strong>CHRONOGRAPHE D'ART</strong>
+                  <span>Reloj de esqueleto 3D</span>
+                  <small>TIEMPO / EXPERIENCIA 3D</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="../tools/MAPA-MUNDIAL-SATELLITE/index.html" class="catalog-card" data-category="tool" data-search="mapa mundial satellite chronos osint orbital exploración mapa mundo">
+                <span class="card-icon" aria-hidden="true">◎</span>
+                <span class="card-copy">
+                  <strong>MAPA MUNDIAL SATELLITE</strong>
+                  <span>Exploración orbital y suite OSINT</span>
+                  <small>MAPAS / EXPLORACIÓN</small>
+                </span>
+                <span class="card-launch">ABRIR ↗</span>
+              </a>
+              <a href="https://www.cyberenterados.com.ar" class="catalog-card" data-category="tool" data-search="cyberenterados news noticias sitio comunidad web externo" target="_blank" rel="noopener noreferrer">
+                <span class="card-icon" aria-hidden="true">↗</span>
+                <span class="card-copy">
+                  <strong>CYBERENTERADOS NEWS</strong>
+                  <span>Sitio CyberEnterados</span>
+                  <small>ENLACE EXTERNO / WEB</small>
+                </span>
+                <span class="card-launch">VISITAR ↗</span>
+              </a>
+              <a href="https://www.libreqrstudios.com.ar" class="catalog-card" data-category="tool" data-search="generador qr libre qr studios externo web códigos">
+                <span class="card-icon" aria-hidden="true">▦</span>
+                <span class="card-copy">
+                  <strong>GENERADOR QR</strong>
+                  <span>Servicio de Libre QR Studios</span>
+                  <small>ENLACE EXTERNO / WEB</small>
+                </span>
+                <span class="card-launch">VISITAR ↗</span>
+              </a>
             </div>
-          </div>
+          </section>
+          <p class="empty-state" id="empty-state" hidden>No hay ejecutables que coincidan con esa búsqueda.</p>
         </div>
 
-        <div id="nexus-log">
-          <span class="dim">root@nexus:~$</span> <span id="nexus-log-msg">SISTEMA INICIADO. ESPERANDO COMANDOS...</span>
+        <div id="nexus-log" role="status" aria-live="polite">
+          <span class="dim">root@nexus:~$</span> <span id="nexus-log-msg">SISTEMA INICIADO. CATÁLOGO DISPONIBLE.</span>
         </div>
       </main>
-
-      <aside class="side-panel">
-        <div class="panel-title">[ IDENTIDAD_PILOTO ]</div>
-        <div class="pilot-profile">
-          <div class="avatar" id="global-avatar">👤</div>
-          <div class="pilot-data">
-            <div class="dim">Alias:</div>
-            <div class="hi" id="global-alias">GUEST_USER</div>
-            <div class="dim" style="margin-top:10px;">Reputación Global:</div>
-            <div class="amber" id="global-reputation">NIVEL 1 - NOVATO</div>
-          </div>
-          <button class="menu-btn" id="auth-trigger-btn" style="margin-top: 15px; width: 100%;">[ AUTENTICARSE ]</button>
-        </div>
-
-        <div class="ad-space" style="margin-top: auto;">
-          <div class="ad-label">>> SEÑAL_INTERCEPTADA <<</div>
-          <div class="ad-content dim">
-            [ BLOQUE ADSENSE DERECHO ]<br>
-            Esperando inyección de red...
-          </div>
-        </div>
-      </aside>
 
     </div>
   </div>
@@ -143,5 +282,6 @@
 
   <script src="game-api.js"></script>
   <script src="nexus.js"></script>
+  <script src="catalog.js"></script>
 </body>
 </html>

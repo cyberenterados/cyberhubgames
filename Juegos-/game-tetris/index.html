@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:5000 http://127.0.0.1:5000 ws://127.0.0.1:5500 http://127.0.0.1:5500; img-src 'self' data:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TETRIS NEXUS // TERMINAL_OS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="crt-scanline"></div>
+    <div class="container">
+        <header class="header glitch" data-text=">>> TETRIS NEXUS_OS v2026 <<<">
+            >>> TETRIS NEXUS_OS v2026 <<<
+        </header>
+
+        <div class="main-wrapper">
+            <div class="side-panel left-panel">
+                <div class="info-box">
+                    <div class="info-title">ESTADO DEL SISTEMA</div>
+                    <div class="stat-line">
+                        <span class="stat-label">NIVEL:</span>
+                        <span class="stat-value" id="level">1</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="stat-label">SCORE:</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="stat-label">LÍNEAS:</span>
+                        <span class="stat-value" id="lines">0</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="stat-label">TIEMPO:</span>
+                        <span class="stat-value" id="time">00:00</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">RADAR: PRÓXIMA PIEZA</div>
+                    <div class="canvas-container">
+                        <canvas id="nextCanvas" width="120" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <canvas id="gameCanvas" width="300" height="600"></canvas>
+                
+                <div class="game-overlay active" id="gameOverlay">
+                    <div class="overlay-box">
+                        <div class="overlay-title" id="overlayTitle">SISTEMA EN ESPERA</div>
+                        <div class="overlay-text" id="overlayText">Aguardando comando de inicio...</div>
+                        
+                        <div class="ad-slot interstitial-ad">
+                            <span>[ ESPACIO RESERVADO PARA ADSENSE ]</span>
+                        </div>
+                        
+                        <button class="btn-action" id="resumeBtn">INICIAR OPERACIÓN</button>
+                    </div>
+                </div>
+
+                <div class="mobile-controls">
+                    <button class="btn-action mobile-btn" id="btn-rotate">[ ROTAR ]</button>
+                    <div class="d-pad">
+                        <button class="btn-action mobile-btn" id="btn-left">&lt;</button>
+                        <button class="btn-action mobile-btn" id="btn-down">v</button>
+                        <button class="btn-action mobile-btn" id="btn-right">&gt;</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel right-panel">
+                <div class="info-box">
+                    <div class="info-title">COMANDOS MANUALES</div>
+                    <div class="controls-list">
+                        <div class="control-item">← → : Navegar</div>
+                        <div class="control-item">↓ : Descenso</div>
+                        <div class="control-item">↑ / ESPACIO: Rotar</div>
+                        <div class="control-item">P : Interrumpir (Pausa)</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">TERMINAL</div>
+                    <button class="btn-action w-100" id="startBtn">INICIAR OPERACIÓN</button>
+                </div>
+
+                <div class="info-box ad-container">
+                    <div class="info-title">ENLACE COMERCIAL</div>
+                    <div class="ad-slot display-ad">
+                        <span>[ BANNER ADSENSE 300x250 ]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

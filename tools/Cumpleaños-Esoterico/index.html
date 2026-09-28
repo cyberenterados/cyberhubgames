@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cumpleaños Esotérico & Oráculo Védico | Portal Astral</title>
+  <meta name="description" content="Descubre tu mapa místico de nacimiento: signo zodiacal, constelación védica, fase lunar natal, numerología de vida, tarot del día, biorritmos y hechos históricos.">
+  
+  <!-- Fuentes Místicas de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Estilos Principales -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Motores de Captura y PDF de Alta Resolución -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!-- Canvas de Polvo Estelar y Constelaciones -->
+  <canvas id="cosmic-canvas" aria-hidden="true"></canvas>
+
+  <!-- Mandalas y Yantras de Fondo (Animación sutil de rotación) -->
+  <div class="mandala-container mandala-top-right" aria-hidden="true">
+    <svg class="mandala-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" r="190" stroke="url(#goldGradient)" stroke-width="1.5" stroke-dasharray="6 6"/>
+      <circle cx="200" cy="200" r="150" stroke="url(#goldGradient)" stroke-width="1.2"/>
+      <circle cx="200" cy="200" r="110" stroke="url(#goldGradient)" stroke-width="1"/>
+      <polygon points="200,30 240,160 370,200 240,240 200,370 160,240 30,200 160,160" stroke="url(#goldGradient)" stroke-width="1.5" fill="none"/>
+      <polygon points="200,70 300,100 330,200 300,300 200,330 100,300 70,200 100,100" stroke="url(#goldGradient)" stroke-width="0.8" fill="none"/>
+      <circle cx="200" cy="200" r="40" stroke="url(#goldGradient)" stroke-width="2"/>
+      <defs>
+        <linearGradient id="goldGradient" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#D4AF37" stop-opacity="0.5"/>
+          <stop offset="0.5" stop-color="#F5D77F" stop-opacity="0.8"/>
+          <stop offset="1" stop-color="#996515" stop-opacity="0.3"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="mandala-container mandala-bottom-left" aria-hidden="true">
+    <svg class="mandala-svg mandala-reverse" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" r="180" stroke="url(#goldGrad2)" stroke-width="1.5" stroke-dasharray="4 8"/>
+      <circle cx="200" cy="200" r="130" stroke="url(#goldGrad2)" stroke-width="1.2"/>
+      <polygon points="200,40 350,290 50,290" stroke="url(#goldGrad2)" stroke-width="1.5" fill="none"/>
+      <polygon points="200,360 350,110 50,110" stroke="url(#goldGrad2)" stroke-width="1.5" fill="none"/>
+      <circle cx="200" cy="200" r="60" stroke="url(#goldGrad2)" stroke-width="1"/>
+      <defs>
+        <linearGradient id="goldGrad2" x1="400" y1="400" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#E5B85E" stop-opacity="0.4"/>
+          <stop offset="0.5" stop-color="#FCEBA7" stop-opacity="0.7"/>
+          <stop offset="1" stop-color="#80540C" stop-opacity="0.2"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- Barra de Herramientas Sagradas Superior -->
+  <header class="sacred-toolbar">
+    <div class="toolbar-brand">
+      <span class="sacred-symbol">ॐ</span>
+      <span class="toolbar-title">ORÁCULO VÉDICO</span>
+    </div>
+    <div class="toolbar-actions">
+      <button id="btn-sound-toggle" class="btn-sacred-icon" title="Sintonizar Cuenco Tibetano (432 Hz)" aria-label="Sintonizar Sonido Sagrado">
+        <span class="icon" id="sound-icon">🔔</span>
+        <span class="sound-text">Sintonizar 432 Hz</span>
+      </button>
+      <button id="btn-print-papiro" class="btn-sacred-icon hidden" title="Guardar o Imprimir Papiro Astral" aria-label="Imprimir Papiro">
+        <span class="icon">📜</span>
+        <span class="papiro-text">Papiro Astral</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="main-wrapper">
+    
+    <!-- Hero & Formulario de Entrada -->
+    <section class="oracle-hero">
+      <div class="hero-badge">
+        <span class="badge-sparkle">✦</span>
+        <span>SABIDURÍA ANCESTRAL & CARTOGRAFÍA CELESTIAL</span>
+        <span class="badge-sparkle">✦</span>
+      </div>
+      
+      <h1 class="oracle-title">
+        CUMPLEAÑOS ESOTÉRICO
+      </h1>
+      
+      <p class="oracle-subtitle">
+        Desvela los misterios ocultos en las estrellas el día exacto de tu llegada al cosmos. Ingresa tu fecha sagrada de nacimiento y despierta tu mapa vibracional.
+      </p>
+
+      <!-- Formulario de Consulta Sagrada -->
+      <form id="oracle-form" class="oracle-form-card" novalidate>
+        <div class="form-mandala-crest">
+          <div class="crest-circle">
+            <span class="crest-icon">☸</span>
+          </div>
+        </div>
+
+        <div class="form-content">
+          <div class="input-group">
+            <label for="birth-date" class="input-label">
+              <span class="label-icon">🗓️</span>
+              <span>Fecha Sagrada de Nacimiento</span>
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="date" 
+                id="birth-date" 
+                name="birthDate" 
+                class="sacred-date-input" 
+                required 
+                max=""
+                min="1900-01-01"
+              >
+              <div class="input-border-glow"></div>
+            </div>
+            <p class="input-hint">Día / Mes / Año de tu primera respiración terrenal</p>
+          </div>
+
+          <div class="input-actions">
+            <button type="submit" id="btn-reveal" class="btn-reveal-oracle">
+              <span class="btn-sparkle">✧</span>
+              <span class="btn-text">REVELAR MI DESTINO CÓSMICO</span>
+              <span class="btn-sparkle">✧</span>
+              <div class="btn-glow"></div>
+            </button>
+          </div>
+        </div>
+        
+        <div id="form-error" class="form-error-msg hidden" role="alert"></div>
+      </form>
+    </section>
+
+    <!-- Indicador de Carga Mística -->
+    <div id="mystic-loader" class="mystic-loader hidden" aria-live="polite">
+      <div class="loader-mandala"></div>
+      <p class="loader-text">Alineando constelaciones y canalizando oráculos...</p>
+    </div>
+
+    <!-- Sección de Resultados: Santuario de Lectura -->
+    <section id="oracle-results" class="oracle-results-section hidden">
+
+      <!-- Saludo Ceremonial y Resumen Rápido -->
+      <div class="results-header-card">
+        <div class="results-greeting">
+          <div class="greeting-symbol">🪷</div>
+          <div class="greeting-texts">
+            <span class="greeting-tag">LECTURA DEL ALMA & MAPA VIBRACIONAL</span>
+            <h2 id="res-birth-formatted" class="greeting-date">---</h2>
+          </div>
+        </div>
+        <div class="quick-stats-bar">
+          <div class="stat-chip">
+            <span class="stat-label">Signo Solar:</span>
+            <strong id="stat-zodiac-name">---</strong>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-label">Ruta de Vida:</span>
+            <strong id="stat-numerology-num">---</strong>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-label">Fase Lunar:</span>
+            <strong id="stat-moon-phase">---</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuadrícula Principal de Módulos Astrales -->
+      <div class="oracle-grid">
+
+        <!-- 1. Módulo: Cronometría del Alma (Edad Exacta) -->
+        <article class="oracle-card card-chronos">
+          <div class="card-header">
+            <div class="card-icon-wrap">⏳</div>
+            <div class="card-titles">
+              <span class="card-category">TIEMPO TERRENAL</span>
+              <h3 class="card-title">Cronometría de tu Alma</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="age-main-display">
+              <div class="age-unit-box">
+                <span id="age-years" class="age-number">0</span>
+                <span class="age-unit">Años</span>
+              </div>
+              <div class="age-unit-separator">✦</div>
+              <div class="age-unit-box">
+                <span id="age-months" class="age-number">0</span>
+                <span class="age-unit">Meses</span>
+              </div>
+              <div class="age-unit-separator">✦</div>
+              <div class="age-unit-box">
+                <span id="age-days" class="age-number">0</span>
+                <span class="age-unit">Días</span>
+              </div>
+            </div>
+            <div class="age-details-list">
+              <div class="detail-row">
+                <span class="detail-label">☀️ Días de viaje cósmico:</span>
+                <span id="age-total-days" class="detail-val">0</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">🌙 Lunas llenas presenciadas:</span>
+                <span id="age-moons-seen" class="detail-val">0</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">🎂 Próximo renacimiento solar:</span>
+                <span id="age-next-bday" class="detail-val">-- días</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. Módulo: Identidad Zodiacal & Rashi Védico -->
+        <article class="oracle-card card-zodiac">
+          <div class="card-header">
+            <div class="card-icon-wrap" id="zodiac-glyph">♈</div>
+            <div class="card-titles">
+              <span class="card-category">ARQUETIPO CÓSMICO</span>
+              <h3 class="card-title" id="zodiac-name">Signo Zodiacal</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="zodiac-badges">
+              <span id="zodiac-element" class="badge-element">Elemento: --</span>
+              <span id="zodiac-modality" class="badge-modality">Cualidad: --</span>
+              <span id="zodiac-ruler" class="badge-ruler">Regente: --</span>
+            </div>
+            
+            <p id="zodiac-desc" class="zodiac-description">
+              Cargando sabiduría de las constelaciones...
+            </p>
+
+            <!-- Sección Védica Especial -->
+            <div class="vedic-subcard">
+              <div class="vedic-header">
+                <span class="vedic-icon">🕉️</span>
+                <strong>Correspondencia Védica (Jyotish / Rashi):</strong>
+              </div>
+              <div class="vedic-body">
+                <span id="vedic-rashi-name" class="vedic-tag">---</span>
+                <p id="vedic-insight" class="vedic-text">
+                  Cálculo sideral según la tradición védica antigua.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. Módulo: Fase Lunar Natal (Característica de Valor) -->
+        <article class="oracle-card card-moon">
+          <div class="card-header">
+            <div class="card-icon-wrap" id="moon-glyph">🌓</div>
+            <div class="card-titles">
+              <span class="card-category">ASTRONOMÍA SAGRADA</span>
+              <h3 class="card-title">Fase Lunar de tu Nacimiento</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="moon-display">
+              <div class="moon-visual-wrap">
+                <div id="moon-phase-art" class="moon-phase-art"></div>
+              </div>
+              <div class="moon-meta">
+                <h4 id="moon-phase-name" class="moon-title">Fase Lunar</h4>
+                <p id="moon-illumination" class="moon-illum">Iluminación lunar: --%</p>
+                <div class="moon-archetype-badge">
+                  <span>Arquetipo:</span>
+                  <strong id="moon-archetype-title">---</strong>
+                </div>
+              </div>
+            </div>
+            <p id="moon-archetype-desc" class="moon-description">
+              La posición de la Luna en el momento en que naciste revela la naturaleza íntima de tu intuición y el ritmo de tu mundo emocional.
+            </p>
+          </div>
+        </article>
+
+        <!-- 4. Módulo: Numerología de Vida (Life Path & Números Maestros) -->
+        <article class="oracle-card card-numerology">
+          <div class="card-header">
+            <div class="card-icon-wrap">🔢</div>
+            <div class="card-titles">
+              <span class="card-category">CÓDIGO PITAGÓRICO</span>
+              <h3 class="card-title">Número de Ruta de Vida</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="numerology-highlight">
+              <div class="numerology-number-ring">
+                <span id="num-life-path" class="num-val">--</span>
+              </div>
+              <div class="numerology-titles">
+                <h4 id="num-archetype-name" class="num-archetype">El Maestro Sabio</h4>
+                <span id="num-calculation-formula" class="num-formula">Día + Mes + Año</span>
+              </div>
+            </div>
+            
+            <p id="num-meaning" class="numerology-desc">
+              Interpretando el código sagrado de tu destino...
+            </p>
+
+            <div class="numerology-pillars">
+              <div class="pillar-box">
+                <span class="pillar-tag">✨ Don Principal</span>
+                <p id="num-gift" class="pillar-text">---</p>
+              </div>
+              <div class="pillar-box">
+                <span class="pillar-tag">⚖️ Desafío Kármico</span>
+                <p id="num-karma" class="pillar-text">---</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. Módulo: Carta de Tarot del Día (3D Flip Card Interactiva) -->
+        <article class="oracle-card card-tarot">
+          <div class="card-header">
+            <div class="card-icon-wrap">🎴</div>
+            <div class="card-titles">
+              <span class="card-category">ORÁCULO ARCANO</span>
+              <h3 class="card-title">Carta del Tarot del Día</h3>
+            </div>
+          </div>
+          <div class="card-body tarot-card-body">
+            <p class="tarot-instruction">Haz clic en la carta sagrada para revelarla:</p>
+            
+            <!-- Contenedor 3D Flip -->
+            <div class="tarot-flip-container" id="tarot-flip-wrap" tabindex="0" role="button" aria-label="Voltear carta de Tarot">
+              <div class="tarot-flipper" id="tarot-flipper">
+                
+                <!-- Dorso de la Carta -->
+                <div class="tarot-face tarot-back">
+                  <div class="tarot-back-pattern">
+                    <div class="tarot-back-center">
+                      <span class="tarot-eye">👁️</span>
+                      <span class="tarot-back-sub">TOCA PARA REVELAR</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Frente de la Carta -->
+                <div class="tarot-face tarot-front">
+                  <div class="tarot-frame">
+                    <span id="tarot-roman" class="tarot-card-roman">0</span>
+                    <div id="tarot-artwork" class="tarot-card-artwork">🌟</div>
+                    <h4 id="tarot-name" class="tarot-card-name">El Arcano</h4>
+                    <span id="tarot-orientation" class="tarot-card-orientation">Al Derecho</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Interpretación de la Carta -->
+            <div id="tarot-meaning-box" class="tarot-meaning-box">
+              <div class="tarot-keywords">
+                <span class="keyword-label">Palabras Clave:</span>
+                <span id="tarot-keywords" class="keyword-values">Intuición, Destino</span>
+              </div>
+              <p id="tarot-reading" class="tarot-reading-text">
+                Toca la carta para consultar las energías arcanas asignadas a tu vibración de hoy.
+              </p>
+              <div class="tarot-advice">
+                <strong>Consejo del Tarot:</strong>
+                <span id="tarot-advice-text">---</span>
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- 6. Módulo: Horóscopo y Clima Cósmico Diario -->
+        <article class="oracle-card card-horoscope">
+          <div class="card-header">
+            <div class="card-icon-wrap">✨</div>
+            <div class="card-titles">
+              <span class="card-category">TRÁNSITOS PLANETARIOS</span>
+              <h3 class="card-title">Horóscopo & Energía de Hoy</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="horoscope-source-bar">
+              <span id="horoscope-date-badge" class="horoscope-badge">Hoy</span>
+              <span id="horoscope-source-badge" class="source-badge">Conexión Astral Activa</span>
+            </div>
+
+            <p id="horoscope-overview" class="horoscope-general">
+              Consultando la configuración astral del día para tu signo...
+            </p>
+
+            <div class="horoscope-aspects-grid">
+              <div class="aspect-item">
+                <span class="aspect-icon">💖</span>
+                <div class="aspect-info">
+                  <strong>Amor & Relaciones</strong>
+                  <p id="horoscope-love">---</p>
+                </div>
+              </div>
+              <div class="aspect-item">
+                <span class="aspect-icon">⚡</span>
+                <div class="aspect-info">
+                  <strong>Propósito & Trabajo</strong>
+                  <p id="horoscope-work">---</p>
+                </div>
+              </div>
+              <div class="aspect-item">
+                <span class="aspect-icon">🌿</span>
+                <div class="aspect-info">
+                  <strong>Vitalidad & Mente</strong>
+                  <p id="horoscope-health">---</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. Módulo: Biorritmo Místico del Día (Característica de Valor) -->
+        <article class="oracle-card card-biorhythm">
+          <div class="card-header">
+            <div class="card-icon-wrap">🌊</div>
+            <div class="card-titles">
+              <span class="card-category">CICLOS VITALES</span>
+              <h3 class="card-title">Tu Biorritmo de Hoy</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="biorhythm-intro">
+              Ondas biológicas y energéticas calculadas desde tu primer aliento hasta este preciso instante:
+            </p>
+
+            <div class="biorhythm-meters">
+              
+              <!-- Ciclo Físico (23 días) -->
+              <div class="bio-meter-group">
+                <div class="bio-meter-header">
+                  <span class="bio-name">🔴 Físico (Vitalidad & Fuerza)</span>
+                  <span id="bio-physical-pct" class="bio-pct">0%</span>
+                </div>
+                <div class="bio-progress-bar">
+                  <div id="bio-physical-bar" class="bio-fill bio-fill-physical" style="width: 50%;"></div>
+                </div>
+              </div>
+
+              <!-- Ciclo Emocional (28 días) -->
+              <div class="bio-meter-group">
+                <div class="bio-meter-header">
+                  <span class="bio-name">🔵 Emocional (Intuición & Ánimo)</span>
+                  <span id="bio-emotional-pct" class="bio-pct">0%</span>
+                </div>
+                <div class="bio-progress-bar">
+                  <div id="bio-emotional-bar" class="bio-fill bio-fill-emotional" style="width: 50%;"></div>
+                </div>
+              </div>
+
+              <!-- Ciclo Intelectual (33 días) -->
+              <div class="bio-meter-group">
+                <div class="bio-meter-header">
+                  <span class="bio-name">🟡 Intelectual (Claridad & Decisión)</span>
+                  <span id="bio-intellectual-pct" class="bio-pct">0%</span>
+                </div>
+                <div class="bio-progress-bar">
+                  <div id="bio-intellectual-bar" class="bio-fill bio-fill-intellectual" style="width: 50%;"></div>
+                </div>
+              </div>
+
+              <!-- Ciclo Espiritual (38 días) -->
+              <div class="bio-meter-group">
+                <div class="bio-meter-header">
+                  <span class="bio-name">🟣 Espiritual (Conexión Mística)</span>
+                  <span id="bio-spiritual-pct" class="bio-pct">0%</span>
+                </div>
+                <div class="bio-progress-bar">
+                  <div id="bio-spiritual-bar" class="bio-fill bio-fill-spiritual" style="width: 50%;"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. Módulo: Recomendaciones Místicas, Mantras & Gemas -->
+        <article class="oracle-card card-recs">
+          <div class="card-header">
+            <div class="card-icon-wrap">💎</div>
+            <div class="card-titles">
+              <span class="card-category">ARMONIZACIÓN VÉDICA</span>
+              <h3 class="card-title">Prescripción Energética</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="recs-grid">
+              
+              <div class="rec-item">
+                <span class="rec-icon">🪨</span>
+                <div class="rec-text">
+                  <span class="rec-label">Cristal Protector:</span>
+                  <strong id="rec-crystal">---</strong>
+                </div>
+              </div>
+
+              <div class="rec-item">
+                <span class="rec-icon">🧘</span>
+                <div class="rec-text">
+                  <span class="rec-label">Chakra a Armonizar:</span>
+                  <strong id="rec-chakra">---</strong>
+                </div>
+              </div>
+
+              <div class="rec-item">
+                <span class="rec-icon">🎨</span>
+                <div class="rec-text">
+                  <span class="rec-label">Color de Aura Favorable:</span>
+                  <strong id="rec-color">---</strong>
+                </div>
+              </div>
+
+              <div class="rec-item">
+                <span class="rec-icon">🌿</span>
+                <div class="rec-text">
+                  <span class="rec-label">Elemento & Planta Sagrada:</span>
+                  <strong id="rec-herb">---</strong>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Mantra en Sánscrito -->
+            <div class="mantra-sacred-card">
+              <div class="mantra-header">
+                <span class="mantra-sym">🕉️</span>
+                <span>Mantra Personal Recomendado:</span>
+              </div>
+              <blockquote id="rec-mantra" class="mantra-sanskrit">
+                Om Mani Padme Hum
+              </blockquote>
+              <p id="rec-mantra-meaning" class="mantra-meaning">
+                La joya en el loto florece con paz incondicional.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. Módulo: En la Historia de este Día (Wikipedia & Efemérides) -->
+        <article class="oracle-card card-history card-history-full">
+          <div class="card-header">
+            <div class="card-icon-wrap">📜</div>
+            <div class="card-titles">
+              <span class="card-category">MEMORIA HISTÓRICA DEL UNIVERSO</span>
+              <h3 class="card-title" id="history-header-title">Acontecimientos en tu Día de Nacimiento</h3>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="history-intro">
+              Descubre qué grandes hitos, nacimientos notables de personajes ilustres y eventos de la ciencia o el cosmos ocurrieron en este mismo día en la historia de la humanidad:
+            </p>
+
+            <!-- Pestañas de Filtro Histórico -->
+            <div class="history-tabs" role="tablist">
+              <button class="tab-btn active" data-tab="events" role="tab" aria-selected="true">
+                🏛️ Hechos Históricos
+              </button>
+              <button class="tab-btn" data-tab="births" role="tab" aria-selected="false">
+                ✨ Personajes Nacidos
+              </button>
+              <button class="tab-btn" data-tab="science" role="tab" aria-selected="false">
+                🔭 Ciencia & Astronomía
+              </button>
+            </div>
+
+            <!-- Listados de Wikipedia -->
+            <div class="history-content-wrap">
+              <ul id="history-list-events" class="history-list active">
+                <li class="history-empty">Cargando memorias del día...</li>
+              </ul>
+              <ul id="history-list-births" class="history-list hidden">
+                <li class="history-empty">Cargando personajes nacidos...</li>
+              </ul>
+              <ul id="history-list-science" class="history-list hidden">
+                <li class="history-empty">Cargando hitos astronómicos y científicos...</li>
+              </ul>
+            </div>
+
+            <div class="history-attribution">
+              <span>Fuente de datos históricos: Wikipedia Abierta & Cronología Universal</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Pie de Resultados: Acciones y Cierre Místico -->
+      <div class="results-footer-bar">
+        <button id="btn-download-pdf" class="btn-pdf-sacred" title="Descargar Certificado Astral en PDF">
+          <span class="btn-icon">📜</span>
+          <span class="btn-pdf-text">DESCARGAR PDF (A4)</span>
+          <span class="btn-sparkle">✧</span>
+        </button>
+        <button id="btn-download-img" class="btn-img-sacred" title="Guardar Papiro como Imagen de Alta Resolución">
+          <span class="btn-icon">🖼️</span>
+          <span class="btn-img-text">GUARDAR IMAGEN (PNG)</span>
+          <span class="btn-sparkle">✧</span>
+        </button>
+        <button id="btn-preview-papiro" class="btn-secondary-sacred" title="Ver Papiro Astral en Pantalla">
+          <span>👁️ Ver Papiro</span>
+        </button>
+        <button id="btn-share-oracle" class="btn-secondary-sacred">
+          <span>📋 Copiar Resumen</span>
+        </button>
+        <button id="btn-new-consult" class="btn-primary-sacred">
+          <span>🔮 Nueva Consulta</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- Modal Sagrado de Vista Previa y Descarga del Papiro Astral -->
+    <div id="papiro-modal" class="papiro-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-papiro-title">
+      <div class="papiro-modal-backdrop" id="modal-backdrop"></div>
+      <div class="papiro-modal-dialog">
+        <div class="papiro-modal-header">
+          <div class="modal-header-titles">
+            <span class="modal-badge">✦ RECUERDO SAGRADO DEL COSMOS ✦</span>
+            <h3 id="modal-papiro-title" class="modal-title">Tu Papiro Astral de Nacimiento</h3>
+          </div>
+          <div class="modal-header-actions">
+            <button id="modal-btn-pdf" class="btn-pdf-sacred btn-compact" title="Descargar en PDF">
+              <span>📜 Descargar PDF</span>
+            </button>
+            <button id="modal-btn-img" class="btn-img-sacred btn-compact" title="Descargar Imagen PNG">
+              <span>🖼️ Descargar PNG</span>
+            </button>
+            <button id="modal-btn-close" class="modal-btn-close" aria-label="Cerrar vista previa">✕</button>
+          </div>
+        </div>
+        <div class="papiro-modal-body">
+          <div id="papiro-parchment" class="papiro-parchment">
+            <!-- El contenido detallado se inyecta dinámicamente -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Pie de Página Ceremonial -->
+  <footer class="sacred-footer">
+    <div class="footer-mandala-line"></div>
+    <div class="footer-content">
+      <div class="footer-symbols">
+        <span>ॐ</span> <span>✦</span> <span>☸</span> <span>✦</span> <span>🪷</span>
+      </div>
+      <p class="footer-text">
+        Portal de Sabiduría Esotérica & Astrología Védica. Confeccionado con reverencia hacia las leyes sagradas del Cosmos.
+      </p>
+      <p class="footer-subtext">
+        Single Page Application | HTML5 · CSS3 · Vanilla JavaScript Puro
+      </p>
+    </div>
+  </footer>
+
+  <!-- Toast de Notificaciones Místicas -->
+  <div id="sacred-toast" class="sacred-toast hidden" role="status" aria-live="polite">
+    <span id="toast-icon">✨</span>
+    <span id="toast-message">Mensaje cósmico</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

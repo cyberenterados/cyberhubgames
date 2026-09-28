@@ -1,0 +1,177 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+
+    color: #ff1a1a;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.clock-container {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+/* =========================
+   RELOJ
+========================= */
+
+.clock {
+    width: min(95vw, 1100px);
+
+    text-align: center;
+
+    padding: clamp(25px, 5vw, 70px);
+
+    border: 2px solid #330000;
+
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #120000 0%,
+            #050000 50%,
+            #000 100%
+        );
+
+    box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.15),
+        inset 0 0 30px rgba(255, 0, 0, 0.05);
+}
+
+
+/* =========================
+   HORA
+========================= */
+
+.time {
+    font-size: clamp(3.5rem, 12vw, 10rem);
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    letter-spacing: 0.05em;
+
+    color: #ff2020;
+
+    text-shadow:
+        0 0 5px #ff0000,
+        0 0 15px rgba(255, 0, 0, 0.8),
+        0 0 35px rgba(255, 0, 0, 0.4);
+
+    font-variant-numeric: tabular-nums;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   FECHA
+========================= */
+
+.date {
+    margin-top: 30px;
+
+    font-size: clamp(1rem, 3vw, 2rem);
+
+    color: #ff4d4d;
+
+    text-transform: capitalize;
+
+    text-shadow:
+        0 0 8px rgba(255, 0, 0, 0.5);
+}
+
+
+/* =========================
+   UBICACIÓN
+========================= */
+
+.location {
+    margin-top: 15px;
+
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+
+    color: #aa2222;
+
+    letter-spacing: 0.08em;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .clock {
+        border-radius: 12px;
+
+        padding: 35px 10px;
+    }
+
+    .time {
+        letter-spacing: 0;
+    }
+
+}
+
+
+/* =========================
+   HORIZONTAL MOBILE
+========================= */
+
+@media (max-height: 500px) {
+
+    .clock {
+        padding: 20px;
+    }
+
+    .date {
+        margin-top: 15px;
+    }
+
+    .location {
+        margin-top: 8px;
+    }
+
+}

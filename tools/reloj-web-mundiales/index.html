@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Aero - Reloj Mundial & Clima Temporal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Iconos y fuentes del sistema estilo Segoe UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Canvas de Fondo: Reloj de Tiempo Cósmico & Ondas Aurora Vista -->
+    <canvas id="aero-canvas"></canvas>
+
+    <!-- Superposición de viñeta y resplandor Aero -->
+    <div class="aero-atmosphere-overlay"></div>
+
+    <!-- Barra de Control Superior Estilo Windows Vista Aero -->
+    <header class="vista-aero-bar">
+        <div class="aero-brand">
+            <div class="vista-orb">
+                <div class="orb-gloss"></div>
+                <div class="orb-clock-icon">◷</div>
+            </div>
+            <div class="brand-text">
+                <span class="brand-title">Windows Vista Aero</span>
+                <span class="brand-subtitle">Time & Weather Vortex • 100+ Países</span>
+            </div>
+        </div>
+
+        <div class="aero-stats">
+            <div class="stat-pill" title="Lugares activos en pantalla">
+                <span class="stat-dot pulse"></span>
+                <span id="active-count">0</span> / <span id="total-count">100</span> Lugares
+            </div>
+            <div class="stat-pill utc-pill" title="Hora Universal Coordinada">
+                <span>UTC:</span>
+                <span id="utc-clock">--:--:--</span>
+            </div>
+        </div>
+
+        <div class="aero-actions">
+            <!-- Botón de Audio Ambiental -->
+            <button id="btn-audio" class="aero-button" title="Activar/Desactivar sonido ambiental y chimes">
+                <span id="audio-icon" class="btn-icon">🔇</span>
+                <span id="audio-label">Sonido: Off</span>
+                <div class="audio-waves" id="audio-visualizer">
+                    <span></span><span></span><span></span>
+                </div>
+            </button>
+
+            <!-- Botón de Reinicio / Nueva Oleada -->
+            <button id="btn-shuffle" class="aero-button" title="Limpiar y generar nueva oleada aleatoria">
+                <span class="btn-icon">⚡</span>
+                <span>Nueva Oleada</span>
+            </button>
+
+            <!-- Botón Pantalla Completa -->
+            <button id="btn-fullscreen" class="aero-button icon-only" title="Pantalla completa">
+                ⛶
+            </button>
+        </div>
+    </header>
+
+    <!-- Notificación / Indicador inicial de audio para la experiencia relajante -->
+    <div id="audio-prompt" class="aero-notification">
+        <div class="notification-gloss"></div>
+        <div class="notification-content">
+            <span class="notification-icon">✨</span>
+            <div class="notification-text">
+                <strong>Experiencia Sonora Windows Vista</strong>
+                <p>Haz clic en cualquier lugar para iniciar la atmósfera sonora relajante.</p>
+            </div>
+            <button id="btn-prompt-ok" class="aero-button-mini">Iniciar</button>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal: Rejilla fluida de mini cuadritos Aero -->
+    <main class="grid-viewport">
+        <div id="tiles-grid" class="aero-grid">
+            <!-- Los mini cuadritos de países se insertarán dinámicamente aquí -->
+        </div>
+    </main>
+
+    <!-- Barra de Estado / Crédito Sutil Inferior -->
+    <footer class="aero-footer">
+        <div class="footer-left">
+            <span class="vista-badge">Aero Glass 3D</span>
+            <span class="status-msg" id="status-msg">Iniciando condensación temporal...</span>
+        </div>
+        <div class="footer-right">
+            <span class="hint">Modo observador activo • Actualización segundo a segundo</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Reloj Despertador · Hora Mundial</title>
+  <meta name="description" content="Reloj digital en tiempo real con fecha, país y clima del usuario." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DSEG7+Classic:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <main class="clock-device" role="main" aria-label="Reloj despertador digital">
+
+    <!-- Franja superior: marca / indicadores estilo despertador -->
+    <div class="top-bar">
+      <span class="brand">CHRONO-RED</span>
+      <div class="indicators">
+        <span class="led" id="led-colon" aria-hidden="true"></span>
+        <span class="indicator-text" id="status-text">SINCRONIZANDO…</span>
+      </div>
+    </div>
+
+    <!-- Pantalla principal -->
+    <section class="screen" aria-live="polite">
+
+      <div class="time-row">
+        <span class="digits" id="hours">--</span>
+        <span class="colon" id="colon">:</span>
+        <span class="digits" id="minutes">--</span>
+        <span class="colon" id="colon2">:</span>
+        <span class="digits seconds" id="seconds">--</span>
+        <span class="meridiem" id="meridiem"></span>
+      </div>
+
+      <div class="date-row" id="date-row">-- de ---- de ----</div>
+
+      <div class="location-row">
+        <svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 7.1 11.3 7.4 11.5.2.2.5.3.6.3s.4-.1.6-.3C12.9 21.3 20 15.4 20 10c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+        </svg>
+        <span id="location-text">Detectando ubicación…</span>
+      </div>
+
+      <div class="extra-row">
+        <div class="weather" id="weather">
+          <span id="weather-icon" class="weather-icon">--</span>
+          <span id="weather-temp">--°</span>
+          <span id="weather-desc">Clima no disponible</span>
+        </div>
+        <div class="timezone" id="timezone-text">UTC</div>
+      </div>
+
+      <div class="special-banner" id="special-banner" hidden></div>
+
+    </section>
+
+    <!-- Franja inferior: botones estilo despertador -->
+    <div class="bottom-bar">
+      <button class="btn" id="btn-format" type="button" aria-pressed="false">
+        12H / 24H
+      </button>
+      <button class="btn" id="btn-location" type="button">
+        Actualizar ubicación
+      </button>
+      <button class="btn btn-alarm" id="btn-alarm" type="button" aria-pressed="false">
+        ALARMA
+      </button>
+    </div>
+
+  </main>
+
+  <p class="footnote">
+    Hora del sistema del dispositivo · Ubicación y clima aproximados por IP ·
+    <span id="footer-tz"></span>
+  </p>
+
+  <script src="script.js"></script>
+</body>
+</html>

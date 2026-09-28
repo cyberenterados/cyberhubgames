@@ -1,0 +1,301 @@
+{
+  "bands": [
+    { "offset": -12, "label": "UTC-12", "color": "#0284c7", "desc": "Baker Island, Howland Island" },
+    { "offset": -11, "label": "UTC-11", "color": "#0ea5e9", "desc": "Samoa Americana, Niue" },
+    { "offset": -10, "label": "UTC-10", "color": "#06b6d4", "desc": "Hawái, Polinesia Francesa" },
+    { "offset": -9, "label": "UTC-9", "color": "#14b8a6", "desc": "Alaska (Anchorage)" },
+    { "offset": -8, "label": "UTC-8", "color": "#10b981", "desc": "Costa Oeste de EE.UU. (Los Ángeles)" },
+    { "offset": -7, "label": "UTC-7", "color": "#22c55e", "desc": "Montañas Rocosas, México (Sonora)" },
+    { "offset": -6, "label": "UTC-6", "color": "#84cc16", "desc": "Centroamérica, CDMX, Chicago" },
+    { "offset": -5, "label": "UTC-5", "color": "#a3e635", "desc": "Costa Este (NY), Colombia, Perú" },
+    { "offset": -4, "label": "UTC-4", "color": "#eab308", "desc": "Santiago, La Paz, Venezuela" },
+    { "offset": -3, "label": "UTC-3", "color": "#f59e0b", "desc": "Buenos Aires, Brasilia, Montevideo" },
+    { "offset": -2, "label": "UTC-2", "color": "#f97316", "desc": "Islas Georgias del Sur, Fernando de Noronha" },
+    { "offset": -1, "label": "UTC-1", "color": "#fb923c", "desc": "Azores, Cabo Verde" },
+    { "offset": 0, "label": "UTC±0", "color": "#38bdf8", "desc": "Londres, Lisboa, Reikiavik, UTC" },
+    { "offset": 1, "label": "UTC+1", "color": "#f97316", "desc": "Madrid, París, Berlín, Roma, Lagos" },
+    { "offset": 2, "label": "UTC+2", "color": "#ea580c", "desc": "El Cairo, Atenas, Johannesburgo" },
+    { "offset": 3, "label": "UTC+3", "color": "#ef4444", "desc": "Moscú, Riad, Bagdad, Nairobi" },
+    { "offset": 4, "label": "UTC+4", "color": "#dc2626", "desc": "Dubái, Bakú, Tiflis" },
+    { "offset": 5, "label": "UTC+5", "color": "#e11d48", "desc": "Karachi, Taskent" },
+    { "offset": 5.5, "label": "UTC+5:30", "color": "#db2777", "desc": "Nueva Delhi, Mumbai (India)" },
+    { "offset": 6, "label": "UTC+6", "color": "#c026d3", "desc": "Daca, Astaná" },
+    { "offset": 7, "label": "UTC+7", "color": "#a855f7", "desc": "Bangkok, Yakarta, Hanói" },
+    { "offset": 8, "label": "UTC+8", "color": "#9333ea", "desc": "Pekín, Singapur, Hong Kong, Perth" },
+    { "offset": 9, "label": "UTC+9", "color": "#7c3aed", "desc": "Tokio, Seúl" },
+    { "offset": 9.5, "label": "UTC+9:30", "color": "#6d28d9", "desc": "Adelaida, Darwin" },
+    { "offset": 10, "label": "UTC+10", "color": "#6366f1", "desc": "Sídney, Melbourne, Brisbane" },
+    { "offset": 11, "label": "UTC+11", "color": "#4f46e5", "desc": "Islas Salomón, Nueva Caledonia" },
+    { "offset": 12, "label": "UTC+12", "color": "#4338ca", "desc": "Auckland, Fiyi, Kamchatka" },
+    { "offset": 13, "label": "UTC+13", "color": "#3730a3", "desc": "Tonga, Samoa" },
+    { "offset": 14, "label": "UTC+14", "color": "#312e81", "desc": "Kiritimati (Islas de la Línea)" }
+  ],
+  "legend": [
+    { "range": "UTC-12 a UTC-8", "region": "América del Norte y Pacífico", "color": "#10b981" },
+    { "range": "UTC-7 a UTC-5", "region": "América Central y parte de Sudamérica", "color": "#84cc16" },
+    { "range": "UTC-4 a UTC-3", "region": "Sudamérica", "color": "#eab308" },
+    { "range": "UTC-2 a UTC+1", "region": "Atlántico, Europa y África", "color": "#f97316" },
+    { "range": "UTC+2 a UTC+5", "region": "Medio Oriente y Asia Occidental", "color": "#ef4444" },
+    { "range": "UTC+6 a UTC+9", "region": "Asia y Oceanía", "color": "#a855f7" },
+    { "range": "UTC+10 a UTC+12", "region": "Pacífico y Oceanía", "color": "#6366f1" }
+  ],
+  "cities": [
+    {
+      "id": "anchorage",
+      "name": "Anchorage",
+      "country": "Estados Unidos",
+      "flag": "🇺🇸",
+      "coords": [61.2181, -149.9003],
+      "timezone": "America/Anchorage",
+      "defaultOffset": "UTC-9",
+      "offsetNum": -9
+    },
+    {
+      "id": "los_angeles",
+      "name": "Los Ángeles",
+      "country": "Estados Unidos",
+      "flag": "🇺🇸",
+      "coords": [34.0522, -118.2437],
+      "timezone": "America/Los_Angeles",
+      "defaultOffset": "UTC-8",
+      "offsetNum": -8,
+      "featured": true
+    },
+    {
+      "id": "ciudad_de_mexico",
+      "name": "Ciudad de México",
+      "country": "México",
+      "flag": "🇲🇽",
+      "coords": [19.4326, -99.1332],
+      "timezone": "America/Mexico_City",
+      "defaultOffset": "UTC-6",
+      "offsetNum": -6
+    },
+    {
+      "id": "bogota",
+      "name": "Bogotá",
+      "country": "Colombia",
+      "flag": "🇨🇴",
+      "coords": [4.7110, -74.0721],
+      "timezone": "America/Bogota",
+      "defaultOffset": "UTC-5",
+      "offsetNum": -5
+    },
+    {
+      "id": "lima",
+      "name": "Lima",
+      "country": "Perú",
+      "flag": "🇵🇪",
+      "coords": [-12.0464, -77.0428],
+      "timezone": "America/Lima",
+      "defaultOffset": "UTC-5",
+      "offsetNum": -5
+    },
+    {
+      "id": "santiago",
+      "name": "Santiago",
+      "country": "Chile",
+      "flag": "🇨🇱",
+      "coords": [-33.4489, -70.6693],
+      "timezone": "America/Santiago",
+      "defaultOffset": "UTC-4",
+      "offsetNum": -4
+    },
+    {
+      "id": "buenos_aires",
+      "name": "Buenos Aires",
+      "country": "Argentina",
+      "flag": "🇦🇷",
+      "coords": [-34.6037, -58.3816],
+      "timezone": "America/Argentina/Buenos_Aires",
+      "defaultOffset": "UTC-3",
+      "offsetNum": -3,
+      "featured": true
+    },
+    {
+      "id": "brasilia",
+      "name": "Brasilia",
+      "country": "Brasil",
+      "flag": "🇧🇷",
+      "coords": [-15.7975, -47.8919],
+      "timezone": "America/Sao_Paulo",
+      "defaultOffset": "UTC-3",
+      "offsetNum": -3
+    },
+    {
+      "id": "nueva_york",
+      "name": "Nueva York",
+      "country": "Estados Unidos",
+      "flag": "🇺🇸",
+      "coords": [40.7128, -74.0060],
+      "timezone": "America/New_York",
+      "defaultOffset": "UTC-5",
+      "offsetNum": -5,
+      "featured": true
+    },
+    {
+      "id": "londres",
+      "name": "Londres",
+      "country": "Reino Unido",
+      "flag": "🇬🇧",
+      "coords": [51.5074, -0.1278],
+      "timezone": "Europe/London",
+      "defaultOffset": "UTC+0",
+      "offsetNum": 0,
+      "featured": true
+    },
+    {
+      "id": "madrid",
+      "name": "Madrid",
+      "country": "España",
+      "flag": "🇪🇸",
+      "coords": [40.4168, -3.7038],
+      "timezone": "Europe/Madrid",
+      "defaultOffset": "UTC+1",
+      "offsetNum": 1,
+      "featured": true
+    },
+    {
+      "id": "berlin",
+      "name": "Berlín",
+      "country": "Alemania",
+      "flag": "🇩🇪",
+      "coords": [52.5200, 13.4050],
+      "timezone": "Europe/Berlin",
+      "defaultOffset": "UTC+1",
+      "offsetNum": 1
+    },
+    {
+      "id": "moscu",
+      "name": "Moscú",
+      "country": "Rusia",
+      "flag": "🇷🇺",
+      "coords": [55.7558, 37.6173],
+      "timezone": "Europe/Moscow",
+      "defaultOffset": "UTC+3",
+      "offsetNum": 3
+    },
+    {
+      "id": "el_cairo",
+      "name": "El Cairo",
+      "country": "Egipto",
+      "flag": "🇪🇬",
+      "coords": [30.0444, 31.2357],
+      "timezone": "Africa/Cairo",
+      "defaultOffset": "UTC+2",
+      "offsetNum": 2
+    },
+    {
+      "id": "lagos",
+      "name": "Lagos",
+      "country": "Nigeria",
+      "flag": "🇳🇬",
+      "coords": [6.5244, 3.3792],
+      "timezone": "Africa/Lagos",
+      "defaultOffset": "UTC+1",
+      "offsetNum": 1
+    },
+    {
+      "id": "riad",
+      "name": "Riad",
+      "country": "Arabia Saudita",
+      "flag": "🇸🇦",
+      "coords": [24.7136, 46.6753],
+      "timezone": "Asia/Riyadh",
+      "defaultOffset": "UTC+3",
+      "offsetNum": 3
+    },
+    {
+      "id": "dubai",
+      "name": "Dubái",
+      "country": "Emiratos Árabes Unidos",
+      "flag": "🇦🇪",
+      "coords": [25.2048, 55.2708],
+      "timezone": "Asia/Dubai",
+      "defaultOffset": "UTC+4",
+      "offsetNum": 4
+    },
+    {
+      "id": "ciudad_del_cabo",
+      "name": "Ciudad del Cabo",
+      "country": "Sudáfrica",
+      "flag": "🇿🇦",
+      "coords": [-33.9249, 18.4241],
+      "timezone": "Africa/Johannesburg",
+      "defaultOffset": "UTC+2",
+      "offsetNum": 2
+    },
+    {
+      "id": "nueva_delhi",
+      "name": "Nueva Delhi",
+      "country": "India",
+      "flag": "🇮🇳",
+      "coords": [28.6139, 77.2090],
+      "timezone": "Asia/Kolkata",
+      "defaultOffset": "UTC+5:30",
+      "offsetNum": 5.5
+    },
+    {
+      "id": "pekin",
+      "name": "Pekín",
+      "country": "China",
+      "flag": "🇨🇳",
+      "coords": [39.9042, 116.4074],
+      "timezone": "Asia/Shanghai",
+      "defaultOffset": "UTC+8",
+      "offsetNum": 8
+    },
+    {
+      "id": "bangkok",
+      "name": "Bangkok",
+      "country": "Tailandia",
+      "flag": "🇹🇭",
+      "coords": [13.7563, 100.5018],
+      "timezone": "Asia/Bangkok",
+      "defaultOffset": "UTC+7",
+      "offsetNum": 7
+    },
+    {
+      "id": "singapur",
+      "name": "Singapur",
+      "country": "Singapur",
+      "flag": "🇸🇬",
+      "coords": [1.3521, 103.8198],
+      "timezone": "Asia/Singapore",
+      "defaultOffset": "UTC+8",
+      "offsetNum": 8
+    },
+    {
+      "id": "tokio",
+      "name": "Tokio",
+      "country": "Japón",
+      "flag": "🇯🇵",
+      "coords": [35.6762, 139.6503],
+      "timezone": "Asia/Tokyo",
+      "defaultOffset": "UTC+9",
+      "offsetNum": 9,
+      "featured": true
+    },
+    {
+      "id": "sidney",
+      "name": "Sídney",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "coords": [-33.8688, 151.2093],
+      "timezone": "Australia/Sydney",
+      "defaultOffset": "UTC+10",
+      "offsetNum": 10,
+      "featured": true
+    },
+    {
+      "id": "auckland",
+      "name": "Auckland",
+      "country": "Nueva Zelanda",
+      "flag": "🇳🇿",
+      "coords": [-36.8485, 174.7633],
+      "timezone": "Pacific/Auckland",
+      "defaultOffset": "UTC+12",
+      "offsetNum": 12
+    }
+  ]
+}

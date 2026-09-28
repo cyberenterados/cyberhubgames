@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chronographe d'Art — Reloj de Esqueleto 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Contenedor WebGL Three.js -->
+  <div id="canvas-container"></div>
+
+  <!-- Interfaz de Usuario de Alta Categoría -->
+  <div class="ui-container">
+
+    <!-- Encabezado de Lujo -->
+    <header class="luxury-header">
+      <div class="brand-crest">
+        <span class="crest-icon">⚜</span>
+        <div class="brand-titles">
+          <h1 class="brand-name">CHRONOMETRE D'ART</h1>
+          <p class="brand-location">PIÈCE UNIQUE • HAUTE HORLOGERIE</p>
+        </div>
+        <span class="crest-icon">⚜</span>
+      </div>
+      <div class="header-status">
+        <div class="time-badge">
+          <span class="badge-label">TIEMPO REAL</span>
+          <span class="digital-clock" id="digital-clock">00:00:00</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Notificación discreta de audio en vivo -->
+    <div class="audio-notice" id="audio-notice">
+      <span class="notice-dot"></span>
+      <span id="audio-notice-text">Haz clic o interactúa para activar el sonido de escape</span>
+    </div>
+
+    <!-- Controles Flotantes Inferiores -->
+    <footer class="controls-overlay">
+      <div class="controls-glass-panel">
+
+        <!-- Selector de Vistas de Cámara -->
+        <div class="control-group">
+          <span class="group-title">VISTAS</span>
+          <div class="btn-cluster">
+            <button class="ctrl-btn active" id="view-front" title="Vista Frontal Clásica">
+              <span class="btn-icon">🏛️</span> Frontal
+            </button>
+            <button class="ctrl-btn" id="view-mechanism" title="Primer plano del escape y engranajes">
+              <span class="btn-icon">⚙️</span> Engranajes
+            </button>
+            <button class="ctrl-btn" id="view-side" title="Vista de perfil del péndulo y cadena">
+              <span class="btn-icon">⏱️</span> Péndulo
+            </button>
+            <button class="ctrl-btn" id="view-free" title="Órbita 3D libre 360°">
+              <span class="btn-icon">🔄</span> Libre 360°
+            </button>
+          </div>
+        </div>
+
+        <div class="control-divider"></div>
+
+        <!-- Opciones de Simulación -->
+        <div class="control-group">
+          <span class="group-title">MECANISMO</span>
+          <div class="btn-cluster">
+            <!-- Campana de Cristal -->
+            <button class="ctrl-btn toggle-btn active" id="btn-dome" title="Mostrar u ocultar la campana de cristal victoriana">
+              <span class="btn-icon">🔮</span> Campana: <b id="dome-status">ON</b>
+            </button>
+            <!-- Velocidad -->
+            <button class="ctrl-btn toggle-btn" id="btn-speed" title="Cambiar velocidad de rotación">
+              <span class="btn-icon">⏩</span> Modo: <b id="speed-status">1x (Real)</b>
+            </button>
+          </div>
+        </div>
+
+        <div class="control-divider"></div>
+
+        <!-- Audio del Reloj -->
+        <div class="control-group">
+          <span class="group-title">ESCAPE</span>
+          <div class="audio-control-box">
+            <button class="ctrl-btn sound-btn active" id="btn-sound" title="Activar / silenciar sonido de tic-tac">
+              <span class="btn-icon" id="sound-icon">🔊</span>
+              <span id="sound-label">Sonido ON</span>
+            </button>
+            <div class="volume-slider-wrap">
+              <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.75" title="Volumen de escape">
+            </div>
+          </div>
+        </div>
+
+        <div class="control-divider"></div>
+
+        <!-- Botón de Información / Anatomía -->
+        <div class="control-group">
+          <span class="group-title">ANATOMÍA</span>
+          <button class="ctrl-btn info-btn" id="btn-info" title="Conoce las partes del reloj de esqueleto">
+            <span class="btn-icon">📖</span> Detalles
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Ayuda de navegación -->
+      <div class="interaction-hint">
+        <span>Arrastra con el ratón o desliza para rotar 360° • Rueda para zoom milimétrico</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Modal de Información Horológica -->
+  <div class="modal-overlay" id="info-modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-subtitle">HAUTE HORLOGERIE MÉCANIQUE</span>
+          <h2 class="modal-title">Reloj de Esqueleto Victoriano</h2>
+        </div>
+        <button class="modal-close-btn" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-icon">🏛️</div>
+            <h3>Platinas Caladas de Latón</h3>
+            <p>Estructura esculpida con volutas arquitectónicas góticas y rococó. Fundida en latón noble pulido y acabada a mano, exponiendo íntegramente la cinemática interna.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">⛓️</div>
+            <h3>Caracol y Cadena Micro-Eslabón</h3>
+            <p>El tambor inferior ranurado con cadena de acero compensa la curva de par del muelle real, garantizando una fuerza constante en todo el rodaje.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">💎</div>
+            <h3>Escape con Paletas de Rubí</h3>
+            <p>Paletas de corindón sintético (rubí de alta relojería) que reciben el impacto de la rueda de escape de 30 dientes, generando el pulso acústico <em>tic-tac</em> con fricción mínima.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">⚜️</div>
+            <h3>Anillo Horario Plateado</h3>
+            <p>Esfera anular satinada en plata de ley con numerales romanos, flor de lis intermedias y escala ferroviaria exterior para lectura de gran precisión.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts de Three.js y Aplicación -->
+  <script src="lib/three.min.js"></script>
+  <script src="lib/OrbitControls.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

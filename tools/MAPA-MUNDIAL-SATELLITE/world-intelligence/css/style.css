@@ -1,0 +1,413 @@
+/* ==========================================================================
+   style.css - Estética Vintage Recon & Cartografía Satelital Táctica
+   Fusión de cronometría en latón envejecido, pergamino y satélite de alta resolución
+   ========================================================================== */
+
+:root {
+  /* Paleta Vintage Recon / Cartográfica */
+  --bg-deep: #060b13;
+  --bg-card: rgba(12, 21, 34, 0.88);
+  --bg-panel: rgba(10, 18, 30, 0.96);
+  
+  --brass-gold: #d4af37;
+  --brass-light: #f3d46f;
+  --brass-dark: #8c6d1f;
+  --brass-dim: rgba(212, 175, 55, 0.25);
+  --brass-glow: 0 0 14px rgba(212, 175, 55, 0.4);
+
+  --parchment: #f5eedc;
+  --parchment-muted: #c7beab;
+  --parchment-dark: #8a8271;
+
+  --accent-cyan: #00e5ff;
+  --accent-emerald: #34d399;
+  --accent-amber: #f59e0b;
+  --accent-crimson: #ef4444;
+
+  /* Tipografías */
+  --font-serif-vintage: 'Cinzel', 'Georgia', serif;
+  --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Rajdhani', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--parchment);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.4;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+  background-image: 
+    radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.04) 0%, transparent 60%),
+    linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+}
+
+/* ==========================================================================
+   ENCABEZADO PRINCIPAL (Vintage Brass & Parchment)
+   ========================================================================== */
+
+.hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 28px;
+  background: linear-gradient(180deg, rgba(7, 14, 24, 0.98) 0%, rgba(11, 20, 34, 0.92) 100%);
+  border-bottom: 1px solid var(--brass-dim);
+  position: relative;
+  z-index: 100;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.brand-title-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+  line-height: 1.1;
+}
+
+.main-title span {
+  color: var(--brass-gold);
+}
+
+.sub-title-accent {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  color: var(--brass-light);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.tagline {
+  font-size: 11px;
+  color: var(--parchment-muted);
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+/* Reloj UTC Maestro Vintage (Latón pulido) */
+.utc-master-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+  background: rgba(14, 24, 38, 0.9);
+  border: 1px solid var(--brass-gold);
+  border-radius: 6px;
+  box-shadow: var(--brass-glow);
+}
+
+.utc-radar-icon {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--brass-gold);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.utc-radar-icon::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.25);
+  animation: radar-pulse 2.2s infinite ease-out;
+}
+
+.utc-radar-icon::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 1.5px;
+  background: var(--brass-light);
+  top: 50%;
+  left: 50%;
+  transform-origin: 0% 0%;
+  animation: radar-sweep 4s infinite linear;
+}
+
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes radar-pulse {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.utc-info-column {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.utc-date-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--brass-light);
+  letter-spacing: 1px;
+}
+
+.utc-digital-clock {
+  font-family: var(--font-mono);
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--parchment);
+  letter-spacing: 1.5px;
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(245, 238, 220, 0.4);
+}
+
+.utc-tagline {
+  font-size: 9.5px;
+  color: var(--parchment-dark);
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   FRANJA SUPERIOR UTC BANDS (UTC-12 a UTC+14)
+   ========================================================================== */
+
+.utc-bands-container {
+  overflow-x: auto;
+  background: #08111e;
+  border-bottom: 1px solid var(--brass-dim);
+  padding: 6px 18px;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brass-gold) #08111e;
+}
+
+.utc-bands-strip {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.utc-band-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: rgba(14, 25, 42, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  color: var(--parchment-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.utc-band-pill:hover,
+.utc-band-pill.active {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--parchment);
+  border-color: var(--brass-gold);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.45);
+}
+
+/* ==========================================================================
+   BARRA DE CONTROLES SATELITALES Y BÚSQUEDA
+   ========================================================================== */
+
+.tactical-control-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 28px;
+  background: rgba(9, 16, 28, 0.9);
+  border-bottom: 1px solid var(--brass-dim);
+  z-index: 90;
+}
+
+.sat-layer-toggles {
+  display: flex;
+  gap: 8px;
+}
+
+.sat-btn {
+  font-family: var(--font-heading);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: rgba(14, 23, 37, 0.85);
+  border: 1px solid var(--brass-dim);
+  color: var(--parchment-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.22s ease;
+}
+
+.sat-btn:hover {
+  border-color: var(--brass-gold);
+  color: var(--parchment);
+}
+
+.sat-btn.active {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: var(--brass-gold);
+  color: var(--brass-light);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+}
+
+.search-box-wrapper {
+  display: flex;
+  gap: 6px;
+  min-width: 290px;
+}
+
+.search-input {
+  flex: 1;
+  background: rgba(6, 12, 21, 0.9);
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--parchment);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--brass-gold);
+  box-shadow: var(--brass-glow);
+}
+
+.search-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--brass-gold);
+  color: var(--brass-light);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-btn:hover {
+  background: var(--brass-gold);
+  color: var(--bg-deep);
+}
+
+/* ==========================================================================
+   MARCO CARTOGRÁFICO SATELITAL (Con margen, padding y esquineros de latón)
+   ========================================================================== */
+
+.map-outer-frame {
+  padding: 14px 24px 20px 24px;
+  width: 100%;
+  height: calc(100vh - 148px);
+  min-height: 520px;
+  position: relative;
+  background: #04080e;
+}
+
+.map-inner-border {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--brass-dim);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.8),
+    inset 0 0 60px rgba(0, 0, 0, 0.85);
+}
+
+/* Esquineros de latón grabados */
+.corner-bracket {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: var(--brass-gold);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 85;
+}
+
+.corner-top-left {
+  top: 4px;
+  left: 4px;
+  border-width: 2px 0 0 2px;
+}
+
+.corner-top-right {
+  top: 4px;
+  right: 4px;
+  border-width: 2px 2px 0 0;
+}
+
+.corner-bottom-left {
+  bottom: 4px;
+  left: 4px;
+  border-width: 0 0 2px 2px;
+}
+
+.corner-bottom-right {
+  bottom: 4px;
+  right: 4px;
+  border-width: 0 2px 2px 0;
+}
+
+#map-satellite-container {
+  width: 100%;
+  height: 100%;
+  background: #000000;
+}
+
+/* Filtro Vintage Cartográfico */
+#map-satellite-container.vintage-filter-active .satellite-tile-layer {
+  filter: sepia(0.25) contrast(1.15) brightness(0.92) saturate(0.9);
+  transition: filter 0.4s ease;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hud-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .utc-master-card {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .tactical-control-bar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .map-outer-frame {
+    padding: 8px;
+    height: calc(100vh - 190px);
+  }
+}
