@@ -7,6 +7,7 @@
 
   // Configuración de coordenadas del Backend
   const API_URL = "http://localhost:5000/api/auth";
+  const PROFILE_AVATAR_PATH = 'assets/avatars/';
 
   // Elementos de la Interfaz Base
   const elClock = document.getElementById('sys-clock');
@@ -120,7 +121,8 @@
           localStorage.setItem('nexus_token', data.token);
           localStorage.setItem('pilot_alias', data.pilot.username);
           localStorage.setItem('pilot_reputation', data.pilot.reputation.title);
-          
+          if (data.pilot.avatar_url) localStorage.setItem('pilot_avatar', data.pilot.avatar_url);
+
           elModal.classList.add('hidden');
           syncProfile();
         } else {
@@ -140,15 +142,51 @@
   const syncProfile = () => {
     const alias = localStorage.getItem('pilot_alias');
     const reputation = localStorage.getItem('pilot_reputation');
+    const avatarPath = localStorage.getItem('pilot_avatar');
     
     if(alias && elAlias) {
       elAlias.textContent = alias;
       if(elReputation && reputation) elReputation.textContent = reputation;
       if(elBtnTrigger) elBtnTrigger.textContent = "[ CERRAR_SESIÓN ]";
+      if (localStorage.getItem('nexus_token')) {
+        const avatarEl = document.getElementById('global-avatar');
+        if (avatarEl) {
+          const resolved = avatarPath || `${PROFILE_AVATAR_PATH}gamer.png`;
+          avatarEl.textContent = '🧑‍💻';
+          avatarEl.title = alias;
+          avatarEl.style.backgroundImage = `url('${resolved}')`;
+          avatarEl.style.backgroundSize = 'cover';
+          avatarEl.style.backgroundPosition = 'center';
+          avatarEl.style.display = 'inline-block';
+          avatarEl.style.width = '64px';
+          avatarEl.style.height = '64px';
+          avatarEl.style.borderRadius = '12px';
+        }
+      }
       if(elLog) elLog.innerHTML = `<span class="hi">BIENVENIDO DE VUELTA, PILOTO MAESTRO: ${alias}. Enlace seguro activo.</span>`;
     }
   };
 
+  const hydrateProfileFromAPI = async () => {
+    if (!localStorage.getItem('nexus_token')) return;
+
+    try {
+      const result = await window.cyberHubApi.getProfile();
+      const pilot = result?.pilot;
+      if (!pilot) return;
+
+      localStorage.setItem('pilot_alias', pilot.username);
+      localStorage.setItem('pilot_reputation', pilot.reputation?.title || 'NIVEL 1 - NOVATO');
+      if (pilot.avatar_url) {
+        localStorage.setItem('pilot_avatar', pilot.avatar_url);
+      }
+      syncProfile();
+    } catch (error) {
+      if (elLog) elLog.innerHTML = `<span class="danger">ERROR: ${error.message}</span>`;
+    }
+  };
+
   syncProfile();
+  hydrateProfileFromAPI();
 
 })();
