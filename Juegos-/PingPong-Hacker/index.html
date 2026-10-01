@@ -2,60 +2,123 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL_PONG_V1.0</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:5000 http://127.0.0.1:5000 ws://127.0.0.1:5500 http://127.0.0.1:5500 https://*.onrender.com https://*.vercel.app; img-src 'self' data: https://res.cloudinary.com;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TERMINAL_PONG // CYBER DUEL 1982 — ARCADE EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="scanlines">
+<body class="crt-screen">
 
-    <div class="terminal-container">
+    <!-- ═══ CRT OVERLAYS ═══ -->
+    <div class="crt-scanline"></div>
+    <div class="crt-vignette"></div>
+
+    <div class="arcade-arena-container">
         
-        <header class="terminal-header">
-            <div class="glitch-text" data-text="SYS_STATUS: ACTIVE">SYS_STATUS: ACTIVE</div>
-            <div class="timer">TIME: <span id="time-display">00:00</span></div>
+        <!-- ─── MARQUESINA SUPERIOR PONG DUEL ─── -->
+        <header class="duel-header">
+            <div class="duel-brand">
+                <span class="duel-icon">▰</span>
+                <div>
+                    <h1 class="duel-title">TERMINAL_PONG <span class="duel-sub">CYBER DUEL 1982</span></h1>
+                    <div class="duel-telemetry">
+                        <span class="t-green" id="sectorNameBadge">SECTOR 01: KERNEL PROTO</span>
+                        <span class="sep">│</span>
+                        <span class="t-amber" id="syncStatus">MONGODB: ENLACE ACTIVO</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marcador y Nivel -->
+            <div class="duel-scoreboard">
+                <div class="player-score-box">
+                    <span class="score-lbl">PILOTO (TÚ)</span>
+                    <span class="score-num font-arcade t-green" id="player-score">00</span>
+                </div>
+                <div class="score-vs-divider font-arcade">:</div>
+                <div class="player-score-box">
+                    <span class="score-lbl" id="cpuLabel">IA CORE (NV. 1)</span>
+                    <span class="score-num font-arcade t-amber" id="cpu-score">00</span>
+                </div>
+            </div>
+
+            <!-- Controles Auxiliares -->
+            <div class="duel-aux-controls">
+                <div class="timer-box">
+                    <span class="timer-lbl">TIEMPO:</span>
+                    <span class="timer-val font-arcade" id="time-display">00:00</span>
+                </div>
+                <button type="button" class="arcade-mini-btn" id="btnAudioToggle" title="Audio Chiptune y SFX">
+                    <span id="audioIcon">🔊 AUDIO ON</span>
+                </button>
+            </div>
         </header>
 
-        <div class="scoreboard">
-            <div class="score-box">
-                <span class="label">CMD_USER:</span>
-                <span id="player-score" class="score">00</span>
-            </div>
-            <div class="score-box">
-                <span class="label">CPU_CORE:</span>
-                <span id="cpu-score" class="score">00</span>
-            </div>
-        </div>
-
-        <div class="canvas-wrapper">
+        <!-- ─── ARENA DE COMBATE BALÍSTICO (CANVAS) ─── -->
+        <main class="canvas-arena-frame" id="arenaFrame">
             <canvas id="pongCanvas"></canvas>
             
-            <div id="overlay" class="overlay">
-                <h1 class="glitch-title" data-text="FALLOUT_PONG">FALLOUT_PONG</h1>
-                <p class="blink-text">>> PRESIONA LA PANTALLA O ENTER PARA INICIAR INTERCEPCIÓN <<</p>
+            <!-- Capa de Textos Flotantes Arcade -->
+            <div class="floating-text-layer" id="floatingLayer"></div>
+
+            <!-- Overlay de Inicio / Pausa / Fin de Duelo -->
+            <div id="overlay" class="duel-overlay">
+                <div class="duel-modal-card">
+                    <div class="modal-era-badge">ATARI PIONEER 1972 // RETRO-CYBER 1982</div>
+                    <h2 class="modal-heading" id="overlayHeading">CYBER DUEL INICIADO</h2>
+                    <p class="modal-desc" id="overlayDesc">
+                        Duelo cibernético contra el Núcleo IA. Controla la paleta con <kbd>W</kbd> / <kbd>S</kbd> o flechas.
+                        Usa <kbd>ESPACIO</kbd> para activar el <strong>TURBO SMASH</strong> cuando la pelota impacta tu escudo.
+                    </p>
+
+                    <div class="duel-modal-rules">
+                        <div class="rule-line"><span>[ W / S ] o [ ↑ / ↓ ]:</span> Desplazar Paleta de Plasma</div>
+                        <div class="rule-line"><span>[ ESPACIO / BOTÓN SMASH ]:</span> Disparo Turbo Supersónico</div>
+                        <div class="rule-line"><span>[ TECLA P ]:</span> Pausar / Reanudar Duelo</div>
+                    </div>
+
+                    <button type="button" class="arcade-start-btn" id="btnStartGame">
+                        <span>[ 🕹️ INSERT COIN / INICIAR DUELO ]</span>
+                    </button>
+                </div>
             </div>
-        </div>
+        </main>
 
-        <div class="mobile-controls">
-            <button id="btn-up" class="ctrl-btn">▲ UP</button>
-            <button id="btn-down" class="ctrl-btn">▼ DOWN</button>
-        </div>
+        <!-- ─── CONSOLA DE ACCIONES & POWER-UPS ─── -->
+        <footer class="duel-footer-console">
+            <!-- Barra de Carga de Turbo Smash -->
+            <div class="smash-meter-panel">
+                <div class="meter-label">
+                    <span>TURBO SMASH [ESPACIO]:</span>
+                    <span class="t-cyan" id="smashStatusText">100% CARGADO</span>
+                </div>
+                <div class="smash-meter-bar">
+                    <div class="smash-meter-fill" id="smashMeterFill"></div>
+                </div>
+            </div>
 
-        <footer class="terminal-footer">
-            <span>[BUENOS AIRES_SECTOR]</span>
-            <span>MANU_EXPLORA // ENGIN_OPERATIONS</span>
+            <!-- Controles Móviles / Botones de Acción -->
+            <div class="duel-console-btns">
+                <button type="button" class="action-btn-retro smash-btn" id="btn-smash">
+                    <span>⚡ TURBO SMASH</span>
+                </button>
+                <div class="mobile-nav-group">
+                    <button type="button" class="action-btn-retro nav-btn" id="btn-up">▲ UP</button>
+                    <button type="button" class="action-btn-retro nav-btn" id="btn-down">▼ DOWN</button>
+                </div>
+                <button type="button" class="action-btn-retro" id="btn-pause">
+                    <span>⏸️ PAUSA</span>
+                </button>
+                <a href="../../index.html" class="action-btn-retro hub-link">
+                    <span>◄ HUB</span>
+                </a>
+            </div>
         </footer>
+
     </div>
 
-    <svg style="display: none;">
-        <defs>
-            <filter id="glitch-filter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.05 0.95" numOctaves="1" result="noise" />
-                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
-
+    <!-- ═══ SCRIPT DEL MOTOR BALÍSTICO PONG ═══ -->
     <script src="script.js"></script>
 </body>
 </html>

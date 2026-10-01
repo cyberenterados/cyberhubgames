@@ -1,0 +1,953 @@
+/* ════════════════════════════════════════════════════════════
+   NEXUS_OS // RETRO ARCADE STORE 70s & 80s — DESIGN SYSTEM CSS
+   Mezcla: 🟠 Ámbar (#FFB000) + 🟢 Verde Fósforo (#39FF14)
+   Estilo: Arcade PlayStore / Fallout Mainframe Terminal
+   ════════════════════════════════════════════════════════════ */
+
+/* ─── VARIABLES GLOBALES ─── */
+:root {
+    /* 🟠 Espectro Ámbar Fallout/Arcade */
+    --amber:              #FFB000;
+    --amber-bright:       #FFCC33;
+    --amber-dim:          #D49200;
+    --amber-dark:         #8A5E00;
+    --amber-glow:         0 0 10px rgba(255, 176, 0, 0.45), 0 0 25px rgba(255, 176, 0, 0.2);
+    --amber-glow-strong:  0 0 8px #FFB000, 0 0 20px rgba(255, 176, 0, 0.7), 0 0 40px rgba(255, 176, 0, 0.35);
+
+    /* 🟢 Espectro Verde Fósforo CRT */
+    --green:              #39FF14;
+    --green-bright:       #66FF44;
+    --green-dim:          #28B80E;
+    --green-dark:         #156007;
+    --green-glow:         0 0 10px rgba(57, 255, 20, 0.45), 0 0 25px rgba(57, 255, 20, 0.2);
+    --green-glow-strong:  0 0 8px #39FF14, 0 0 20px rgba(57, 255, 20, 0.7), 0 0 40px rgba(57, 255, 20, 0.35);
+
+    /* Fondos y Materiales de Cabina Arcade */
+    --bg-abyss:           #050402;
+    --bg-cabinet:         #0E0B06;
+    --bg-card:            #17120A;
+    --bg-card-hover:      #221A0E;
+    --border-bronze:      #3A2C14;
+    --border-metal:       #5C441D;
+    --text-cream:         #F6E8CE;
+    --text-muted:         #A89679;
+    --red-alert:          #FF3B30;
+
+    /* Tipografías */
+    --font-mono:          'Share Tech Mono', monospace;
+    --font-display:       'Cinzel', serif;
+    --font-body:          'Rajdhani', sans-serif;
+    --font-arcade:        'VT323', monospace;
+}
+
+/* ─── RESET Y BASE ─── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-abyss);
+    color: var(--text-cream);
+    font-family: var(--font-body);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: var(--amber);
+    color: var(--bg-abyss);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-abyss);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-metal);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--amber);
+    box-shadow: 0 0 8px var(--amber);
+}
+
+/* ─── CANVAS FONDO & OVERLAYS ─── */
+#serverCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.crt-scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.18) 2px,
+        rgba(0, 0, 0, 0.18) 4px
+    );
+}
+
+.crt-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+/* ─── ESTRUCTURA DE LA APLICACIÓN ─── */
+.arcade-app-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ─── MARQUESINA SUPERIOR ARCADE (HEADER) ─── */
+.arcade-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background: linear-gradient(180deg, rgba(20, 15, 8, 0.94) 0%, rgba(14, 11, 6, 0.90) 100%);
+    border-bottom: 2px solid var(--border-bronze);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+}
+
+.arcade-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.arcade-neon-symbol {
+    font-size: 2.2rem;
+    color: var(--amber);
+    text-shadow: var(--amber-glow-strong);
+    animation: neonPulse 3s infinite alternate;
+}
+
+@keyframes neonPulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--amber)); }
+    100% { transform: scale(1.05); filter: drop-shadow(0 0 15px var(--green)); color: var(--green); }
+}
+
+.arcade-main-title {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--amber);
+    text-shadow: var(--amber-glow);
+}
+
+.title-accent {
+    color: var(--green);
+    text-shadow: var(--green-glow);
+}
+
+.arcade-sub-line {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.sub-chip {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border-metal);
+}
+.sub-chip.amber {
+    color: var(--amber);
+    border-color: var(--amber-dark);
+}
+.sub-chip.green {
+    color: var(--green);
+    border-color: var(--green-dark);
+}
+
+.status-dot {
+    display: inline-block;
+    font-size: 0.7rem;
+    margin-right: 4px;
+}
+.status-dot.green { color: var(--green); text-shadow: var(--green-glow); }
+.status-dot.amber { color: var(--amber); text-shadow: var(--amber-glow); }
+.status-dot.red { color: var(--red-alert); }
+
+/* Controles de la Barra Superior */
+.arcade-top-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Botón INSERT COIN */
+.btn-insert-coin {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(255, 176, 0, 0.18) 0%, rgba(255, 176, 0, 0.05) 100%);
+    border: 2px solid var(--amber);
+    border-radius: 4px;
+    color: var(--amber);
+    font-family: var(--font-arcade);
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(255, 176, 0, 0.2);
+    animation: coinGlow 2s infinite ease-in-out;
+}
+
+@keyframes coinGlow {
+    0%, 100% { border-color: var(--amber); box-shadow: 0 0 8px rgba(255,176,0,0.3); }
+    50% { border-color: var(--green); color: var(--green); box-shadow: 0 0 14px rgba(57,255,20,0.5); }
+}
+
+.btn-insert-coin:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 176, 0, 0.3);
+    box-shadow: var(--amber-glow-strong);
+}
+
+.btn-insert-coin.coin-inserted {
+    transform: scale(0.95);
+    background: var(--green);
+    color: #000;
+}
+
+.coin-badge {
+    background: var(--amber);
+    color: #000;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+/* Panel de Piloto */
+.pilot-badge-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px;
+    background: rgba(10, 8, 4, 0.7);
+    border: 1px solid var(--border-bronze);
+    border-radius: 4px;
+}
+
+.pilot-avatar-icon {
+    font-size: 1.2rem;
+    color: var(--green);
+}
+
+.pilot-info-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.pilot-alias-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--amber);
+}
+
+.pilot-rep-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--green-dim);
+}
+
+.arcade-small-btn {
+    background: none;
+    border: 1px solid var(--border-metal);
+    color: var(--amber-dim);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.arcade-small-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    box-shadow: var(--amber-glow);
+}
+
+.arcade-icon-btn {
+    background: none;
+    border: 1px solid var(--border-metal);
+    color: var(--amber);
+    font-size: 1.1rem;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.arcade-icon-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: var(--green-glow);
+}
+
+/* ─── STORE NAV & SEARCH BAR ─── */
+.store-nav-section {
+    padding: 10px 24px;
+    background: rgba(14, 11, 6, 0.85);
+    border-bottom: 1px solid var(--border-bronze);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.store-tabs-bar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+}
+
+.store-filter-btn {
+    background: rgba(23, 18, 10, 0.7);
+    border: 1px solid var(--border-bronze);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.store-filter-btn:hover {
+    color: var(--amber);
+    border-color: var(--amber-dim);
+    box-shadow: var(--amber-glow);
+}
+
+.store-filter-btn.active {
+    background: linear-gradient(180deg, rgba(255, 176, 0, 0.15) 0%, rgba(255, 176, 0, 0.05) 100%);
+    border-color: var(--amber);
+    color: var(--amber);
+    box-shadow: var(--amber-glow);
+    text-shadow: 0 0 6px var(--amber);
+}
+
+/* Buscador */
+.store-search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.search-terminal-prompt {
+    position: absolute;
+    left: 12px;
+    font-family: var(--font-mono);
+    color: var(--green);
+    font-weight: 700;
+    pointer-events: none;
+    text-shadow: var(--green-glow);
+}
+
+.store-search-input {
+    width: 100%;
+    padding: 9px 14px 9px 36px;
+    background: rgba(8, 6, 3, 0.85);
+    border: 1px solid var(--border-bronze);
+    border-radius: 4px;
+    color: var(--green);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.store-search-input:focus {
+    border-color: var(--green);
+    box-shadow: var(--green-glow), inset 0 0 15px rgba(57, 255, 20, 0.05);
+}
+
+.store-search-input::placeholder {
+    color: var(--border-metal);
+}
+
+.store-count-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--amber-dim);
+    white-space: nowrap;
+    letter-spacing: 1px;
+}
+
+/* ─── GRID DE CATÁLOGO (CARDS PLAYSTORE RETRO) ─── */
+.store-catalog-viewport {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+}
+
+.arcade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 20px;
+}
+
+/* Cartucho / Ficha Arcade */
+.arcade-card {
+    background: linear-gradient(145deg, rgba(23, 18, 10, 0.92) 0%, rgba(14, 11, 6, 0.95) 100%);
+    border: 1px solid var(--border-bronze);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+
+.arcade-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--amber), var(--green));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.arcade-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--amber);
+    box-shadow: var(--amber-glow), 0 10px 25px rgba(0,0,0,0.7);
+}
+
+.arcade-card:hover::before {
+    opacity: 1;
+}
+
+/* Diferenciador por tipo */
+.arcade-card--game:hover {
+    border-color: var(--green);
+    box-shadow: var(--green-glow), 0 10px 25px rgba(0,0,0,0.7);
+}
+
+/* Marquesina del Cartucho */
+.card-marquee {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(10, 8, 4, 0.85);
+    border-bottom: 1px solid var(--border-bronze);
+}
+
+.marquee-era {
+    font-family: var(--font-arcade);
+    font-size: 1.15rem;
+    color: var(--amber);
+    letter-spacing: 1px;
+}
+
+.marquee-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 2px;
+    background: rgba(57, 255, 20, 0.12);
+    border: 1px solid var(--green-dark);
+    color: var(--green);
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+}
+
+/* Cuerpo de la Card */
+.card-body {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.card-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-metal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.card-title-col {
+    flex: 1;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.card-rating {
+    font-size: 0.75rem;
+    color: var(--green);
+    margin-top: 2px;
+    letter-spacing: 2px;
+}
+
+.card-desc {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--text-cream);
+    opacity: 0.8;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    flex: 1;
+}
+
+.card-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: auto;
+}
+
+.card-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    padding: 2px 7px;
+    border-radius: 2px;
+    background: rgba(30, 24, 14, 0.7);
+    border: 1px solid var(--border-bronze);
+    color: var(--amber-dim);
+}
+
+/* Botones de Acción de la Ficha */
+.card-actions {
+    display: grid;
+    grid-template-columns: 1.4fr 1.1fr;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(10, 8, 4, 0.8);
+    border-top: 1px solid var(--border-bronze);
+}
+
+.arcade-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.arcade-btn--launch {
+    background: linear-gradient(135deg, rgba(57, 255, 20, 0.2) 0%, rgba(57, 255, 20, 0.05) 100%);
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.arcade-btn--launch:hover {
+    background: rgba(57, 255, 20, 0.35);
+    box-shadow: var(--green-glow-strong);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.arcade-btn--specs {
+    background: rgba(255, 176, 0, 0.1);
+    border-color: var(--amber-dark);
+    color: var(--amber);
+}
+
+.arcade-btn--specs:hover {
+    background: rgba(255, 176, 0, 0.22);
+    border-color: var(--amber);
+    box-shadow: var(--amber-glow);
+    transform: translateY(-1px);
+}
+
+/* ─── STATUS FOOTER ─── */
+.arcade-status-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 24px;
+    background: rgba(10, 8, 4, 0.95);
+    border-top: 1px solid var(--border-bronze);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.footer-sep { color: var(--border-metal); }
+.t-green { color: var(--green); font-weight: 700; }
+.t-amber { color: var(--amber); font-weight: 700; }
+.t-dim   { color: var(--text-muted); }
+
+/* ─── MODAL ANALIZADOR DE SPECS & ARQUITECTURA ─── */
+.specs-modal-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.specs-modal-wrapper.active {
+    display: flex;
+    animation: modalFadeIn 0.25s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+    0% { opacity: 0; transform: scale(0.96); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.specs-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(8px);
+}
+
+.specs-modal-window {
+    position: relative;
+    z-index: 101;
+    width: min(92vw, 720px);
+    max-height: 88vh;
+    background: linear-gradient(180deg, #151008 0%, #0c0904 100%);
+    border: 2px solid var(--amber);
+    border-radius: 8px;
+    box-shadow: var(--amber-glow-strong), 0 0 60px rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.specs-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(22, 16, 8, 0.95);
+    border-bottom: 2px solid var(--border-bronze);
+}
+
+.specs-header-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.specs-modal-icon {
+    font-size: 2.2rem;
+}
+
+.specs-modal-heading {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--amber);
+    text-shadow: var(--amber-glow);
+}
+
+.specs-modal-sub {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.spec-pill {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 2px;
+}
+.spec-pill.amber {
+    background: rgba(255, 176, 0, 0.15);
+    color: var(--amber);
+    border: 1px solid var(--amber-dark);
+}
+.spec-pill.green {
+    background: rgba(57, 255, 20, 0.15);
+    color: var(--green);
+    border: 1px solid var(--green-dark);
+}
+
+.specs-close-btn {
+    background: none;
+    border: 1px solid var(--border-metal);
+    color: var(--amber);
+    font-size: 1.2rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.specs-close-btn:hover {
+    border-color: var(--red-alert);
+    color: var(--red-alert);
+}
+
+.specs-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.spec-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.spec-section-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--green);
+    letter-spacing: 1px;
+}
+
+.spec-text-highlight {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-cream);
+    line-height: 1.5;
+}
+
+.spec-box-content {
+    padding: 10px 14px;
+    background: rgba(6, 4, 2, 0.75);
+    border: 1px solid var(--border-bronze);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--text-cream);
+    line-height: 1.5;
+}
+.spec-box-content.mono {
+    font-family: var(--font-mono);
+    color: var(--amber-dim);
+    font-size: 0.82rem;
+}
+
+.spec-grid-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.pilot-stats-panel {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px dashed var(--border-metal);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+.stat-pill {
+    background: rgba(255, 176, 0, 0.1);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border-metal);
+}
+.stat-pill .lbl { color: var(--text-muted); font-size: 0.7rem; }
+.stat-pill .val { font-weight: 700; margin-left: 4px; }
+
+.specs-modal-footer {
+    padding: 14px 20px;
+    background: rgba(14, 10, 5, 0.9);
+    border-top: 1px solid var(--border-bronze);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.arcade-btn--launch-lg {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, var(--green-dim) 0%, var(--green-dark) 100%);
+    color: #000;
+    font-weight: 900;
+    border: 1px solid var(--green);
+    box-shadow: var(--green-glow);
+}
+
+.arcade-btn--launch-lg:hover {
+    background: var(--green);
+    color: #000;
+    box-shadow: var(--green-glow-strong);
+    transform: translateY(-2px);
+}
+
+/* ─── MODAL DE AUTENTICACIÓN ─── */
+.auth-window {
+    width: min(90vw, 440px);
+}
+
+.auth-form-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-label {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--amber-dim);
+}
+
+.arcade-input {
+    padding: 10px 14px;
+    background: rgba(6, 4, 2, 0.85);
+    border: 1px solid var(--border-bronze);
+    border-radius: 4px;
+    color: var(--green);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.arcade-input:focus {
+    border-color: var(--amber);
+    box-shadow: var(--amber-glow);
+}
+
+.auth-submit-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.text-link-btn {
+    background: none;
+    border: none;
+    color: var(--amber-dim);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: center;
+}
+.text-link-btn:hover { color: var(--amber); }
+
+.auth-status-msg {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-align: center;
+    padding: 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.4);
+}
+.auth-status-msg.t-green { color: var(--green); }
+.auth-status-msg.t-amber { color: var(--amber); }
+.auth-status-msg.t-red { color: var(--red-alert); }
+
+/* ─── ESTADO VACÍO ─── */
+.store-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+.empty-icon {
+    font-size: 2.5rem;
+    color: var(--amber-dim);
+    margin-bottom: 10px;
+}
+
+/* ─── RESPONSIVE DESIGN ─── */
+@media (max-width: 900px) {
+    .arcade-grid { grid-template-columns: 1fr; }
+    .spec-grid-cols { grid-template-columns: 1fr; }
+    .arcade-top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .arcade-top-controls { width: 100%; justify-content: space-between; }
+    .hide-sm { display: none; }
+}
+
+@media (max-width: 600px) {
+    .card-actions { grid-template-columns: 1fr; }
+    .btn-insert-coin { font-size: 1rem; padding: 4px 10px; }
+}

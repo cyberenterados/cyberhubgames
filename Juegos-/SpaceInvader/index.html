@@ -2,31 +2,131 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:5000 http://127.0.0.1:5000 ws://127.0.0.1:5500 http://127.0.0.1:5500 https://*.onrender.com https://*.vercel.app; img-src 'self' data: https://res.cloudinary.com;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROYECTO GAMMA // DEFENSA RED OWM</title>
+    <title>PROYECTO GAMMA // VECTOR DEFENSE 1983</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="crt">
-    <div id="terminal-container">
-        <header class="hud glitch-text">
-            <div id="score-display">INTERCEPCIONES: <span id="score">0000</span></div>
-            <div id="level-display">OLEADA: <span id="level">01</span></div>
-            <div id="status">RED OWM: <span id="status-text">EN LÍNEA</span></div>
-        </header>
-        
-        <div id="radar-wrapper">
-            <canvas id="gameCanvas"></canvas>
-            <div id="pause-overlay" class="hidden">
-                <h1 class="glitch-text">SISTEMA EN ESPERA</h1>
-                <p>PRESIONE [P] O EL BOTÓN PARA REANUDAR</p>
-            </div>
-        </div>
+<body class="crt-screen">
 
-        <div id="mobile-controls">
-            <div class="instruction">>>> OBJETIVO: TOQUE EL RADAR PARA DESPLEGAR ESCUDOS <<<</div>
-            <button id="btn-pause" class="control-btn pause-btn">SISTEMA: PAUSA/REANUDAR</button>
-        </div>
+    <!-- ═══ CRT SCANLINES & OVERLAY ═══ -->
+    <div class="crt-scanline"></div>
+    <div class="crt-vignette"></div>
+
+    <div class="terminal-container">
+        
+        <!-- ─── HUD MILITAR NORAD 1983 ─── -->
+        <header class="defense-hud">
+            <div class="hud-brand">
+                <span class="hud-symbol">⌁</span>
+                <div>
+                    <h1 class="hud-title">PROYECTO GAMMA <span class="hud-sub">VECTOR DEFENSE 1983</span></h1>
+                    <div class="hud-telemetry-row">
+                        <span class="t-green">STATUS: DEFENSA ACTIVA</span>
+                        <span class="sep">│</span>
+                        <span class="t-amber" id="syncStatus">MONGODB: ENLACE ARMADO</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Métricas de Combate -->
+            <div class="hud-stats-group">
+                <div class="stat-cell">
+                    <span class="stat-lbl">PUNTUACIÓN</span>
+                    <span class="stat-val font-arcade t-green" id="score">00000</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-lbl">OLEADA</span>
+                    <span class="stat-val font-arcade t-amber" id="level">01</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-lbl">CIUDADES</span>
+                    <span class="stat-val font-arcade" id="citiesAlive">5 / 5</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-lbl">PULSO PEM [E]</span>
+                    <span class="stat-val font-arcade t-cyan" id="empReadyText">100% LISTO</span>
+                </div>
+                <!-- Control de Audio -->
+                <button type="button" class="arcade-mini-btn" id="btnAudioToggle" title="Audio Chiptune y Sirena">
+                    <span id="audioIcon">🔊 AUDIO ON</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ─── PANTALLA DE RADAR TÁCTICO VECTORIAL ─── -->
+        <main class="radar-viewport" id="radarViewport">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Retícula de Apuntado SVG Virtual -->
+            <div class="targeting-crosshair" id="crosshair"></div>
+
+            <!-- Overlay de Inicio / Pausa / Game Over -->
+            <div id="pause-overlay" class="radar-overlay">
+                <div class="overlay-modal">
+                    <div class="overlay-badge">NORAD STRATEGIC DEFENSE COMMAND // 1983</div>
+                    <h2 class="overlay-heading" id="modalHeading">DEFENSA VECTORIAL ACTIVA</h2>
+                    <p class="overlay-desc" id="modalDesc">
+                        Misiles balísticos ICBM y cazas enemigos detectados sobre el espacio aéreo. 
+                        Apunta con el ratón o toca el radar para desplegar cúpulas de intercepción antiaérea.
+                    </p>
+                    
+                    <div class="overlay-mission-brief">
+                        <div class="brief-item"><span>[ CLIC / TOUCH ]:</span> Disparar Interceptor desde el silo más cercano</div>
+                        <div class="brief-item"><span>[ TECLA E / BOTÓN PEM ]:</span> Detonar Pulso Electromagnético de área</div>
+                        <div class="brief-item"><span>[ TECLA P / ESC ]:</span> Interrumpir / Reanudar operación</div>
+                    </div>
+
+                    <button type="button" class="action-btn-glow" id="btnResume">
+                        <span>[ 🕹️ INICIAR DEFENSA TÁCTICA ]</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Capa de Notificaciones Tácticas (Floating Alerts) -->
+            <div class="tactical-alerts-layer" id="alertsLayer"></div>
+        </main>
+
+        <!-- ─── BARRAS DE MUNICIÓN DE SILOS TERRESTRES & CONTROLES ─── -->
+        <footer class="defense-console">
+            <!-- Silo ALFA (Izquierda) -->
+            <div class="silo-panel" id="siloLeft">
+                <div class="silo-title">SILO ALFA</div>
+                <div class="ammo-slots" id="ammoAlfa">
+                    <!-- Balas dinámicas -->
+                </div>
+            </div>
+
+            <!-- Silo BETA (Centro) -->
+            <div class="silo-panel" id="siloCenter">
+                <div class="silo-title">SILO DELTA (PRINCIPAL)</div>
+                <div class="ammo-slots" id="ammoDelta"></div>
+            </div>
+
+            <!-- Silo GAMMA (Derecha) -->
+            <div class="silo-panel" id="siloRight">
+                <div class="silo-title">SILO OMEGA</div>
+                <div class="ammo-slots" id="ammoOmega"></div>
+            </div>
+
+            <!-- Botones Tácticos para Mobile y Atajo -->
+            <div class="console-actions">
+                <button type="button" class="tactical-btn emp-btn" id="btnFireEmp">
+                    <span>⚡ PULSO PEM [E]</span>
+                </button>
+                <button type="button" class="tactical-btn" id="btnPause">
+                    <span>⏸️ PAUSA [P]</span>
+                </button>
+                <a href="../../index.html" class="tactical-btn hub-btn">
+                    <span>◄ HUB</span>
+                </a>
+            </div>
+        </footer>
+
     </div>
+
+    <!-- ═══ MOTOR TÁCTICO VECTORIAL ═══ -->
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,230 +1,582 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+/* ════════════════════════════════════════════════════════════
+   CRYPT-TRIS 1984 // ARCADE CABINET CSS
+   Estilo: Cabina Recreativa 80s + Monitor CRT Ahumado
+   ════════════════════════════════════════════════════════════ */
 
 :root {
-    --bg-bunker: #05070f;
-    --panel-bg: #0a0d1a;
-    --verde-fosforo: #00ff00;
-    --verde-oscuro: #004400;
-    --alerta: #00ff00;
-    --cian: #00ff00;
-    --brillo-neon: 0 0 10px rgba(0, 255, 0, 0.4);
+    /* ─── PALETA DINÁMICA POR NIVEL (SOBRESCRITA POR JS) ─── */
+    --accent-primary:    #39FF14; /* Color principal del sector */
+    --accent-secondary:  #FFB000; /* Color secundario / highlight */
+    --accent-glow:       0 0 12px rgba(57, 255, 20, 0.45);
+    --accent-glow-strong:0 0 10px #39FF14, 0 0 25px rgba(57, 255, 20, 0.6);
+
+    /* ─── ESTRUCTURA DE LA CABINA ─── */
+    --cabinet-bg:        #080603;
+    --panel-chassis:     #120E08;
+    --box-bg:            #18130B;
+    --bezel-border:      #3A2C14;
+    --metal-edge:        #5C451F;
+    --text-cream:        #F6E9D2;
+    --text-dim:          #9E8B6E;
+    --red-alert:         #FF3B30;
+
+    /* ─── FUENTES ─── */
+    --font-mono:         'Share Tech Mono', monospace;
+    --font-arcade:       'VT323', monospace;
+    --font-display:      'Cinzel', serif;
 }
 
-* {
+/* ─── RESET ─── */
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body {
-    background-color: var(--bg-bunker);
-    color: var(--verde-fosforo);
-    font-family: 'Space Mono', monospace;
-    overflow-x: hidden;
+html, body {
+    width: 100%;
     min-height: 100vh;
-}
-
-/* Bloqueo de selección táctico */
-.game-area, canvas, .btn-action, .mobile-btn {
-    -webkit-user-select: none;
+    background-color: var(--cabinet-bg);
+    color: var(--text-cream);
+    font-family: var(--font-mono);
+    overflow-x: hidden;
     user-select: none;
+    -webkit-user-select: none;
     touch-action: manipulation;
 }
 
-/* Efecto CRT Clandestino */
+/* ─── EFECTOS DE TUBO CRT ─── */
 .crt-scanline {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(0, 255, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 255, 0, 0.03));
-    background-size: 100% 4px, 3px 100%;
+    inset: 0;
     pointer-events: none;
-    z-index: 999;
+    z-index: 1000;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.22) 2px,
+        rgba(0, 0, 0, 0.22) 4px
+    );
 }
 
-.container {
-    max-width: 1400px;
+.crt-curvature {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1001;
+    background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.8) 100%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
+}
+
+/* ─── CONTENEDOR PRINCIPAL CABINA ─── */
+.arcade-cabinet {
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 10px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
+    gap: 12px;
     min-height: 100vh;
 }
 
-.header {
-    background-color: var(--panel-bg);
-    border: 2px solid var(--verde-fosforo);
-    padding: 15px;
+/* ─── MARQUESINA RETRO ARCADE ─── */
+.arcade-marquee {
+    background: linear-gradient(180deg, #1C150A 0%, #100C06 100%);
+    border: 2px solid var(--accent-primary);
+    box-shadow: var(--accent-glow), inset 0 0 20px rgba(0,0,0,0.8);
+    padding: 10px 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.marquee-lights {
+    display: flex;
+    gap: 6px;
+}
+
+.light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.5);
+    animation: lightBlink 1.5s infinite alternate;
+}
+.light.red { background: var(--red-alert); box-shadow: 0 0 8px var(--red-alert); }
+.light.amber { background: var(--accent-secondary); box-shadow: 0 0 8px var(--accent-secondary); animation-delay: 0.5s; }
+.light.green { background: var(--accent-primary); box-shadow: 0 0 8px var(--accent-primary); animation-delay: 1s; }
+
+@keyframes lightBlink {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+.marquee-title-box {
     text-align: center;
-    font-weight: bold;
-    font-size: 1.5rem;
+}
+
+.marquee-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-primary);
     letter-spacing: 4px;
-    box-shadow: var(--brillo-neon);
-    margin-bottom: 20px;
+    text-shadow: var(--accent-glow-strong);
+    transition: color 0.5s, text-shadow 0.5s;
 }
 
-.glitch { position: relative; }
-.glitch::before, .glitch::after {
-    content: attr(data-text);
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
+.title-sub {
+    font-family: var(--font-arcade);
+    font-size: 1.3rem;
+    color: var(--accent-secondary);
+    letter-spacing: 2px;
+    margin-left: 8px;
 }
-.glitch::before { animation: glitch-anim 0.4s infinite; color: var(--alerta); z-index: -1; left: 2px; }
-.glitch::after { animation: glitch-anim2 0.3s infinite; color: var(--cian); z-index: -2; left: -2px; }
 
-@keyframes glitch-anim { 0% { clip-path: inset(10% 0 60% 0); } 50% { clip-path: inset(30% 0 20% 0); } 100% { clip-path: inset(80% 0 5% 0); } }
-@keyframes glitch-anim2 { 0% { clip-path: inset(40% 0 10% 0); } 50% { clip-path: inset(80% 0 5% 0); } 100% { clip-path: inset(10% 0 60% 0); } }
+.marquee-telemetry {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    margin-top: 4px;
+}
 
-.main-wrapper {
+.marquee-telemetry .sep { color: var(--metal-edge); }
+.t-amber { color: var(--accent-secondary); font-weight: 700; }
+.t-green { color: var(--accent-primary); font-weight: 700; }
+.t-dim   { color: var(--text-dim); }
+
+.dot { display: inline-block; margin-right: 4px; }
+.dot.green { color: var(--accent-primary); text-shadow: 0 0 5px var(--accent-primary); }
+
+.arcade-mini-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.arcade-mini-btn:hover {
+    background: var(--accent-primary);
+    color: #000;
+    box-shadow: var(--accent-glow);
+}
+
+/* ─── CHASIS DE LA CABINA ─── */
+.cabinet-chassis {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 16px;
     flex: 1;
     justify-content: center;
+    align-items: flex-start;
 }
 
-.side-panel {
+/* Módulos Laterales */
+.side-module {
+    width: 250px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    width: 280px;
+    gap: 12px;
 }
 
-.info-box {
-    background-color: var(--panel-bg);
-    border: 1px solid var(--verde-fosforo);
-    padding: 15px;
-    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
+.retro-box {
+    background: var(--box-bg);
+    border: 1px solid var(--bezel-border);
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.6), 0 3px 10px rgba(0,0,0,0.5);
+    transition: border-color 0.3s;
 }
 
-.info-title {
-    border-bottom: 1px dashed var(--verde-fosforo);
-    padding-bottom: 5px;
+.retro-box:hover {
+    border-color: var(--metal-edge);
+}
+
+.box-header {
+    font-size: 0.75rem;
+    color: var(--accent-primary);
+    letter-spacing: 1px;
+    border-bottom: 1px dashed var(--bezel-border);
+    padding-bottom: 6px;
     margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 0.9rem;
+    font-weight: 700;
 }
 
-.stat-line {
+.canvas-bezel {
+    background: #030302;
+    border: 1px solid var(--metal-edge);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+}
+
+/* Telemetría */
+.metric-row {
     display: flex;
     justify-content: space-between;
-    margin: 8px 0;
-    font-size: 1rem;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 
-.game-area {
-    position: relative;
+.metric-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+.metric-value {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+}
+
+.font-arcade {
+    font-family: var(--font-arcade);
+}
+
+.highlight-row {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 6px 4px;
+    border-radius: 3px;
+    margin: 4px 0;
+}
+
+/* Medidor de Gravedad */
+.gravity-gauge-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid var(--metal-edge);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.gravity-fill {
+    width: 10%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    box-shadow: 0 0 8px var(--accent-primary);
+    transition: width 0.4s ease;
+}
+
+.gravity-text {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-align: right;
+}
+
+/* Sector / Escenarios */
+.sector-badge-name {
+    font-family: var(--font-arcade);
+    font-size: 1.4rem;
+    color: var(--accent-primary);
+    text-shadow: var(--accent-glow);
+    letter-spacing: 1px;
+}
+
+.sector-theme-desc {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin: 4px 0 8px 0;
+}
+
+.sector-progress-dots {
+    display: flex;
+    gap: 4px;
+    justify-content: space-between;
+}
+
+.sector-dot {
+    flex: 1;
+    height: 6px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--bezel-border);
+    transition: all 0.3s;
+}
+
+.sector-dot.active {
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.sector-dot.completed {
+    background: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+}
+
+/* Lista de Teclas */
+.key-list {
+    list-style: none;
+    font-size: 0.74rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+}
+
+kbd {
+    background: #000;
+    border: 1px solid var(--metal-edge);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent-primary);
+    font-family: var(--font-mono);
+}
+
+.hub-return-link {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--bezel-border);
+    border-radius: 4px;
+    color: var(--accent-secondary);
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.hub-return-link:hover {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 10px rgba(255, 176, 0, 0.3);
+}
+
+/* ─── PANTALLA CRT PRINCIPAL (POZO DE JUEGO) ─── */
+.crt-game-well {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 12px;
 }
 
-canvas {
-    background-color: #000;
-    border: 2px solid var(--verde-fosforo);
-    box-shadow: var(--brillo-neon);
-    image-rendering: pixelated;
+.crt-screen-frame {
+    position: relative;
+    background: #000000;
+    border: 4px solid var(--metal-edge);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.9), inset 0 0 40px rgba(0,0,0,0.9);
+    overflow: hidden;
+    transition: border-color 0.4s;
+}
+
+.crt-screen-frame.shake {
+    animation: screenShake 0.15s ease-out;
+}
+
+@keyframes screenShake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-3px, 3px); }
+    40% { transform: translate(3px, -2px); }
+    60% { transform: translate(-2px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0, 0); }
 }
 
 #gameCanvas {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    aspect-ratio: 1 / 2;
+    display: block;
+    background: #000000;
 }
 
-.canvas-container {
-    display: flex;
-    justify-content: center;
-    background-color: #000;
-    padding: 10px;
-    border: 1px solid var(--verde-oscuro);
-}
-
-.game-overlay {
-    display: none;
+/* Capa de Textos Flotantes Arcade */
+.floating-text-layer {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(5, 7, 15, 0.85);
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    z-index: 10;
-    justify-content: center;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-text {
+    position: absolute;
+    font-family: var(--font-arcade);
+    font-size: 2rem;
+    color: #FFFFFF;
+    text-shadow: 0 0 8px var(--accent-primary), 2px 2px #000;
+    animation: floatUp 0.8s ease-out forwards;
+    white-space: nowrap;
+}
+
+@keyframes floatUp {
+    0% { opacity: 0; transform: translateY(0) scale(0.6); }
+    20% { opacity: 1; transform: translateY(-10px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-40px) scale(1); }
+}
+
+/* Overlay de Pausa / Game Over */
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    display: none;
     align-items: center;
-}
-
-.game-overlay.active { display: flex; }
-
-.overlay-box {
-    background-color: var(--panel-bg);
-    border: 2px solid var(--verde-fosforo);
+    justify-content: center;
     padding: 20px;
-    text-align: center;
-    width: 90%;
-    box-shadow: 0 0 20px rgba(0,255,0,0.3);
 }
 
-.ad-slot {
-    border: 1px dashed var(--verde-oscuro);
-    background: rgba(0, 255, 0, 0.05);
+.game-overlay.active {
+    display: flex;
+}
+
+.overlay-card {
+    text-align: center;
+    background: #110D07;
+    border: 2px solid var(--accent-primary);
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: var(--accent-glow-strong);
+    width: 100%;
+}
+
+.overlay-arcade-logo {
+    font-size: 0.75rem;
+    color: var(--accent-secondary);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.overlay-title {
+    font-family: var(--font-arcade);
+    font-size: 2.4rem;
+    color: var(--accent-primary);
+    text-shadow: var(--accent-glow);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+}
+
+.overlay-text {
+    font-size: 0.85rem;
+    color: var(--text-cream);
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.overlay-stats-preview {
     display: flex;
     justify-content: center;
-    align-items: center;
-    color: var(--verde-oscuro);
-    font-size: 0.8rem;
-    margin-top: 15px;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
 }
 
-.interstitial-ad { height: 250px; width: 100%; }
-.display-ad { height: 250px; width: 100%; }
+.stat-pill {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid var(--metal-edge);
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+.stat-pill .lbl { color: var(--text-dim); }
+.stat-pill .val { font-weight: 700; margin-left: 4px; }
 
-.btn-action {
-    background-color: transparent;
-    color: var(--verde-fosforo);
-    border: 1px solid var(--verde-fosforo);
-    padding: 10px;
-    font-family: inherit;
-    font-size: 1rem;
+.overlay-hint {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    margin-top: 12px;
+}
+
+/* Botón de Acción Arcade */
+.arcade-action-btn {
+    background: linear-gradient(135deg, rgba(57, 255, 20, 0.25) 0%, rgba(57, 255, 20, 0.08) 100%);
+    border: 2px solid var(--accent-primary);
+    color: var(--accent-primary);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 4px;
     cursor: pointer;
-    text-transform: uppercase;
+    letter-spacing: 1px;
     transition: all 0.2s;
-    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(57,255,20,0.2);
 }
 
-.btn-action:hover, .btn-action:active {
-    background-color: var(--verde-fosforo);
-    color: var(--bg-bunker);
-    box-shadow: 0 0 15px var(--verde-fosforo);
+.arcade-action-btn:hover {
+    background: var(--accent-primary);
+    color: #000;
+    box-shadow: var(--accent-glow-strong);
+    transform: translateY(-2px);
 }
 
-.w-100 { width: 100%; }
+.arcade-action-btn.w-100 {
+    width: 100%;
+}
 
-.mobile-controls {
+/* ─── CONTROLES TÁCTILES MOBILE ─── */
+.mobile-arcade-deck {
     display: none;
     width: 100%;
-    margin-top: 15px;
+    max-width: 320px;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
-.d-pad {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+.deck-row, .deck-dpad {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
 }
 
-.mobile-btn {
-    flex: 1;
-    padding: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-top: 0;
+.deck-btn {
+    background: #18130B;
+    border: 1px solid var(--metal-edge);
+    color: var(--text-cream);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 12px 6px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-@media (max-width: 900px) {
-    .main-wrapper { flex-direction: column; align-items: center; }
-    .side-panel { width: 100%; max-width: 400px; }
-    .left-panel { flex-direction: row; flex-wrap: wrap; }
-    .left-panel .info-box { flex: 1; min-width: 150px; }
-    .mobile-controls { display: flex; max-width: 300px; }
-    .ad-container { display: none; } 
+.deck-btn:active {
+    background: var(--accent-primary);
+    color: #000;
+}
+
+.deck-btn.accent {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    font-weight: 700;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 950px) {
+    .cabinet-chassis {
+        flex-direction: column;
+        align-items: center;
+    }
+    .side-module {
+        width: 100%;
+        max-width: 340px;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .retro-box {
+        flex: 1 1 calc(50% - 6px);
+    }
+    .mobile-arcade-deck {
+        display: flex;
+    }
+    .arcade-marquee {
+        flex-direction: column;
+        gap: 8px;
+    }
 }

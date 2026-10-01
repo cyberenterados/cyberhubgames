@@ -1,127 +1,440 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+/* ════════════════════════════════════════════════════════════
+   PROYECTO GAMMA // VECTOR DEFENSE 1983 — MILITARY HUD CSS
+   Estética: Monitor Vectorial Atari/NORAD + Neon Fósforo CRT
+   ════════════════════════════════════════════════════════════ */
 
 :root {
-    --phosphor: #00FF00;
-    --dark: #050505;
-    --glow: 0 0 10px rgba(0, 255, 0, 0.8);
-    --alert: #FF0000;
+    /* 🟢 Verde Fósforo Táctico */
+    --vector-green:        #39FF14;
+    --vector-green-glow:   0 0 8px #39FF14, 0 0 20px rgba(57, 255, 20, 0.5);
+
+    /* 🟠 Ámbar Radar */
+    --vector-amber:        #FFB000;
+    --vector-amber-glow:   0 0 8px #FFB000, 0 0 20px rgba(255, 176, 0, 0.5);
+
+    /* 🔵 Cian Láser */
+    --vector-cyan:         #00F3FF;
+    --vector-cyan-glow:    0 0 8px #00F3FF, 0 0 20px rgba(0, 243, 255, 0.5);
+
+    /* 🔴 Rojo Alerta ICBM */
+    --vector-red:          #FF2222;
+    --vector-red-glow:     0 0 8px #FF2222, 0 0 20px rgba(255, 34, 34, 0.6);
+
+    /* Chasis de Búnker */
+    --bunker-bg:           #040604;
+    --panel-bg:            #0B110B;
+    --border-metal:        #1A2A1A;
+    --border-bright:       #2E4A2E;
+    --text-cream:          #E2F5E2;
+    --text-dim:            #6A8C6A;
+
+    /* Fuentes */
+    --font-mono:           'Share Tech Mono', monospace;
+    --font-arcade:         'VT323', monospace;
+    --font-display:        'Cinzel', serif;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ─── RESET ─── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-body {
-    background-color: var(--dark);
-    color: var(--phosphor);
-    font-family: 'Share Tech Mono', monospace;
+html, body {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    touch-action: none; /* Crítico: bloquea scroll al tocar el radar */
+    background-color: var(--bunker-bg);
+    color: var(--text-cream);
+    font-family: var(--font-mono);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
-.crt::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px;
-    z-index: 2;
+/* ─── OVERLAYS CRT TÁCTICOS ─── */
+.crt-scanline {
+    position: fixed;
+    inset: 0;
     pointer-events: none;
+    z-index: 1000;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 20, 0, 0.25) 2px,
+        rgba(0, 20, 0, 0.25) 4px
+    );
 }
 
-#terminal-container {
+.crt-vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1001;
+    background: radial-gradient(circle at center, transparent 65%, rgba(0, 5, 0, 0.8) 100%);
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8);
+}
+
+/* ─── CONTENEDOR DE LA TERMINAL ─── */
+.terminal-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 900px;
-    height: 100%;
-    padding: 10px;
-    z-index: 3;
+    height: 100vh;
+    padding: 8px;
+    gap: 8px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
-.hud {
+/* ─── HUD MILITAR SUPERIOR ─── */
+.defense-hud {
+    background: linear-gradient(180deg, rgba(14, 24, 14, 0.95) 0%, rgba(9, 15, 9, 0.90) 100%);
+    border: 1px solid var(--vector-green);
+    border-radius: 4px;
+    padding: 8px 16px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 12px;
-    border: 1px solid var(--phosphor);
-    box-shadow: var(--glow);
-    margin-bottom: 10px;
-    background: rgba(0, 255, 0, 0.05);
-    font-size: 1rem;
-    text-transform: uppercase;
+    box-shadow: var(--vector-green-glow);
+    flex-shrink: 0;
 }
 
-#radar-wrapper {
-    position: relative;
-    flex-grow: 1;
+.hud-brand {
     display: flex;
-    justify-content: center;
-    border: 2px solid var(--phosphor);
-    box-shadow: var(--glow);
-    background-color: #000;
-    cursor: crosshair; /* Retícula de objetivo en PC */
+    align-items: center;
+    gap: 12px;
 }
 
-canvas {
+.hud-symbol {
+    font-size: 1.8rem;
+    color: var(--vector-green);
+    text-shadow: var(--vector-green-glow);
+    animation: radarBlink 2s infinite alternate;
+}
+
+@keyframes radarBlink {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.1); color: var(--vector-cyan); }
+}
+
+.hud-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--vector-green);
+    letter-spacing: 3px;
+    text-shadow: var(--vector-green-glow);
+}
+
+.hud-sub {
+    font-family: var(--font-arcade);
+    font-size: 1.1rem;
+    color: var(--vector-amber);
+    margin-left: 6px;
+    letter-spacing: 2px;
+}
+
+.hud-telemetry-row {
+    font-size: 0.65rem;
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.hud-telemetry-row .sep { color: var(--border-metal); }
+.t-green { color: var(--vector-green); font-weight: 700; }
+.t-amber { color: var(--vector-amber); font-weight: 700; }
+.t-cyan  { color: var(--vector-cyan); font-weight: 700; }
+
+.hud-stats-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.stat-lbl {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+}
+
+.stat-val {
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+}
+
+.font-arcade {
+    font-family: var(--font-arcade);
+}
+
+.arcade-mini-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--vector-green);
+    color: var(--vector-green);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.arcade-mini-btn:hover {
+    background: var(--vector-green);
+    color: #000;
+    box-shadow: var(--vector-green-glow);
+}
+
+/* ─── PANTALLA DE RADAR VECTORIAL (CANVAS) ─── */
+.radar-viewport {
+    flex: 1;
+    position: relative;
+    background: #020402;
+    border: 2px solid var(--border-bright);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: crosshair;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.95);
+}
+
+#gameCanvas {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-.glitch-text {
-    text-shadow: 2px 0 var(--phosphor), -1px 0 var(--alert);
-    animation: glitch-anim 2s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-anim {
-    0% { opacity: 1; transform: translate(0); }
-    5% { opacity: 0.9; transform: translate(-1px, 1px); }
-    10% { opacity: 1; transform: translate(1px, -1px); }
-    15% { opacity: 1; transform: translate(0); }
-    100% { opacity: 1; transform: translate(0); }
-}
-
-#pause-overlay {
+/* Retícula de Apuntado Virtual */
+.targeting-crosshair {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.targeting-crosshair::before, .targeting-crosshair::after {
+    content: '';
+    position: absolute;
+    background: var(--vector-cyan);
+    box-shadow: var(--vector-cyan-glow);
+}
+.targeting-crosshair::before { top: 0; left: 13px; width: 2px; height: 28px; }
+.targeting-crosshair::after  { top: 13px; left: 0; width: 28px; height: 2px; }
+
+/* ─── MODAL OVERLAY DE INICIO / PAUSA / GAME OVER ─── */
+.radar-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 2, 0.88);
+    backdrop-filter: blur(6px);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.radar-overlay.hidden {
+    display: none;
+}
+
+.overlay-modal {
+    background: rgba(10, 18, 10, 0.96);
+    border: 2px solid var(--vector-green);
+    border-radius: 6px;
+    padding: 24px;
+    max-width: 580px;
+    box-shadow: var(--vector-green-glow);
     text-align: center;
 }
-.hidden { display: none !important; }
 
-#mobile-controls {
+.overlay-badge {
+    font-size: 0.68rem;
+    color: var(--vector-amber);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.overlay-heading {
+    font-family: var(--font-arcade);
+    font-size: 2.2rem;
+    color: var(--vector-green);
+    text-shadow: var(--vector-green-glow);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.overlay-desc {
+    font-size: 0.84rem;
+    color: var(--text-cream);
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.overlay-mission-brief {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding-top: 10px;
-}
-
-.instruction {
-    text-align: center;
-    font-size: 0.85rem;
-    opacity: 0.8;
-}
-
-.control-btn {
-    background: rgba(0, 255, 0, 0.1);
-    color: var(--phosphor);
-    border: 1px solid var(--phosphor);
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-metal);
+    border-radius: 4px;
     padding: 12px;
-    font-family: inherit;
-    font-size: 1rem;
-    box-shadow: var(--glow);
-    cursor: pointer;
-    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 0.75rem;
 }
-.control-btn:active { background: var(--phosphor); color: #000; }
 
-@media (max-width: 768px) {
-    .hud { font-size: 0.8rem; flex-direction: column; text-align: center; gap: 5px; }
+.brief-item span {
+    color: var(--vector-green);
+    font-weight: 700;
+}
+
+.action-btn-glow {
+    background: linear-gradient(135deg, rgba(57, 255, 20, 0.25) 0%, rgba(57, 255, 20, 0.08) 100%);
+    border: 2px solid var(--vector-green);
+    color: var(--vector-green);
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+}
+
+.action-btn-glow:hover {
+    background: var(--vector-green);
+    color: #000;
+    box-shadow: var(--vector-green-glow);
+    transform: translateY(-2px);
+}
+
+/* Capa de Notificaciones Tácticas */
+.tactical-alerts-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.tactical-alert-text {
+    position: absolute;
+    font-family: var(--font-arcade);
+    font-size: 1.8rem;
+    color: var(--vector-green);
+    text-shadow: var(--vector-green-glow), 2px 2px #000;
+    animation: alertFadeUp 1s ease-out forwards;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes alertFadeUp {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    20%  { opacity: 1; transform: translate(-50%, -10px) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -30px) scale(1); }
+}
+
+/* ─── CONSOLA DE DEFENSA INFERIOR (SILOS DE MUNICIÓN) ─── */
+.defense-console {
+    background: rgba(10, 16, 10, 0.95);
+    border: 1px solid var(--border-metal);
+    border-radius: 4px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.silo-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.silo-title {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+}
+
+.ammo-slots {
+    display: flex;
+    gap: 3px;
+    height: 14px;
+}
+
+.ammo-bullet {
+    flex: 1;
+    background: var(--vector-green);
+    border-radius: 1px;
+    box-shadow: 0 0 5px var(--vector-green);
+    transition: all 0.2s;
+}
+
+.ammo-bullet.empty {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+}
+
+.console-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.tactical-btn {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-metal);
+    color: var(--text-cream);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 8px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.tactical-btn:hover {
+    border-color: var(--vector-green);
+    color: var(--vector-green);
+    box-shadow: var(--vector-green-glow);
+}
+
+.tactical-btn.emp-btn {
+    border-color: var(--vector-cyan);
+    color: var(--vector-cyan);
+    font-weight: 700;
+}
+.tactical-btn.emp-btn:hover {
+    background: var(--vector-cyan);
+    color: #000;
+    box-shadow: var(--vector-cyan-glow);
+}
+
+.tactical-btn.hub-btn {
+    color: var(--vector-amber);
+    border-color: var(--vector-amber);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+    .defense-hud { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .hud-stats-group { width: 100%; justify-content: space-between; }
+    .defense-console { flex-wrap: wrap; }
+    .console-actions { width: 100%; justify-content: space-between; }
 }

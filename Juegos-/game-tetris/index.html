@@ -2,99 +2,185 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:5000 http://127.0.0.1:5000 ws://127.0.0.1:5500 http://127.0.0.1:5500; img-src 'self' data:;">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TETRIS NEXUS // TERMINAL_OS</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:5000 http://127.0.0.1:5000 ws://127.0.0.1:5500 http://127.0.0.1:5500 https://*.onrender.com https://*.vercel.app; img-src 'self' data: https://res.cloudinary.com;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CRYPT-TRIS // ARCADE 1984 — NEXUS_OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- ═══ EFECTOS DE MONITOR CRT ═══ -->
     <div class="crt-scanline"></div>
-    <div class="container">
-        <header class="header glitch" data-text=">>> TETRIS NEXUS_OS v2026 <<<">
-            >>> TETRIS NEXUS_OS v2026 <<<
+    <div class="crt-curvature"></div>
+
+    <div class="arcade-cabinet">
+
+        <!-- ─── MARQUESINA RETRO ARCADE ─── -->
+        <header class="arcade-marquee">
+            <div class="marquee-lights">
+                <span class="light red"></span>
+                <span class="light amber"></span>
+                <span class="light green"></span>
+            </div>
+            <div class="marquee-title-box">
+                <h1 class="marquee-title" data-text="CRYPT-TRIS 1984">CRYPT-TRIS <span class="title-sub">ARCADE EDITION</span></h1>
+                <div class="marquee-telemetry">
+                    <span class="t-amber" id="arcadeCreditsBadge">🪙 CREDITS: 04</span>
+                    <span class="sep">│</span>
+                    <span class="t-green" id="sectorNameBadge">SECTOR 01: GREEN PHOSPHOR</span>
+                    <span class="sep">│</span>
+                    <span class="t-dim" id="cloudSyncStatus"><span class="dot green">●</span> MONGO SYNC: ARMED</span>
+                </div>
+            </div>
+            <div class="marquee-audio-btn">
+                <button type="button" id="btnAudioToggle" class="arcade-mini-btn" title="Música & SFX">
+                    <span id="audioIcon">🔊 AUDIO ON</span>
+                </button>
+            </div>
         </header>
 
-        <div class="main-wrapper">
-            <div class="side-panel left-panel">
-                <div class="info-box">
-                    <div class="info-title">ESTADO DEL SISTEMA</div>
-                    <div class="stat-line">
-                        <span class="stat-label">NIVEL:</span>
-                        <span class="stat-value" id="level">1</span>
-                    </div>
-                    <div class="stat-line">
-                        <span class="stat-label">SCORE:</span>
-                        <span class="stat-value" id="score">0</span>
-                    </div>
-                    <div class="stat-line">
-                        <span class="stat-label">LÍNEAS:</span>
-                        <span class="stat-value" id="lines">0</span>
-                    </div>
-                    <div class="stat-line">
-                        <span class="stat-label">TIEMPO:</span>
-                        <span class="stat-value" id="time">00:00</span>
+        <!-- ─── CUERPO PRINCIPAL DE LA CABINA ─── -->
+        <div class="cabinet-chassis">
+
+            <!-- ─── PANEL IZQUIERDO: HOLD & ESTADO ─── -->
+            <aside class="side-module left-module">
+                <!-- Reserva / HOLD PIECE -->
+                <div class="retro-box">
+                    <div class="box-header">> HOLD [C / SHIFT]</div>
+                    <div class="canvas-bezel">
+                        <canvas id="holdCanvas" width="100" height="100"></canvas>
                     </div>
                 </div>
 
-                <div class="info-box">
-                    <div class="info-title">RADAR: PRÓXIMA PIEZA</div>
-                    <div class="canvas-container">
-                        <canvas id="nextCanvas" width="120" height="120"></canvas>
+                <!-- Estadísticas de la Partida -->
+                <div class="retro-box telemetry-box">
+                    <div class="box-header">> TELEMETRÍA PILOTO</div>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">SCORE:</span>
+                        <span class="metric-value font-arcade" id="score">000000</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">HIGH SCORE:</span>
+                        <span class="metric-value font-arcade t-amber" id="highScore">000000</span>
+                    </div>
+                    <div class="metric-row highlight-row">
+                        <span class="metric-label">NIVEL (1-10):</span>
+                        <span class="metric-value font-arcade t-green" id="level">01</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">LÍNEAS:</span>
+                        <span class="metric-value font-arcade" id="lines">000</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">TIEMPO:</span>
+                        <span class="metric-value font-arcade" id="time">00:00</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="game-area">
-                <canvas id="gameCanvas" width="300" height="600"></canvas>
-                
-                <div class="game-overlay active" id="gameOverlay">
-                    <div class="overlay-box">
-                        <div class="overlay-title" id="overlayTitle">SISTEMA EN ESPERA</div>
-                        <div class="overlay-text" id="overlayText">Aguardando comando de inicio...</div>
-                        
-                        <div class="ad-slot interstitial-ad">
-                            <span>[ ESPACIO RESERVADO PARA ADSENSE ]</span>
+                <!-- Indicador de Velocidad / Dificultad -->
+                <div class="retro-box">
+                    <div class="box-header">> GRAVEDAD MOTOR</div>
+                    <div class="gravity-gauge-bar">
+                        <div class="gravity-fill" id="gravityGaugeFill"></div>
+                    </div>
+                    <div class="gravity-text" id="gravitySpeedText">1000 ms / tick</div>
+                </div>
+            </aside>
+
+            <!-- ─── CENTRO: PANTALLA CRT PRINCIPAL (POZO DE JUEGO) ─── -->
+            <main class="crt-game-well">
+                <div class="crt-screen-frame" id="screenFrame">
+                    <canvas id="gameCanvas" width="300" height="600"></canvas>
+                    
+                    <!-- Capa de Textos Flotantes Arcade -->
+                    <div class="floating-text-layer" id="floatingLayer"></div>
+
+                    <!-- Overlay de Pausa / Game Over -->
+                    <div class="game-overlay active" id="gameOverlay">
+                        <div class="overlay-card">
+                            <div class="overlay-arcade-logo">🕹️ 1984 SOVIET CHIP</div>
+                            <h2 class="overlay-title" id="overlayTitle">INSERT COIN</h2>
+                            <p class="overlay-text" id="overlayText">Presiona INICIAR para arrancar el motor de descompresión de bloques.</p>
+                            
+                            <div class="overlay-stats-preview" id="overlayStatsPreview" style="display:none;">
+                                <div class="stat-pill"><span class="lbl">FINAL SCORE:</span> <span class="val t-green" id="overScore">0</span></div>
+                                <div class="stat-pill"><span class="lbl">MAX LEVEL:</span> <span class="val t-amber" id="overLevel">1</span></div>
+                                <div class="stat-pill"><span class="lbl">LINES:</span> <span class="val" id="overLines">0</span></div>
+                            </div>
+
+                            <button type="button" class="arcade-action-btn" id="resumeBtn">
+                                <span>[ 🕹️ INICIAR OPERACIÓN ]</span>
+                            </button>
+                            <p class="overlay-hint">ESPACIO: Hard Drop · C: Hold · P: Pausa</p>
                         </div>
-                        
-                        <button class="btn-action" id="resumeBtn">INICIAR OPERACIÓN</button>
                     </div>
                 </div>
 
-                <div class="mobile-controls">
-                    <button class="btn-action mobile-btn" id="btn-rotate">[ ROTAR ]</button>
-                    <div class="d-pad">
-                        <button class="btn-action mobile-btn" id="btn-left">&lt;</button>
-                        <button class="btn-action mobile-btn" id="btn-down">v</button>
-                        <button class="btn-action mobile-btn" id="btn-right">&gt;</button>
+                <!-- Controles Táctiles Mobile / Tablet -->
+                <div class="mobile-arcade-deck">
+                    <div class="deck-row">
+                        <button type="button" class="deck-btn" id="btn-hold">HOLD</button>
+                        <button type="button" class="deck-btn accent" id="btn-hard-drop">⚡ HARD DROP</button>
+                        <button type="button" class="deck-btn" id="btn-rotate">↻ ROTAR</button>
+                    </div>
+                    <div class="deck-dpad">
+                        <button type="button" class="deck-btn nav" id="btn-left">◄</button>
+                        <button type="button" class="deck-btn nav" id="btn-down">▼ SOFT</button>
+                        <button type="button" class="deck-btn nav" id="btn-right">►</button>
                     </div>
                 </div>
-            </div>
+            </main>
 
-            <div class="side-panel right-panel">
-                <div class="info-box">
-                    <div class="info-title">COMANDOS MANUALES</div>
-                    <div class="controls-list">
-                        <div class="control-item">← → : Navegar</div>
-                        <div class="control-item">↓ : Descenso</div>
-                        <div class="control-item">↑ / ESPACIO: Rotar</div>
-                        <div class="control-item">P : Interrumpir (Pausa)</div>
+            <!-- ─── PANEL DERECHO: NEXT & RADAR DE ESCENARIOS ─── -->
+            <aside class="side-module right-module">
+                <!-- Próxima Pieza / NEXT -->
+                <div class="retro-box">
+                    <div class="box-header">> RADAR: PRÓXIMA</div>
+                    <div class="canvas-bezel">
+                        <canvas id="nextCanvas" width="100" height="100"></canvas>
                     </div>
                 </div>
 
-                <div class="info-box">
-                    <div class="info-title">TERMINAL</div>
-                    <button class="btn-action w-100" id="startBtn">INICIAR OPERACIÓN</button>
-                </div>
-
-                <div class="info-box ad-container">
-                    <div class="info-title">ENLACE COMERCIAL</div>
-                    <div class="ad-slot display-ad">
-                        <span>[ BANNER ADSENSE 300x250 ]</span>
+                <!-- Sector / Escenario Actual -->
+                <div class="retro-box sector-box">
+                    <div class="box-header">> ESCENARIO ACTIVO</div>
+                    <div class="sector-badge-name" id="sectorName">SECTOR 01</div>
+                    <div class="sector-theme-desc" id="sectorDesc">VT100 Terminal Verde Fósforo</div>
+                    <div class="sector-progress-dots" id="sectorProgressDots">
+                        <!-- 10 dots de los 10 niveles -->
                     </div>
                 </div>
-            </div>
+
+                <!-- Comandos & Botón de Control -->
+                <div class="retro-box">
+                    <div class="box-header">> COMANDOS ARCADE</div>
+                    <ul class="key-list">
+                        <li><kbd>←</kbd> <kbd>→</kbd> : Desplazar</li>
+                        <li><kbd>↑</kbd> : Rotar Bloque</li>
+                        <li><kbd>↓</kbd> : Soft Drop (+1 pt)</li>
+                        <li><kbd>ESPACIO</kbd> : Hard Drop (+2 pts)</li>
+                        <li><kbd>C</kbd> / <kbd>SHIFT</kbd> : Guardar (Hold)</li>
+                        <li><kbd>P</kbd> : Pausar Sistema</li>
+                    </ul>
+                    <button type="button" class="arcade-action-btn w-100" id="startBtn">
+                        <span>[ PAUSAR / REANUDAR ]</span>
+                    </button>
+                </div>
+
+                <!-- Botón Volver al Hub Mainframe -->
+                <div class="retro-box hub-return-box">
+                    <a href="../../index.html" class="hub-return-link">
+                        <span>◄ RETORNAR AL HUB MAINFRAME</span>
+                    </a>
+                </div>
+            </aside>
+
         </div>
     </div>
+
+    <!-- ═══ SCRIPTS DEL MOTOR ═══ -->
     <script src="script.js"></script>
 </body>
 </html>

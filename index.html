@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CYBERENTERADOS // NEXUS ARCADE STORE & MAINFRAME</title>
+    <meta name="description" content="PlayStore y Arcade retro-futurista de los años 70 y 80: catálogo de juegos clásicos y herramientas interactivas bajo el kernel Nexus OS.">
+    <!-- Tipografías Retro: Share Tech Mono, Cinzel, Rajdhani, VT323 Arcade Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600;700;900&family=VT323&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/hub.css">
+</head>
+<body>
+
+    <!-- ═══ CANVAS VINTAGE MAINFRAME SERVER (FONDO ANIMADO) ═══ -->
+    <canvas id="serverCanvas"></canvas>
+
+    <!-- ═══ CRT SCANLINES & OVERLAY ═══ -->
+    <div class="crt-scanlines"></div>
+    <div class="crt-vignette"></div>
+
+    <!-- ═══ APLICACIÓN PRINCIPAL (NEXUS ARCADE STORE) ═══ -->
+    <div class="arcade-app-container">
+
+        <!-- ─── MARQUESINA SUPERIOR ARCADE 70s-80s ─── -->
+        <header class="arcade-top-bar">
+            <div class="arcade-brand">
+                <span class="arcade-neon-symbol">☢</span>
+                <div class="arcade-brand-titles">
+                    <h1 class="arcade-main-title">CYBERENTERADOS <span class="title-accent">// NEXUS_STORE</span></h1>
+                    <div class="arcade-sub-line">
+                        <span class="sub-chip amber">ARCADE 70s-80s</span>
+                        <span class="sub-chip green">MAINFRAME VAULT</span>
+                        <span class="sub-chip" id="sysBackendStatus"><span class="status-dot green">●</span> KERNEL: ONLINE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Moneda / Créditos y Piloto -->
+            <div class="arcade-top-controls">
+                <!-- Botón Interactivo INSERT COIN -->
+                <button type="button" class="btn-insert-coin" id="btnInsertCoin" title="Inserta una moneda virtual para jugar">
+                    <span class="coin-slot">🪙</span>
+                    <span class="coin-text">INSERT COIN</span>
+                    <span class="coin-badge" id="creditsCount">02</span>
+                </button>
+
+                <!-- Identidad del Piloto -->
+                <div class="pilot-badge-box">
+                    <div class="pilot-avatar-icon">👤</div>
+                    <div class="pilot-info-col">
+                        <div class="pilot-alias-label" id="pilotAlias">PILOTO_INVITADO</div>
+                        <div class="pilot-rep-label" id="pilotReputation">MODO ARCADE LOCAL</div>
+                    </div>
+                    <button type="button" class="arcade-small-btn" id="btnAuthTrigger">[ IDENTIFICARSE 👤 ]</button>
+                </div>
+
+                <!-- Control de Sonido -->
+                <button type="button" class="arcade-icon-btn" id="btnSoundMute" title="Activar/Silenciar sintetizador arcade">
+                    <span id="soundMuteIcon">🔊</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ─── STORE CONTROLS & HERO BAR ─── -->
+        <section class="store-nav-section">
+            <!-- Barra de Pestañas Estilo PlayStore Arcade -->
+            <nav class="store-tabs-bar" role="tablist">
+                <button type="button" class="store-filter-btn active" data-filter="all">
+                    <span>🔥 TODO EL ARSENAL</span>
+                </button>
+                <button type="button" class="store-filter-btn" data-filter="games">
+                    <span>🕹️ SALÓN ARCADE (70s-80s)</span>
+                </button>
+                <button type="button" class="store-filter-btn" data-filter="tools">
+                    <span>🛠️ HERRAMIENTAS & OSINT</span>
+                </button>
+                <button type="button" class="store-filter-btn" data-filter="featured">
+                    <span>⭐ EDITORS' PICKS</span>
+                </button>
+            </nav>
+
+            <!-- Barra de Búsqueda y Conteo -->
+            <div class="store-search-bar">
+                <div class="search-input-wrapper">
+                    <span class="search-terminal-prompt">>_</span>
+                    <input type="search" id="arcadeSearch" class="store-search-input" placeholder="Buscar juego, herramienta, tecnología o año (ej: Outrun, Three.js, OSINT, 1988)..." autocomplete="off">
+                </div>
+                <div class="store-count-badge" id="catalogCount">16 EJECUTABLES DISPONIBLES</div>
+            </div>
+        </section>
+
+        <!-- ─── CATÁLOGO EN GRID (CARDS PLAYSTORE RETRO) ─── -->
+        <main class="store-catalog-viewport">
+            <div class="arcade-grid" id="arcadeGrid">
+                <!-- Se inyecta dinámicamente con las 16 fichas técnicas -->
+            </div>
+
+            <!-- Estado Vacío -->
+            <div class="store-empty-state" id="emptyState" style="display: none;">
+                <p class="empty-icon">⚠</p>
+                <h3 class="t-amber">NO SE DETECTARON EJECUTABLES CON ESE PARÁMETRO</h3>
+                <p class="t-dim">Prueba buscando por "Arcade", "Three.js", "Reloj", "Tetris" o "OSINT".</p>
+            </div>
+        </main>
+
+        <!-- ─── STATUS FOOTER ─── -->
+        <footer class="arcade-status-footer">
+            <div class="footer-segment">
+                <span class="t-green">SYS:</span> NEXUS_OS KERNEL v2.5
+            </div>
+            <div class="footer-sep">│</div>
+            <div class="footer-segment">
+                <span class="t-amber">AUDIO:</span> WEB AUDIO FM SYNTH 80s
+            </div>
+            <div class="footer-sep">│</div>
+            <div class="footer-segment" id="footerClock">
+                <span class="t-dim">TIME:</span> <span id="arcadeSysClock">00:00:00</span>
+            </div>
+            <div class="footer-sep hide-sm">│</div>
+            <div class="footer-segment hide-sm">
+                <span class="t-dim">STORE:</span> CYBERENTERADOS NEXUS MAINFRAME
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ═══ MODAL: ANALIZADOR DE ARQUITECTURA & SPECS (¡CLAVE!) ═══ -->
+    <div class="specs-modal-wrapper" id="specsModal" role="dialog" aria-modal="true">
+        <div class="specs-modal-backdrop" id="specsModalBackdrop"></div>
+        <div class="specs-modal-window">
+            <header class="specs-modal-header">
+                <div class="specs-header-title">
+                    <span class="specs-modal-icon" id="modalSpecIcon">🏎️</span>
+                    <div>
+                        <h2 class="specs-modal-heading" id="modalSpecTitle">NEON RACER 88</h2>
+                        <div class="specs-modal-sub">
+                            <span class="spec-pill amber" id="modalSpecEra">1988 SYNTHWAVE</span>
+                            <span class="spec-pill green" id="modalSpecCategory">JUEGO ARCADE</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="specs-close-btn" id="specsModalClose" title="Cerrar análisis">✕</button>
+            </header>
+
+            <div class="specs-modal-body">
+                <div class="spec-section">
+                    <h4 class="spec-section-title">> DESCRIPCIÓN DEL SISTEMA:</h4>
+                    <p class="spec-text-highlight" id="modalSpecDesc"></p>
+                </div>
+
+                <div class="spec-section">
+                    <h4 class="spec-section-title">> ARQUITECTURA DEL MOTOR:</h4>
+                    <p class="spec-box-content" id="modalSpecArch"></p>
+                </div>
+
+                <div class="spec-section">
+                    <h4 class="spec-section-title">> LÓGICA INTERNA & ALGORITMOS MATEMÁTICOS:</h4>
+                    <p class="spec-box-content" id="modalSpecAlgorithms"></p>
+                </div>
+
+                <div class="spec-grid-cols">
+                    <div class="spec-section">
+                        <h4 class="spec-section-title">> STACK TECNOLÓGICO:</h4>
+                        <p class="spec-box-content mono" id="modalSpecTech"></p>
+                    </div>
+                    <div class="spec-section">
+                        <h4 class="spec-section-title">> APIS & SERVICIOS:</h4>
+                        <p class="spec-box-content mono" id="modalSpecApis"></p>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <h4 class="spec-section-title">> TELEMETRÍA DEL PILOTO EN MONGODB:</h4>
+                    <div class="pilot-stats-panel" id="modalSpecPilotStats">
+                        <!-- Se llena dinámicamente con los récords de la API -->
+                    </div>
+                </div>
+            </div>
+
+            <footer class="specs-modal-footer">
+                <a href="#" target="_blank" class="arcade-btn arcade-btn--launch-lg" id="modalSpecLaunchBtn">
+                    <span>🕹️ INICIAR AHORA ↗</span>
+                </a>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ═══ MODAL: AUTENTICACIÓN DE PILOTO (MONGODB ATLAS) ═══ -->
+    <div class="specs-modal-wrapper" id="authModal" role="dialog" aria-modal="true">
+        <div class="specs-modal-backdrop" id="authModalBackdrop"></div>
+        <div class="specs-modal-window auth-window">
+            <header class="specs-modal-header">
+                <div>
+                    <h2 class="specs-modal-heading" id="authModalTitle">[ IDENTIFICACIÓN DE PILOTO ]</h2>
+                    <span class="spec-pill amber">NEXUS_OS MONGODB KERNEL</span>
+                </div>
+                <button type="button" class="specs-close-btn" id="authModalClose">✕</button>
+            </header>
+
+            <form id="arcadeAuthForm" class="auth-form-content">
+                <div class="form-field" id="authUsernameGroup" style="display: none;">
+                    <label class="form-label">> ALIAS DEL PILOTO (CALLSIGN):</label>
+                    <input type="text" id="authUsername" class="arcade-input" placeholder="ej: Neo_Pilot88">
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">> CORREO ELECTRÓNICO REGISTRADO:</label>
+                    <input type="email" id="authEmail" class="arcade-input" required placeholder="piloto@nexus.os">
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">> LLAVE DE ENCRIPTACIÓN (PASSWORD):</label>
+                    <input type="password" id="authPassword" class="arcade-input" required placeholder="••••••••">
+                </div>
+
+                <div class="auth-submit-row">
+                    <button type="submit" class="arcade-btn arcade-btn--launch-lg" id="authSubmitBtn">
+                        <span>[ LOG_IN ► ]</span>
+                    </button>
+                    <button type="button" class="text-link-btn" id="authModeToggle">
+                        ¿Nuevo recluta? Crear cuenta de piloto
+                    </button>
+                </div>
+
+                <div class="auth-status-msg" id="authStatusMessage">ESPERANDO CREDENCIALES...</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ SCRIPTS ═══ -->
+    <script src="js/canvas-bg.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/hub.js"></script>
+</body>
+</html>

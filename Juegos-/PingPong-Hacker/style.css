@@ -1,175 +1,484 @@
-/* ---- FUENTE Y CONFIGURACIÓN BASE ---- */
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+/* ════════════════════════════════════════════════════════════
+   TERMINAL_PONG // CYBER DUEL 1982 — ARCADE STYLES
+   Estilo: Arena Cibernética Retro 80s + Neón Fósforo CRT
+   ════════════════════════════════════════════════════════════ */
 
-* {
+:root {
+    /* 🟢 Verde Fósforo Piloto */
+    --neon-green:        #39FF14;
+    --neon-green-glow:   0 0 10px #39FF14, 0 0 25px rgba(57, 255, 20, 0.5);
+
+    /* 🟠 Ámbar CPU Core */
+    --neon-amber:        #FFB000;
+    --neon-amber-glow:   0 0 10px #FFB000, 0 0 25px rgba(255, 176, 0, 0.5);
+
+    /* 🔵 Cian Turbo Smash */
+    --neon-cyan:         #00F3FF;
+    --neon-cyan-glow:    0 0 10px #00F3FF, 0 0 25px rgba(0, 243, 255, 0.6);
+
+    /* 🔴 Rojo Alerta */
+    --neon-red:          #FF2222;
+
+    /* Fondo y Chasis */
+    --bg-arena:          #030503;
+    --panel-chassis:     #0D130D;
+    --border-metal:      #1C2E1C;
+    --border-bright:     #335533;
+    --text-cream:        #E5F5E5;
+    --text-dim:          #7A9E7A;
+
+    /* Fuentes */
+    --font-mono:         'Share Tech Mono', monospace;
+    --font-arcade:       'VT323', monospace;
+    --font-display:      'Cinzel', serif;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Share Tech Mono', monospace;
-    user-select: none;
 }
 
-body {
-    background-color: #050a05;
-    color: #00ff00;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
-    padding: 10px;
-}
-
-/* ---- EFECTO CRT SCANLINES ESPACIAL ---- */
-.scanlines {
-    position: relative;
-}
-.scanlines::before {
-    content: " ";
-    display: block;
-    position: fixed;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 99;
-    background-size: 100% 4px, 6px 100%;
-    pointer-events: none;
-}
-
-/* ---- CONTENEDOR TERMINAL ---- */
-.terminal-container {
+html, body {
     width: 100%;
-    max-width: 800px;
-    background-color: #000000;
-    border: 2px solid #00ff00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-    padding: 15px;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-arena);
+    color: var(--text-cream);
+    font-family: var(--font-mono);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+/* ─── CRT SCANLINES Y VIÑETA ─── */
+.crt-scanline {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 20, 0, 0.22) 2px,
+        rgba(0, 20, 0, 0.22) 4px
+    );
+}
+
+.crt-vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1001;
+    background: radial-gradient(circle at center, transparent 65%, rgba(0, 5, 0, 0.85) 100%);
+    box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.9);
+}
+
+/* ─── CONTENEDOR PRINCIPAL ─── */
+.arcade-arena-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    height: 100vh;
+    padding: 10px;
+    gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* ---- CABECERA Y MARCADORES ---- */
-.terminal-header, .terminal-footer {
+/* ─── MARQUESINA SUPERIOR Y MARCADOR ─── */
+.duel-header {
+    background: linear-gradient(180deg, rgba(16, 26, 16, 0.95) 0%, rgba(10, 16, 10, 0.92) 100%);
+    border: 1px solid var(--neon-green);
+    border-radius: 4px;
+    padding: 10px 18px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    font-size: 1.1rem;
-    text-shadow: 0 0 5px #00ff00;
-    border-bottom: 1px dashed #00ff00;
-    padding-bottom: 5px;
-}
-.terminal-footer {
-    border-bottom: none;
-    border-top: 1px dashed #00ff00;
-    padding-top: 5px;
-    font-size: 0.85rem;
+    box-shadow: var(--neon-green-glow);
+    flex-shrink: 0;
 }
 
-.scoreboard {
+.duel-brand {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    align-items: center;
+    gap: 12px;
 }
-.score-box {
-    background: rgba(0, 255, 0, 0.05);
-    border: 1px solid #00ff00;
-    padding: 10px 20px;
-    flex: 1;
+
+.duel-icon {
+    font-size: 1.8rem;
+    color: var(--neon-green);
+    text-shadow: var(--neon-green-glow);
+    animation: iconPulse 2s infinite alternate;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 4px var(--neon-green)); }
+    100% { transform: scale(1.1); filter: drop-shadow(0 0 12px var(--neon-cyan)); color: var(--neon-cyan); }
+}
+
+.duel-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--neon-green);
+    letter-spacing: 3px;
+    text-shadow: var(--neon-green-glow);
+}
+
+.duel-sub {
+    font-family: var(--font-arcade);
+    font-size: 1.15rem;
+    color: var(--neon-amber);
+    letter-spacing: 2px;
+    margin-left: 6px;
+}
+
+.duel-telemetry {
+    font-size: 0.65rem;
     display: flex;
-    justify-content: space-between;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.duel-telemetry .sep { color: var(--border-metal); }
+.t-green { color: var(--neon-green); font-weight: 700; }
+.t-amber { color: var(--neon-amber); font-weight: 700; }
+.t-cyan  { color: var(--neon-cyan); font-weight: 700; }
+
+/* Marcador Digital */
+.duel-scoreboard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-metal);
+    padding: 4px 18px;
+    border-radius: 4px;
+}
+
+.player-score-box {
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
-.score {
+
+.score-lbl {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+}
+
+.score-num {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.score-vs-divider {
     font-size: 2rem;
-    font-weight: bold;
-    text-shadow: 0 0 10px #00ff00;
+    color: var(--border-bright);
+    margin-bottom: 4px;
 }
 
-/* ---- ÁREA DEL JUEGO (RESPONSIVE CANVAS) ---- */
-.canvas-wrapper {
+.font-arcade {
+    font-family: var(--font-arcade);
+}
+
+/* Controles Auxiliares */
+.duel-aux-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.timer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.timer-lbl {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+}
+
+.timer-val {
+    font-size: 1.25rem;
+    color: var(--text-cream);
+}
+
+.arcade-mini-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--neon-green);
+    color: var(--neon-green);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.arcade-mini-btn:hover {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: var(--neon-green-glow);
+}
+
+/* ─── ARENA DE COMBATE BALÍSTICO (CANVAS) ─── */
+.canvas-arena-frame {
+    flex: 1;
     position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9; /* Mantiene la proporción hacker de radar */
-    background: #020502;
-    border: 1px solid #00ff00;
+    background: #020402;
+    border: 2px solid var(--border-bright);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-canvas {
+.canvas-arena-frame.shake {
+    animation: arenaShake 0.18s ease-out;
+}
+
+@keyframes arenaShake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 3px); }
+    40% { transform: translate(4px, -3px); }
+    60% { transform: translate(-3px, 1px); }
+    80% { transform: translate(2px, -1px); }
+    100% { transform: translate(0, 0); }
+}
+
+#pongCanvas {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-/* ---- PANTALLA SUPERPUESTA (OVERLAY) ---- */
-.overlay {
+/* Capa de Textos Flotantes Arcade */
+.floating-text-layer {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 10;
-    transition: all 0.5s ease;
-    padding: 10px;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
 }
-.overlay.hide {
+
+.floating-alert {
+    position: absolute;
+    font-family: var(--font-arcade);
+    font-size: 2.2rem;
+    color: #FFFFFF;
+    text-shadow: 0 0 10px var(--neon-green), 2px 2px #000;
+    animation: alertPop 0.85s ease-out forwards;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes alertPop {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    25%  { opacity: 1; transform: translate(-50%, -15px) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -45px) scale(1); }
+}
+
+/* Modal Overlay */
+.duel-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 2, 0.85);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.duel-overlay.hide {
     display: none;
 }
 
-/* ---- EFECTOS GLITCH Y TEXTO ANIMADO ---- */
-.glitch-title {
-    font-size: 3rem;
-    font-weight: bold;
-    text-shadow: 0 0 15px #00ff00;
-    animation: glitch-anim 3s infinite linear alternate-reverse;
-}
-.blink-text {
-    animation: blink 1.5s infinite;
-    color: #00ff00;
-    font-size: 1rem;
-    margin-top: 15px;
+.duel-modal-card {
+    background: rgba(12, 20, 12, 0.96);
+    border: 2px solid var(--neon-green);
+    border-radius: 6px;
+    padding: 24px;
+    max-width: 540px;
+    box-shadow: var(--neon-green-glow);
+    text-align: center;
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.1; }
+.modal-era-badge {
+    font-size: 0.68rem;
+    color: var(--neon-amber);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
 }
 
-@keyframes glitch-anim {
-    0% { filter: url(#glitch-filter); transform: skew(0deg); }
-    10% { filter: none; transform: skew(0deg); }
-    11% { filter: url(#glitch-filter); transform: skew(3deg); }
-    12% { filter: none; transform: skew(0deg); }
-    90% { filter: none; }
-    92% { filter: url(#glitch-filter); transform: skew(-5deg); }
-    95% { filter: none; transform: skew(0deg); }
+.modal-heading {
+    font-family: var(--font-arcade);
+    font-size: 2.3rem;
+    color: var(--neon-green);
+    text-shadow: var(--neon-green-glow);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
 }
 
-/* ---- BOTONES TÁLTILES PARA MÓVILES ---- */
-.mobile-controls {
-    display: none; /* Se activa en pantallas táctiles por Media Queries */
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+.modal-desc {
+    font-size: 0.85rem;
+    color: var(--text-cream);
+    line-height: 1.5;
+    margin-bottom: 18px;
 }
-.ctrl-btn {
-    background: rgba(0, 255, 0, 0.1);
-    border: 1px solid #00ff00;
-    color: #00ff00;
-    padding: 15px;
-    font-size: 1.2rem;
+
+.duel-modal-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-metal);
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 0.76rem;
+}
+
+.rule-line span {
+    color: var(--neon-green);
+    font-weight: 700;
+}
+
+kbd {
+    background: #000;
+    border: 1px solid var(--neon-green);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--neon-green);
+    font-family: var(--font-mono);
+}
+
+.arcade-start-btn {
+    background: linear-gradient(135deg, rgba(57, 255, 20, 0.25) 0%, rgba(57, 255, 20, 0.08) 100%);
+    border: 2px solid var(--neon-green);
+    color: var(--neon-green);
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 4px;
     cursor: pointer;
-    text-shadow: 0 0 5px #00ff00;
-}
-.ctrl-btn:active {
-    background: #00ff00;
-    color: #000;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
 }
 
-/* ---- MEDIA QUERIES (RESPONSIVE RADAR) ---- */
-@media (max-width: 600px) {
-    .glitch-title { font-size: 2rem; }
-    .blink-text { font-size: 0.8rem; }
-    .score { font-size: 1.5rem; }
-    .mobile-controls { display: grid; } /* Despliega mandos táctiles */
+.arcade-start-btn:hover {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: var(--neon-green-glow);
+    transform: translateY(-2px);
+}
+
+/* ─── CONSOLA INFERIOR & TURBO SMASH ─── */
+.duel-footer-console {
+    background: rgba(10, 18, 10, 0.95);
+    border: 1px solid var(--border-metal);
+    border-radius: 4px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.smash-meter-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.meter-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+}
+
+.smash-meter-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.smash-meter-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+    box-shadow: 0 0 8px var(--neon-cyan);
+    transition: width 0.3s ease;
+}
+
+.duel-console-btns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mobile-nav-group {
+    display: none;
+    gap: 6px;
+}
+
+.action-btn-retro {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-bright);
+    color: var(--text-cream);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 8px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.action-btn-retro:hover {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    box-shadow: var(--neon-green-glow);
+}
+
+.action-btn-retro.smash-btn {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-weight: 700;
+}
+.action-btn-retro.smash-btn:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: var(--neon-cyan-glow);
+}
+
+.action-btn-retro.hub-link {
+    border-color: var(--neon-amber);
+    color: var(--neon-amber);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+    .duel-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .duel-scoreboard { width: 100%; justify-content: space-around; }
+    .duel-footer-console { flex-direction: column; align-items: stretch; }
+    .mobile-nav-group { display: flex; }
+    .nav-btn { flex: 1; justify-content: center; }
 }
